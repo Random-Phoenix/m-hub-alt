@@ -66,42 +66,52 @@ export const Footer = () => {
               </div>
             </div>
 
-            {/* Quick Links */}
-            <div className="col-span-4 md:col-span-2 md:ml-24">
+            {/* Quick Links - Reduced left margin */}
+            <div className="col-span-4 md:col-span-2 md:ml-8">
               <h4 className="text-[14px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Quick Links</h4>
               <ul className="space-y-1.5">
-                {[
-                  { label: 'Latest Phones', icon: Smartphone },
-                  { label: 'Compare Phones', icon: ArrowUpDown },
-                  { label: 'Favourites', icon: Heart }
-                ].map(({ label, icon: Icon }) => (
-                  <li key={label}>
-                    <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
-                                         group transition-colors whitespace-nowrap">
-                      <Icon className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
-                      {label}
-                    </a>
-                  </li>
-                ))}
+                <li>
+                  <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
+                                       group transition-colors whitespace-nowrap">
+                    <Smartphone className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
+                    Latest Phones
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
+                                       group transition-colors whitespace-nowrap">
+                    <ArrowUpDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
+                    Compare Phones
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
+                                       group transition-colors whitespace-nowrap">
+                    <Heart className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
+                    Favourites
+                  </a>
+                </li>
               </ul>
             </div>
 
-            {/* Resources */}
-            <div className="col-span-4 md:col-span-2 md:ml-16">
+            {/* Resources - Adjusted spacing */}
+            <div className="col-span-4 md:col-span-2 md:ml-4">
               <h4 className="text-[14px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Resources</h4>
               <ul className="space-y-1.5">
-                {[
-                  { label: 'News & Reviews', icon: Newspaper },
-                  { label: 'User Guides', icon: BookOpen }
-                ].map(({ label, icon: Icon }) => (
-                  <li key={label}>
-                    <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
-                                         group transition-colors whitespace-nowrap">
-                      <Icon className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
-                      {label}
-                    </a>
-                  </li>
-                ))}
+                <li>
+                  <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
+                                       group transition-colors whitespace-nowrap">
+                    <Newspaper className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
+                    News & Reviews
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
+                                       group transition-colors whitespace-nowrap">
+                    <BookOpen className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
+                    User Guides
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -163,13 +173,13 @@ export const Footer = () => {
           {/* Newsletter Section */}
           <div className="px-3 py-1 border-b border-gray-100">
             <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5 text-blue-600" />
-                  <span className="text-sm font-bold tracking-tight">MobileHUB</span>
+                  <Smartphone className="w-4 h-4 text-blue-600" />
+                  <span className="text-base font-bold tracking-tight">MobileHUB</span>
                 </div>
                 
-                {/* Social Links - Now on the left */}
+                {/* Social Links - Left of App Coming Soon */}
                 <div className="flex items-center gap-1">
                   <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
                      className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
@@ -186,29 +196,21 @@ export const Footer = () => {
                 </div>
               </div>
 
-              {/* QR Code for Mobile */}
-              <div className="flex items-center gap-1.5 px-2 py-1 bg-gray-50 rounded-lg">
+              {/* App Coming Soon - Always single line */}
+              <div className="flex items-center gap-1 px-2 py-1 bg-gray-50 rounded-lg shrink-0">
                 <QrCode className="w-3.5 h-3.5 text-gray-400" />
-                <span className="text-[10px] text-gray-600">App Coming Soon</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-600 whitespace-nowrap">App Coming Soon</span>
               </div>
             </div>
 
             {/* Quick Links and Trust Badges in a more compact layout */}
             <div className="flex items-center justify-between mt-2 mb-1.5">
               <div className="flex gap-4">
-                <div>
-                  <h5 className="text-[11px] font-semibold text-gray-700 mb-1">Quick Links</h5>
-                  <div className="flex gap-3">
-                    <a href="#" className="text-[10px] text-gray-600">Latest</a>
-                    <a href="#" className="text-[10px] text-gray-600">Compare</a>
-                  </div>
-                </div>
-                <div>
-                  <h5 className="text-[11px] font-semibold text-gray-700 mb-1">Resources</h5>
-                  <div className="flex gap-3">
-                    <a href="#" className="text-[10px] text-gray-600">News</a>
-                    <a href="#" className="text-[10px] text-gray-600">Guides</a>
-                  </div>
+                <div className="flex gap-3">
+                  <a href="#" className="text-[10px] text-gray-600">Latest</a>
+                  <a href="#" className="text-[10px] text-gray-600">Compare</a>
+                  <a href="#" className="text-[10px] text-gray-600">News</a>
+                  <a href="#" className="text-[10px] text-gray-600">Guides</a>
                 </div>
               </div>
 
@@ -225,7 +227,8 @@ export const Footer = () => {
               </div>
             </div>
 
-            <form className="space-y-1 flex flex-col items-center">
+            {/* Newsletter - Left aligned */}
+            <div className="flex flex-col items-start">
               <div className="relative w-full max-w-[280px]">
                 <input
                   type="email"
@@ -242,8 +245,8 @@ export const Footer = () => {
                   Subscribe
                 </button>
               </div>
-              <p className="text-[10px] text-gray-500">Stay updated with the latest mobile tech news</p>
-            </form>
+              <p className="text-[10px] text-gray-500 mt-1">Stay updated with the latest mobile tech news</p>
+            </div>
           </div>
 
           {/* Support Links */}
