@@ -21,7 +21,7 @@ const LanguageSelector = () => {
       </button>
       
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-xl shadow-lg border 
+        <div className="absolute bottom-full right-0 mb-2 w-36 bg-white rounded-xl shadow-lg border 
                       border-gray-100 p-1 animate-fadeIn">
           <button 
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-900 rounded-lg
@@ -47,20 +47,22 @@ export const Footer = () => {
             {/* Brand and Newsletter Section */}
             <div className="col-span-12 md:col-span-4">
               <div className="flex flex-col gap-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <Smartphone className="w-5 h-5 text-blue-600" />
-                      <span className="text-lg font-bold tracking-tight">MobileHUB</span>
-                    </div>
-                    <p className="text-sm text-gray-500">Your trusted source for mobile tech</p>
-                  </div>
-                  {/* QR Code Section - Compact */}
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-xl">
-                    <QrCode className="w-6 h-6 text-gray-400" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
                     <div>
-                      <p className="text-[11px] font-medium text-gray-900">Mobile App</p>
-                      <p className="text-[10px] text-gray-500">Coming Soon</p>
+                      <div className="flex items-center gap-2">
+                        <Smartphone className="w-5 h-5 text-blue-600" />
+                        <span className="text-lg font-bold tracking-tight">MobileHUB</span>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1">Your trusted source for mobile tech</p>
+                    </div>
+                    {/* QR Code Section - Right side of MobileHUB */}
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl">
+                      <QrCode className="w-7 h-7 text-gray-400" />
+                      <div>
+                        <p className="text-[12px] font-medium text-gray-900">Mobile App</p>
+                        <p className="text-[11px] text-gray-500">Coming Soon</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -90,7 +92,7 @@ export const Footer = () => {
 
             {/* Quick Links */}
             <div className="col-span-4 md:col-span-2 md:ml-6">
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">Quick Links</h4>
+              <h4 className="text-[13px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Quick Links</h4>
               <ul className="space-y-1.5">
                 {[
                   { label: 'Latest Phones', icon: Smartphone },
@@ -98,8 +100,8 @@ export const Footer = () => {
                   { label: 'Favourites', icon: Heart }
                 ].map(({ label, icon: Icon }) => (
                   <li key={label}>
-                    <a href="#" className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 
-                                         group transition-colors">
+                    <a href="#" className="flex items-center gap-2 text-[12px] text-gray-600 hover:text-blue-600 
+                                         group transition-colors whitespace-nowrap">
                       <Icon className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
                       {label}
                     </a>
@@ -110,15 +112,15 @@ export const Footer = () => {
 
             {/* Resources */}
             <div className="col-span-4 md:col-span-2">
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">Resources</h4>
+              <h4 className="text-[13px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Resources</h4>
               <ul className="space-y-1.5">
                 {[
                   { label: 'News & Reviews', icon: Newspaper },
                   { label: 'User Guides', icon: BookOpen }
                 ].map(({ label, icon: Icon }) => (
                   <li key={label}>
-                    <a href="#" className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 
-                                         group transition-colors">
+                    <a href="#" className="flex items-center gap-2 text-[12px] text-gray-600 hover:text-blue-600 
+                                         group transition-colors whitespace-nowrap">
                       <Icon className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
                       {label}
                     </a>
@@ -134,11 +136,11 @@ export const Footer = () => {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-green-500" />
-                    <span className="text-xs text-gray-600">Expert Reviews</span>
+                    <span className="text-[11px] text-gray-600 whitespace-nowrap">Expert Reviews</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Star className="w-4 h-4 text-blue-500" />
-                    <span className="text-xs text-gray-600">Trusted Specs</span>
+                    <span className="text-[11px] text-gray-600 whitespace-nowrap">Trusted Specs</span>
                   </div>
                 </div>
 
@@ -163,10 +165,10 @@ export const Footer = () => {
 
                 {/* Support Links */}
                 <div className="flex items-center gap-3">
-                  <a href="#" className="text-sm text-gray-600 hover:text-blue-600">Privacy</a>
-                  <a href="#" className="text-sm text-gray-600 hover:text-blue-600">Terms</a>
-                  <a href="#" className="text-sm text-gray-600 hover:text-blue-600">FAQ</a>
-                  <a href="#" className="text-sm text-gray-600 hover:text-blue-600">Contact</a>
+                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Privacy</a>
+                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Terms</a>
+                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">FAQ</a>
+                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Contact</a>
                 </div>
               </div>
             </div>
@@ -175,44 +177,62 @@ export const Footer = () => {
           {/* Bottom Bar */}
           <div className="flex justify-center mt-4 pt-4 border-t border-gray-100">
             <p className="text-sm text-gray-500">
-              © 2024 MobileHUB. All rights reserved.
+              © 2025 MobileHUB. All rights reserved.
             </p>
           </div>
         </div>
 
-        {/* Mobile Footer */}
+        {/* Mobile Footer with Responsive Layouts */}
         <div className="md:hidden">
           {/* Newsletter Section */}
-          <div className="px-3 py-1.5 border-b border-gray-100">
-            <div className="flex items-center justify-between mb-2">
+          <div className="px-3 py-1 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
                   <Smartphone className="w-3.5 h-3.5 text-blue-600" />
                   <span className="text-sm font-bold tracking-tight">MobileHUB</span>
                 </div>
               </div>
-              {/* Social Links and Language Selector for Mobile */}
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5">
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
-                     className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
-                    <Facebook className="w-3.5 h-3.5" />
-                  </a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
-                     className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
-                    <Instagram className="w-3.5 h-3.5" />
-                  </a>
-                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
-                     className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
-                    <Youtube className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-                <button className="flex items-center gap-1.5 px-2 py-1 text-xs text-gray-600 bg-gray-50 rounded-lg">
-                  <Globe className="w-3.5 h-3.5" />
-                  <span>EN</span>
-                </button>
+
+              {/* QR Code for Mobile */}
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-gray-50 rounded-lg">
+                <QrCode className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-[10px] text-gray-600">App Coming Soon</span>
               </div>
             </div>
+
+            {/* Responsive Quick Links for Wider Mobile Screens */}
+            <div className="hidden sm:flex items-start justify-between mt-2 mb-1.5">
+              <div className="flex items-start gap-8">
+                <div>
+                  <h5 className="text-[11px] font-semibold text-gray-700 mb-1">Quick Links</h5>
+                  <div className="flex flex-col gap-1">
+                    <a href="#" className="text-[10px] text-gray-600">Latest Phones</a>
+                    <a href="#" className="text-[10px] text-gray-600">Compare</a>
+                  </div>
+                </div>
+                <div>
+                  <h5 className="text-[11px] font-semibold text-gray-700 mb-1">Resources</h5>
+                  <div className="flex flex-col gap-1">
+                    <a href="#" className="text-[10px] text-gray-600">News</a>
+                    <a href="#" className="text-[10px] text-gray-600">Guides</a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trust Badges for Wider Screens */}
+              <div className="flex items-start gap-3">
+                <div className="flex items-center gap-1">
+                  <Award className="w-3 h-3 text-green-500" />
+                  <span className="text-[10px] text-gray-600">Expert Reviews</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Star className="w-3 h-3 text-blue-500" />
+                  <span className="text-[10px] text-gray-600">Trusted Specs</span>
+                </div>
+              </div>
+            </div>
+
             <form className="space-y-1 flex flex-col items-center">
               <div className="relative w-full max-w-[280px]">
                 <input
@@ -234,8 +254,32 @@ export const Footer = () => {
             </form>
           </div>
 
+          {/* Social Links and Language Selector */}
+          <div className="px-4 py-1 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
+                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
+                  <Facebook className="w-3.5 h-3.5" />
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
+                  <Instagram className="w-3.5 h-3.5" />
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
+                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
+                  <Youtube className="w-3.5 h-3.5" />
+                </a>
+              </div>
+              <button className="flex items-center gap-1.5 px-2 py-1 text-xs text-gray-600 bg-gray-50 rounded-lg">
+                <Globe className="w-3.5 h-3.5" />
+                <span>EN</span>
+              </button>
+            </div>
+          </div>
+
           {/* Support Links */}
-          <div className="px-4 py-1.5 border-b border-gray-100">
+          <div className="px-4 py-1 border-b border-gray-100">
             <div className="flex items-center justify-center gap-2">
               <a href="#" className="px-2 py-1 text-[11px] font-medium text-gray-600 whitespace-nowrap">
                 Privacy
@@ -253,9 +297,9 @@ export const Footer = () => {
           </div>
 
           {/* Copyright */}
-          <div className="px-4 py-1.5 bg-gray-50/50">
+          <div className="px-4 py-1 bg-gray-50/50">
             <p className="text-[10px] text-center text-gray-500">
-              © 2024 MobileHUB. All rights reserved.
+              © 2025 MobileHUB. All rights reserved.
             </p>
           </div>
         </div>
