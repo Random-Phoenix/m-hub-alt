@@ -1,41 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { 
-  Smartphone, Mail, ArrowUpRight, Globe, 
-  ChevronDown, QrCode, Star, Award, BookOpen, Newspaper,
+  Smartphone, Mail, Globe, 
+  QrCode, Star, Award, BookOpen, Newspaper,
   Facebook, Instagram, Youtube, Heart, Search, Zap
 } from "lucide-react";
 
-const LanguageSelector = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="relative group">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 
-                 bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors"
-      >
-        <Globe className="w-4 h-4" />
-        <span>English</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
-      
-      {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-36 bg-white rounded-xl shadow-lg border 
-                      border-gray-100 p-1 animate-fadeIn">
-          <button 
-            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-900 rounded-lg
-                     hover:bg-gray-50 transition-colors"
-          >
-            <Globe className="w-4 h-4 text-gray-400" />
-            <span>English</span>
-            <Star className="w-3 h-3 text-blue-500 ml-auto" />
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
+const LanguageSelector = () => (
+  <div className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 
+               bg-gray-50 rounded-lg group-hover:bg-gray-100 transition-colors">
+    <Globe className="w-4 h-4" />
+    <span>English</span>
+  </div>
+);
 
 export const Footer = () => {
   return (
@@ -91,8 +67,8 @@ export const Footer = () => {
             </div>
 
             {/* Quick Links */}
-            <div className="col-span-4 md:col-span-2 md:ml-6">
-              <h4 className="text-[13px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Quick Links</h4>
+            <div className="col-span-4 md:col-span-2 md:ml-24">
+              <h4 className="text-[14px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Quick Links</h4>
               <ul className="space-y-1.5">
                 {[
                   { label: 'Latest Phones', icon: Smartphone },
@@ -100,7 +76,7 @@ export const Footer = () => {
                   { label: 'Favourites', icon: Heart }
                 ].map(({ label, icon: Icon }) => (
                   <li key={label}>
-                    <a href="#" className="flex items-center gap-2 text-[12px] text-gray-600 hover:text-blue-600 
+                    <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
                                          group transition-colors whitespace-nowrap">
                       <Icon className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
                       {label}
@@ -111,15 +87,15 @@ export const Footer = () => {
             </div>
 
             {/* Resources */}
-            <div className="col-span-4 md:col-span-2">
-              <h4 className="text-[13px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Resources</h4>
+            <div className="col-span-4 md:col-span-2 md:ml-12">
+              <h4 className="text-[14px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Resources</h4>
               <ul className="space-y-1.5">
                 {[
                   { label: 'News & Reviews', icon: Newspaper },
                   { label: 'User Guides', icon: BookOpen }
                 ].map(({ label, icon: Icon }) => (
                   <li key={label}>
-                    <a href="#" className="flex items-center gap-2 text-[12px] text-gray-600 hover:text-blue-600 
+                    <a href="#" className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-600 
                                          group transition-colors whitespace-nowrap">
                       <Icon className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500" />
                       {label}
@@ -165,10 +141,10 @@ export const Footer = () => {
 
                 {/* Support Links */}
                 <div className="flex items-center gap-3">
-                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Privacy</a>
-                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Terms</a>
-                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">FAQ</a>
-                  <a href="#" className="text-[11px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Contact</a>
+                  <a href="#" className="text-[13px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Privacy</a>
+                  <a href="#" className="text-[13px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Terms</a>
+                  <a href="#" className="text-[13px] text-gray-600 hover:text-blue-600 whitespace-nowrap">FAQ</a>
+                  <a href="#" className="text-[13px] text-gray-600 hover:text-blue-600 whitespace-nowrap">Contact</a>
                 </div>
               </div>
             </div>
@@ -187,10 +163,26 @@ export const Footer = () => {
           {/* Newsletter Section */}
           <div className="px-3 py-1 border-b border-gray-100">
             <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                   <Smartphone className="w-3.5 h-3.5 text-blue-600" />
                   <span className="text-sm font-bold tracking-tight">MobileHUB</span>
+                </div>
+                
+                {/* Social Links - Now on the left */}
+                <div className="flex items-center gap-1">
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
+                     className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
+                    <Facebook className="w-3.5 h-3.5" />
+                  </a>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
+                     className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
+                    <Instagram className="w-3.5 h-3.5" />
+                  </a>
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
+                     className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
+                    <Youtube className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </div>
 
@@ -252,30 +244,6 @@ export const Footer = () => {
               </div>
               <p className="text-[10px] text-gray-500">Stay updated with the latest mobile tech news</p>
             </form>
-          </div>
-
-          {/* Social Links and Language Selector */}
-          <div className="px-4 py-1 border-b border-gray-100">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
-                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
-                  <Facebook className="w-3.5 h-3.5" />
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
-                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
-                  <Instagram className="w-3.5 h-3.5" />
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
-                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 transition-all">
-                  <Youtube className="w-3.5 h-3.5" />
-                </a>
-              </div>
-              <button className="flex items-center gap-1.5 px-2 py-1 text-xs text-gray-600 bg-gray-50 rounded-lg">
-                <Globe className="w-3.5 h-3.5" />
-                <span>EN</span>
-              </button>
-            </div>
           </div>
 
           {/* Support Links */}
