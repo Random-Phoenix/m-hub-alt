@@ -18,17 +18,10 @@ const extractBrandAndModel = (name: string) => {
 const FavoriteButton: React.FC<{
   isFavorite: boolean;
   onClick: (e: React.MouseEvent) => void;
-  isMobile: boolean;
-}> = memo(({ isFavorite, onClick, isMobile }) => (
+}> = memo(({ isFavorite, onClick }) => (
   <button
     onClick={onClick}
-    className={`absolute top-3 right-3 transition-opacity ${
-      isMobile
-        ? ""
-        : isFavorite
-        ? "opacity-100"
-        : "opacity-0 group-hover:opacity-100"
-    }`}
+    className="absolute top-3 right-3 transition-opacity opacity-0 group-hover:opacity-100"
     aria-label="Add to favorites"
   >
     <Heart
@@ -74,12 +67,10 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
             decoding="async"
           />
 
-          {/* Favorite Button */}
-          <FavoriteButton
-            isFavorite={isFavorite}
-            onClick={handleFavorite}
-            isMobile={isMobile}
-          />
+          {/* Favorite Button - Only shown on desktop */}
+          {!isMobile && (
+            <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />
+          )}
         </div>
 
         {/* Content */}
