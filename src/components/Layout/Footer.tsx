@@ -257,19 +257,19 @@ const MobileFooter = memo(() => (
         {/* Social Links and App Coming Soon */}
         <div className="flex items-center gap-2">
           {/* Social Links */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             {SOCIAL_LINKS.map((link) => (
               <SocialLink key={link.label} {...link} />
             ))}
           </div>
 
           {/* App Coming Soon */}
-          <div className="flex items-center gap-1 px-2 py-1 bg-gray-50 rounded-lg shrink-0">
+          {/* <div className="flex items-center gap-1 px-2 py-1 bg-gray-50 rounded-lg shrink-0">
             <QrCode className="w-3.5 h-3.5 text-gray-400" />
             <span className="text-[9px] sm:text-[10px] text-gray-600 whitespace-nowrap">
               App Coming Soon
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
 

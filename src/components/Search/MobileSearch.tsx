@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Search, Flame, History, Trash2, X } from "lucide-react";
 
 interface MobileSearchProps {
@@ -36,6 +30,15 @@ export const MobileSearch: React.FC<MobileSearchProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Handle search query updates immediately
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value); // Directly update the search query state
+    },
+    [setSearchQuery]
+  );
+
+  // Handle search actions
   const handleSearch = useCallback(
     (query: string) => {
       if (!query.trim()) return;
@@ -49,32 +52,38 @@ export const MobileSearch: React.FC<MobileSearchProps> = ({
     [setSearchQuery]
   );
 
+  // Clear recent searches
   const clearRecentSearches = useCallback(() => {
     setRecentSearches([]);
     localStorage.removeItem("recentSearches");
   }, []);
 
+  // Remove a single recent search
   const removeRecentSearch = useCallback((index: number) => {
     setRecentSearches((prev) => prev.filter((_, i) => i !== index));
     setLongPressedIndex(null);
   }, []);
 
+  // Handle long press on recent searches
   const handleTouchStart = useCallback((index: number) => {
     longPressTimer.current = setTimeout(() => {
       setLongPressedIndex(index);
     }, LONG_PRESS_DURATION);
   }, []);
 
+  // Cancel long press
   const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
     }
   }, []);
 
+  // Persist recent searches to localStorage
   useEffect(() => {
     localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
   }, [recentSearches]);
 
+  // Handle clicks outside the dropdown
   useEffect(() => {
     if (!isFocused) return;
 
@@ -94,14 +103,6 @@ export const MobileSearch: React.FC<MobileSearchProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isFocused]);
 
-  const debouncedSetSearchQuery = useMemo(() => {
-    let timeout: NodeJS.Timeout;
-    return (value: string) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => setSearchQuery(value), 300);
-    };
-  }, [setSearchQuery]);
-
   return (
     <div className="md:hidden bg-white border-b border-gray-100">
       <div className="px-4 py-3">
@@ -112,7 +113,7 @@ export const MobileSearch: React.FC<MobileSearchProps> = ({
               type="text"
               placeholder="Search phones, brands, features..."
               value={searchQuery}
-              onChange={(e) => debouncedSetSearchQuery(e.target.value)}
+              onChange={handleInputChange} // Directly update state on every keystroke
               onFocus={() => setIsFocused(true)}
               className="w-full pl-11 pr-12 py-3 bg-gray-50/75 border border-gray-200/75 rounded-xl 
                        focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/30 
