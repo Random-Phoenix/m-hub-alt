@@ -2,7 +2,8 @@ import React from "react";
 import { 
   Smartphone, Mail, Globe, 
   QrCode, Star, Award, BookOpen, Newspaper,
-  Facebook, Instagram, Youtube, Heart, Search, Zap
+  Facebook, Instagram, Youtube, Heart,
+  ArrowUpDown
 } from "lucide-react";
 
 const LanguageSelector = () => (
@@ -35,16 +36,15 @@ export const Footer = () => {
                     {/* QR Code Section - Right side of MobileHUB */}
                     <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl">
                       <QrCode className="w-7 h-7 text-gray-400" />
-                      <div>
-                        <p className="text-[12px] font-medium text-gray-900">Mobile App</p>
-                        <p className="text-[11px] text-gray-500">Coming Soon</p>
+                      <div className="whitespace-nowrap">
+                        <p className="text-[12px] font-medium text-gray-900">App Coming Soon</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 
                 {/* Newsletter Input */}
-                <div className="flex items-stretch gap-2">
+                <div className="flex items-stretch gap-2 max-w-md">
                   <div className="relative flex-1">
                     <input
                       type="email"
@@ -72,7 +72,7 @@ export const Footer = () => {
               <ul className="space-y-1.5">
                 {[
                   { label: 'Latest Phones', icon: Smartphone },
-                  { label: 'Compare Phones', icon: Zap },
+                  { label: 'Compare Phones', icon: ArrowUpDown },
                   { label: 'Favourites', icon: Heart }
                 ].map(({ label, icon: Icon }) => (
                   <li key={label}>
@@ -87,7 +87,7 @@ export const Footer = () => {
             </div>
 
             {/* Resources */}
-            <div className="col-span-4 md:col-span-2 md:ml-12">
+            <div className="col-span-4 md:col-span-2 md:ml-16">
               <h4 className="text-[14px] font-semibold text-gray-900 mb-2 whitespace-nowrap">Resources</h4>
               <ul className="space-y-1.5">
                 {[
@@ -163,7 +163,7 @@ export const Footer = () => {
           {/* Newsletter Section */}
           <div className="px-3 py-1 border-b border-gray-100">
             <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
                   <Smartphone className="w-3.5 h-3.5 text-blue-600" />
                   <span className="text-sm font-bold tracking-tight">MobileHUB</span>
@@ -193,34 +193,34 @@ export const Footer = () => {
               </div>
             </div>
 
-            {/* Responsive Quick Links for Wider Mobile Screens */}
-            <div className="hidden sm:flex items-start justify-between mt-2 mb-1.5">
-              <div className="flex items-start gap-8">
+            {/* Quick Links and Trust Badges in a more compact layout */}
+            <div className="flex items-center justify-between mt-2 mb-1.5">
+              <div className="flex gap-4">
                 <div>
                   <h5 className="text-[11px] font-semibold text-gray-700 mb-1">Quick Links</h5>
-                  <div className="flex flex-col gap-1">
-                    <a href="#" className="text-[10px] text-gray-600">Latest Phones</a>
+                  <div className="flex gap-3">
+                    <a href="#" className="text-[10px] text-gray-600">Latest</a>
                     <a href="#" className="text-[10px] text-gray-600">Compare</a>
                   </div>
                 </div>
                 <div>
                   <h5 className="text-[11px] font-semibold text-gray-700 mb-1">Resources</h5>
-                  <div className="flex flex-col gap-1">
+                  <div className="flex gap-3">
                     <a href="#" className="text-[10px] text-gray-600">News</a>
                     <a href="#" className="text-[10px] text-gray-600">Guides</a>
                   </div>
                 </div>
               </div>
 
-              {/* Trust Badges for Wider Screens */}
-              <div className="flex items-start gap-3">
+              {/* Trust Badges - Compact */}
+              <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <Award className="w-3 h-3 text-green-500" />
-                  <span className="text-[10px] text-gray-600">Expert Reviews</span>
+                  <span className="text-[9px] text-gray-600">Expert</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Star className="w-3 h-3 text-blue-500" />
-                  <span className="text-[10px] text-gray-600">Trusted Specs</span>
+                  <span className="text-[9px] text-gray-600">Trusted</span>
                 </div>
               </div>
             </div>
