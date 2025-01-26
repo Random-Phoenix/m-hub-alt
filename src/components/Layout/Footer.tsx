@@ -105,29 +105,29 @@ export const Footer = memo(() => {
     <footer className="bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Desktop Footer */}
-        <div className="hidden md:block py-6"> {/* Reduced padding */}
-          <div className="grid grid-cols-12 gap-4 lg:gap-6">
+        <div className="hidden md:block py-2">
+          <div className="grid grid-cols-12 gap-3 lg:gap-4">
             {/* Brand and Newsletter Section */}
             <div className="col-span-12 md:col-span-4">
-              <div className="flex flex-col gap-2"> {/* Reduced gap */}
+              <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3"> {/* Reduced gap */}
+                  <div className="flex items-center gap-3">
                     <div>
-                      <div className="flex items-center gap-1.5"> {/* Reduced gap */}
+                      <div className="flex items-center gap-1.5">
                         <Smartphone className="w-5 h-5 text-blue-600" />
                         <span className="text-lg font-bold tracking-tight">
                           MobileHUB
                         </span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1"> {/* Smaller font size */}
+                      <p className="text-sm text-gray-500 mt-0.5">
                         Your trusted source for mobile tech
                       </p>
                     </div>
                     {/* QR Code Section */}
-                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-50 rounded-xl"> {/* Reduced padding */}
-                      <QrCode className="w-6 h-6 text-gray-400" /> {/* Smaller icon */}
+                    <div className="flex items-center gap-1.5 px-2 py-1.5 bg-gray-50 rounded-xl">
+                      <QrCode className="w-6 h-6 text-gray-400" />
                       <div className="whitespace-nowrap">
-                        <p className="text-[11px] font-medium text-gray-900"> {/* Smaller font size */}
+                        <p className="text-[11px] font-medium text-gray-900">
                           App Coming Soon
                         </p>
                       </div>
@@ -136,20 +136,20 @@ export const Footer = memo(() => {
                 </div>
 
                 {/* Newsletter Input */}
-                <div className="flex items-stretch gap-1.5 max-w-md"> {/* Reduced gap */}
+                <div className="flex items-stretch gap-1.5 max-w-md">
                   <div className="relative flex-1">
                     <input
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full pl-3 pr-8 py-1.5 text-xs rounded-lg border border-gray-200 outline-none 
+                      className="w-full pl-3 pr-8 py-1.5 text-sm rounded-lg border border-gray-200 outline-none 
                                ring-blue-500/20 focus:ring-2 focus:bg-white font-display
                                placeholder:text-gray-400 transition-all"
                     />
-                    <Mail className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" /> {/* Smaller icon */}
+                    <Mail className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
                   <button
                     type="submit"
-                    className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg 
+                    className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg 
                              hover:bg-blue-700 active:scale-[0.98] transition-all whitespace-nowrap"
                   >
                     Subscribe
@@ -159,11 +159,11 @@ export const Footer = memo(() => {
             </div>
 
             {/* Quick Links */}
-            <div className="col-span-4 md:col-span-2 md:ml-8">
-              <h4 className="text-[13px] font-semibold text-gray-900 mb-1.5"> {/* Smaller font size */}
+            <div className="col-span-4 md:col-span-2 md:ml-6">
+              <h4 className="text-[13px] font-semibold text-gray-900 mb-1.5">
                 Quick Links
               </h4>
-              <ul className="space-y-1"> {/* Reduced gap */}
+              <ul className="space-y-1">
                 {QUICK_LINKS.map((link) => (
                   <QuickLink key={link.text} {...link} />
                 ))}
@@ -171,11 +171,11 @@ export const Footer = memo(() => {
             </div>
 
             {/* Resources */}
-            <div className="col-span-4 md:col-span-2 md:ml-4">
-              <h4 className="text-[13px] font-semibold text-gray-900 mb-1.5"> {/* Smaller font size */}
+            <div className="col-span-4 md:col-span-2 md:ml-3">
+              <h4 className="text-[13px] font-semibold text-gray-900 mb-1.5">
                 Resources
               </h4>
-              <ul className="space-y-1"> {/* Reduced gap */}
+              <ul className="space-y-1">
                 {RESOURCE_LINKS.map((link) => (
                   <QuickLink key={link.text} {...link} />
                 ))}
@@ -184,13 +184,15 @@ export const Footer = memo(() => {
 
             {/* Company and Additional Features */}
             <div className="col-span-12 md:col-span-4">
-              <div className="flex flex-col md:items-end gap-1.5"> {/* Reduced gap */}
+              <div className="flex flex-col md:items-end gap-1.5">
                 {/* Trust Badges */}
                 <div className="flex items-center gap-3">
                   {TRUST_BADGES.map(({ icon: Icon, text, color }) => (
-                    <div key={text} className="flex items-center gap-1.5"> {/* Reduced gap */}
-                      <Icon className={`w-3.5 h-3.5 ${color}`} /> {/* Smaller icon */}
-                      <span className="text-[10px] text-gray-600 whitespace-nowrap"> {/* Smaller font size */}
+                    <div key={text} className="flex items-center gap-1.5">
+                      <Icon className={`w-3.5 h-3.5 ${color}`} />
+                      <span className="text-[11px] md:text-[12px] text-gray-600 whitespace-nowrap">
+                        {" "}
+                        {/* Increased to 12px for desktop */}
                         {text}
                       </span>
                     </div>
@@ -198,17 +200,16 @@ export const Footer = memo(() => {
                 </div>
 
                 {/* Social, Language, and Support Links */}
-                <div className="flex flex-col items-end gap-2 mt-4"> {/* Reduced gap */}
+                <div className="flex flex-col items-end gap-2 mt-6">
                   {/* Social and Language */}
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5"> {/* Reduced gap */}
+                    <div className="flex items-center gap-1.5">
                       {SOCIAL_LINKS.map((link) => (
                         <SocialLink key={link.label} {...link} />
                       ))}
                     </div>
                     <LanguageSelector />
                   </div>
-
                   {/* Support Links */}
                   <div className="flex items-center gap-2">
                     {SUPPORT_LINKS.map((link) => (
@@ -227,8 +228,8 @@ export const Footer = memo(() => {
           </div>
 
           {/* Bottom Bar */}
-          <div className="flex justify-center mt-2 pt-2 border-t border-gray-100"> {/* Reduced padding */}
-            <p className="text-xs text-gray-500"> {/* Smaller font size */}
+          <div className="flex justify-center mt-2 pt-2 border-t border-gray-100">
+            <p className="text-sm text-gray-500">
               © 2025 MobileHUB. All rights reserved.
             </p>
           </div>
@@ -284,18 +285,18 @@ const MobileFooter = memo(() => (
           </div>
         </div>
 
-          {/* Trust Badges */}
-          <div className="flex items-center gap-2">
-            {TRUST_BADGES.map(({ icon: Icon, text, color }) => (
-              <div key={text} className="flex items-center gap-1">
-                <Icon className={`w-3 h-3 ${color}`} />
-                <span className="text-[9px] text-gray-600">
-                  {text.split(" ")[0]}
-                </span>
-              </div>
-            ))}
-          </div>
+        {/* Trust Badges */}
+        <div className="flex items-center gap-2">
+          {TRUST_BADGES.map(({ icon: Icon, text, color }) => (
+            <div key={text} className="flex items-center gap-1">
+              <Icon className={`w-3 h-3 ${color}`} />
+              <span className="text-[9px] text-gray-600">
+                {text.split(" ")[0]}
+              </span>
+            </div>
+          ))}
         </div>
+      </div>
 
       {/* Newsletter */}
       <div className="flex flex-col items-start">
