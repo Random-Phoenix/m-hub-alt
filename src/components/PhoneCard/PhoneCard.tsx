@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo, useRef, useEffect } from "react";
+import React, { useState, useCallback, memo } from "react";
 import { Heart, Cpu, HardDrive } from "lucide-react";
 import { Phone } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
@@ -6,11 +6,6 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 interface PhoneCardProps {
   phone: Phone;
   onClick: () => void;
-  onImageLoad: () => void;
-  isImageLoaded: boolean;
-  index: number;
-  totalItems: number;
-  columns: number;
 }
 
 // Utility function to extract brand and model
@@ -31,97 +26,17 @@ const FavoriteButton: React.FC<{
   >
     <Heart
       className={`h-5 w-5 transition-colors ${
-        isFavorite ? "fill-red-500 text-red-500" : "text-gray-600 hover:text-gray-600"
+        isFavorite
+          ? "fill-red-500 text-red-500"
+          : "text-gray-600 hover:text-gray-600"
       }`}
     />
   </button>
 ));
-
-// Lazy loading image component with blur placeholder
-const LazyImage = memo(
-  ({
-    src,
-    alt,
-    onLoad,
-    isLoaded,
-    priority,
-  }: {
-    src: string;
-    alt: string;
-    onLoad: () => void;
-    isLoaded: boolean;
-    priority: boolean;
-  }) => {
-    const imgRef = useRef<HTMLImageElement>(null);
-    const [isInView, setIsInView] = useState(false);
-
-    useEffect(() => {
-      // If priority, load immediately
-      if (priority) {
-        setIsInView(true);
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            setIsInView(true);
-            observer.disconnect();
-          }
-        },
-        {
-          rootMargin: "50px",
-          threshold: 0.1,
-        }
-      );
-
-      if (imgRef.current) {
-        observer.observe(imgRef.current);
-      }
-
-      return () => observer.disconnect();
-    }, [priority]);
-
-    // Preload high priority images
-    useEffect(() => {
-      if (priority && src) {
-        const preloadLink = document.createElement('link');
-        preloadLink.rel = 'preload';
-        preloadLink.as = 'image';
-        preloadLink.href = src;
-        document.head.appendChild(preloadLink);
-
-        return () => {
-          document.head.removeChild(preloadLink);
-        };
-      }
-    }, [src, priority]);
-
-    return (
-      <div
-        ref={imgRef}
-        className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100"
-      >
-        {(isInView || priority) && (
-          <img
-            src={src}
-            alt={alt}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-              isLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            loading={priority ? "eager" : "lazy"}
-            decoding={priority ? "sync" : "async"}
-            fetchpriority={priority ? "high" : "low"}
-            onLoad={onLoad}
-          />
-        )}
-      </div>
-    );
-  }
-);
+FavoriteButton.displayName = "FavoriteButton";
 
 export const PhoneCard: React.FC<PhoneCardProps> = memo(
-  ({ phone, onClick, onImageLoad, isImageLoaded, index, totalItems, columns }) => {
+  ({ phone, onClick }) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const { width } = useWindowSize();
     const isMobile = width < 768;
@@ -137,35 +52,27 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
       setIsFavorite((prev) => !prev);
     }, []);
 
-    // Calculate loading priority based on position
-    // First row and visible items get high priority
-    const isHighPriority = index < columns;
-    const isPriorityLoad = isHighPriority || index < (columns * 2);
-
     return (
       <div
-        className="relative bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer transform transition-transform hover:translate-y-[-2px]"
+        className="relative bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer"
         onClick={handleClick}
-        style={{
-          contain: "content",
-          willChange: "transform",
-        }}
       >
-        {/* Image Container with aspect ratio */}
-        <div className="relative pt-[120%] md:pt-[95%]">
-          <LazyImage
-            src={phone.image}
+        {/* Image Container */}
+        <div className="relative pt-[120%] md:pt-[95%] bg-gradient-to-br from-gray-50 via-white to-gray-50">
+          <img
+            src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf"
             alt={phone.name}
-            onLoad={onImageLoad}
-            isLoaded={isImageLoaded}
-            priority={isPriorityLoad}
+            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply rounded-t-lg"
+            loading="eager"
           />
+
+          {/* Favorite Button - Only shown on desktop */}
           {!isMobile && (
             <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />
           )}
         </div>
 
-        {/* Content with optimized rendering */}
+        {/* Content */}
         <div className="p-1.5 md:p-3 md:pt-2.5">
           <div className="space-y-0.5 md:space-y-1">
             {/* Brand and Specs Row */}
