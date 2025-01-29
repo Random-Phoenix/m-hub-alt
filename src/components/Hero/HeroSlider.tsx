@@ -73,7 +73,7 @@ const LazySlideImage = memo(
             loading={priority ? "eager" : "lazy"}
             decoding={priority ? "sync" : "async"}
             onLoad={onLoad}
-            fetchPriority={priority ? "high" : "low"}
+            fetchpriority={priority ? "high" : "low"}
           />
         )}
       </div>

@@ -44,52 +44,74 @@ const LazyImage = memo(
     alt,
     onLoad,
     isLoaded,
+    priority,
   }: {
     src: string;
     alt: string;
     onLoad: () => void;
     isLoaded: boolean;
+    priority: boolean;
   }) => {
     const imgRef = useRef<HTMLImageElement>(null);
-    const observerRef = useRef<IntersectionObserver | null>(null);
-    const [shouldLoad, setShouldLoad] = useState(false);
+    const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
-      observerRef.current = new IntersectionObserver(
+      // If priority, load immediately
+      if (priority) {
+        setIsInView(true);
+        return;
+      }
+
+      const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
-            setShouldLoad(true);
-            observerRef.current?.disconnect();
+            setIsInView(true);
+            observer.disconnect();
           }
         },
         {
           rootMargin: "50px",
+          threshold: 0.1,
         }
       );
 
       if (imgRef.current) {
-        observerRef.current.observe(imgRef.current);
+        observer.observe(imgRef.current);
       }
 
-      return () => {
-        observerRef.current?.disconnect();
-      };
-    }, []);
+      return () => observer.disconnect();
+    }, [priority]);
+
+    // Preload high priority images
+    useEffect(() => {
+      if (priority && src) {
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.as = 'image';
+        preloadLink.href = src;
+        document.head.appendChild(preloadLink);
+
+        return () => {
+          document.head.removeChild(preloadLink);
+        };
+      }
+    }, [src, priority]);
 
     return (
       <div
         ref={imgRef}
-        className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50"
+        className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100"
       >
-        {shouldLoad && (
+        {(isInView || priority) && (
           <img
             src={src}
             alt={alt}
-            className={`absolute inset-0 w-full h-full object-cover mix-blend-multiply rounded-t-lg transition-opacity duration-300 ${
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               isLoaded ? "opacity-100" : "opacity-0"
             }`}
-            loading="lazy"
-            decoding="async"
+            loading={priority ? "eager" : "lazy"}
+            decoding={priority ? "sync" : "async"}
+            fetchpriority={priority ? "high" : "low"}
             onLoad={onLoad}
           />
         )}
@@ -116,17 +138,16 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
     }, []);
 
     // Calculate loading priority based on position
-    const isHighPriority = index < columns * 2; // First two rows
-    const loadingPriority = isHighPriority ? "high" : "low";
+    // First row and visible items get high priority
+    const isHighPriority = index < columns;
+    const isPriorityLoad = isHighPriority || index < (columns * 2);
 
     return (
       <div
         className="relative bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer transform transition-transform hover:translate-y-[-2px]"
         onClick={handleClick}
         style={{
-          // Add CSS containment for better performance
           contain: "content",
-          // Add will-change for smoother animations
           willChange: "transform",
         }}
       >
@@ -137,6 +158,7 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
             alt={phone.name}
             onLoad={onImageLoad}
             isLoaded={isImageLoaded}
+            priority={isPriorityLoad}
           />
           {!isMobile && (
             <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />

@@ -3,8 +3,16 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+// Create root before any other operations
+const root = createRoot(document.getElementById('root')!);
+
+// Render immediately without StrictMode in production
+if (import.meta.env.PROD) {
+  root.render(<App />);
+} else {
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}
