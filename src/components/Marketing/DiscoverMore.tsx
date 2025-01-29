@@ -12,7 +12,7 @@ export const DiscoverMore = () => {
         <div className="max-w-2xl mx-auto px-4 my-4">
           <div className="flex items-center justify-center gap-2 sm:gap-4">
             <button
-              onClick={() => navigate("/mobile-phones")}
+              onClick={() => navigate("/favorites")}
               className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 rounded-xl font-display font-semibold text-[13px] sm:text-[15px] text-gray-700 bg-white border border-gray-200"
             >
               <Heart className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-red-500" />

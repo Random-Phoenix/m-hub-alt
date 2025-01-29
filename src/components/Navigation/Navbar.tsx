@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback, memo, useMemo } from '
 import { Smartphone, Heart, Search, Menu, X, User, Mail } from 'lucide-react';
 import { MobileMenu } from './MobileMenu';
 import { useWindowSize } from '../../hooks/useWindowSize';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Memoize static JSX elements
 const GoogleIcon = memo(() => (
@@ -103,7 +104,6 @@ const SearchInput = memo(({ inputRef, placeholder, onClose }: {
   </div>
 ));
 
-// Main Navbar component with optimized scroll handling and state management
 export const Navbar = memo(({ 
   isMenuOpen, 
   setIsMenuOpen, 
@@ -124,6 +124,7 @@ export const Navbar = memo(({
   const profileMenuRef = useRef<HTMLDivElement>(null);
   const scrollListenerRef = useRef<number>();
   const lastScrollY = useRef(0);
+  const navigate = useNavigate();
 
   // Optimized scroll handler with RAF and throttling
   const handleScroll = useCallback(() => {
@@ -194,17 +195,17 @@ export const Navbar = memo(({
 
   // Memoize static content
   const logo = useMemo(() => (
-    <div className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
+    <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
       <Smartphone className="h-[26px] w-[26px] text-blue-600" />
       <span className="text-xl font-bold text-gray-900 tracking-tight">MobileHUB</span>
-    </div>
+    </Link>
   ), []);
 
   const desktopLinks = useMemo(() => (
     <div className="hidden md:flex items-center space-x-1 ml-10">
-      <a href="#" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
+      <Link to="/mobile-phones" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
         Latest Phones
-      </a>
+      </Link>
       <a href="#" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
         News & Reviews
       </a>
@@ -248,6 +249,7 @@ export const Navbar = memo(({
                 icon={Heart}
                 label="Favorites"
                 badge={favoritesCount}
+                onClick={() => navigate('/favorites')}
               />
             </div>
             <div className="relative" ref={profileMenuRef}>
@@ -284,6 +286,7 @@ export const Navbar = memo(({
                 icon={Heart}
                 label="Favorites"
                 badge={favoritesCount}
+                onClick={() => navigate('/favorites')}
               />
             </div>
             <div className="relative" ref={menuRef}>
@@ -306,3 +309,5 @@ export const Navbar = memo(({
     </nav>
   );
 });
+
+Navbar.displayName = 'Navbar';
