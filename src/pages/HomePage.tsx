@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { Navbar } from '../components/Navigation/Navbar';
 import { HeroSlider } from '../components/Hero/HeroSlider';
-import { LatestNews } from '../components/Hero/LatestNews';
 import { MobileSearch } from '../components/Search/MobileSearch';
 import { CategoryFilter } from '../components/CategoryFilter/CategoryFilter';
 import { PhoneGrid } from '../components/PhoneGrid/PhoneGrid';
@@ -12,6 +11,11 @@ import { phones } from '../data/phones';
 import { slides } from '../data/slides';
 import { news } from '../data/news';
 import { categories } from '../data/categories';
+
+// Lazy load LatestNews component since it's only used on desktop
+const LatestNews = lazy(() => import('../components/Hero/LatestNews').then(module => ({
+  default: module.LatestNews
+})));
 
 export const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -48,7 +52,9 @@ export const HomePage = () => {
               />
             </div>
             <div className="col-span-1">
-              <LatestNews news={news} />
+              <Suspense fallback={<div className="h-[40vh] bg-white rounded-2xl animate-pulse" />}>
+                <LatestNews news={news} />
+              </Suspense>
             </div>
           </div>
         </div>

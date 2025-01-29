@@ -20,13 +20,73 @@ const SlideOverlay = memo(
   )
 );
 
+const LazySlideImage = memo(
+  ({
+    src,
+    alt,
+    priority,
+    onLoad,
+  }: {
+    src: string;
+    alt: string;
+    priority: boolean;
+    onLoad?: () => void;
+  }) => {
+    const imgRef = useRef<HTMLImageElement>(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const [shouldLoad, setShouldLoad] = useState(priority);
+
+    useEffect(() => {
+      if (priority) return;
+
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setShouldLoad(true);
+            observerRef.current?.disconnect();
+          }
+        },
+        {
+          rootMargin: "50px",
+        }
+      );
+
+      if (imgRef.current) {
+        observerRef.current.observe(imgRef.current);
+      }
+
+      return () => {
+        observerRef.current?.disconnect();
+      };
+    }, [priority]);
+
+    return (
+      <div
+        ref={imgRef}
+        className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900"
+      >
+        {shouldLoad && (
+          <img
+            src={src}
+            alt={alt}
+            className="w-full h-full object-cover transition-opacity duration-500"
+            loading={priority ? "eager" : "lazy"}
+            decoding={priority ? "sync" : "async"}
+            onLoad={onLoad}
+            fetchPriority={priority ? "high" : "low"}
+          />
+        )}
+      </div>
+    );
+  }
+);
+
 export const HeroSlider: React.FC<HeroSliderProps> = memo(
   ({ slides, currentSlide, onSlideChange }) => {
-    const [slideDirection, setSlideDirection] = useState<"next" | "prev">(
-      "next"
-    );
+    const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
+    const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-    const slideInterval = 5000; // 5 seconds
+    const slideInterval = 5000;
 
     const goToSlide = useCallback(
       (index: number, direction: "next" | "prev" = "next") => {
@@ -37,7 +97,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
     );
 
     useEffect(() => {
-      // Set up automatic slide transition
       intervalRef.current = setInterval(() => {
         onSlideChange((currentSlide + 1) % slides.length);
       }, slideInterval);
@@ -49,15 +108,15 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
       };
     }, [currentSlide, slides.length, onSlideChange]);
 
-    useEffect(() => {
-      // Preload the next image
-      const nextIndex = (currentSlide + 1) % slides.length;
-      const img = new Image();
-      img.src = slides[nextIndex].image;
-    }, [currentSlide, slides]);
+    const handleImageLoad = useCallback((index: number) => {
+      setLoadedImages((prev) => new Set(prev).add(index));
+    }, []);
 
     return (
-      <div className="relative w-full h-[15vh] md:h-[40vh] bg-gray-900 rounded-2xl overflow-hidden shadow-lg">
+      <div
+        className="relative w-full h-[15vh] md:h-[40vh] bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
+        style={{ contain: "content" }}
+      >
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -70,14 +129,14 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
                       : "-translate-x-full"
                   }`
             }`}
+            style={{ willChange: "transform, opacity" }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-gray-900/50 to-transparent" />
-            <img
+            <LazySlideImage
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover"
-              loading={index === 0 ? "eager" : "lazy"}
-              decoding="async"
+              priority={index === 0 || index === 1}
+              onLoad={() => handleImageLoad(index)}
             />
             <SlideOverlay title={slide.title} subtitle={slide.subtitle} />
           </div>

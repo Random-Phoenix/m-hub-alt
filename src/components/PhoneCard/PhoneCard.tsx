@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useRef, useEffect } from "react";
 import { Heart, Cpu, HardDrive } from "lucide-react";
 import { Phone } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
@@ -6,6 +6,11 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 interface PhoneCardProps {
   phone: Phone;
   onClick: () => void;
+  onImageLoad: () => void;
+  isImageLoaded: boolean;
+  index: number;
+  totalItems: number;
+  columns: number;
 }
 
 // Utility function to extract brand and model
@@ -26,17 +31,75 @@ const FavoriteButton: React.FC<{
   >
     <Heart
       className={`h-5 w-5 transition-colors ${
-        isFavorite
-          ? "fill-red-500 text-red-500"
-          : "text-gray-600 hover:text-gray-600"
+        isFavorite ? "fill-red-500 text-red-500" : "text-gray-600 hover:text-gray-600"
       }`}
     />
   </button>
 ));
-FavoriteButton.displayName = "FavoriteButton";
+
+// Lazy loading image component with blur placeholder
+const LazyImage = memo(
+  ({
+    src,
+    alt,
+    onLoad,
+    isLoaded,
+  }: {
+    src: string;
+    alt: string;
+    onLoad: () => void;
+    isLoaded: boolean;
+  }) => {
+    const imgRef = useRef<HTMLImageElement>(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const [shouldLoad, setShouldLoad] = useState(false);
+
+    useEffect(() => {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setShouldLoad(true);
+            observerRef.current?.disconnect();
+          }
+        },
+        {
+          rootMargin: "50px",
+        }
+      );
+
+      if (imgRef.current) {
+        observerRef.current.observe(imgRef.current);
+      }
+
+      return () => {
+        observerRef.current?.disconnect();
+      };
+    }, []);
+
+    return (
+      <div
+        ref={imgRef}
+        className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50"
+      >
+        {shouldLoad && (
+          <img
+            src={src}
+            alt={alt}
+            className={`absolute inset-0 w-full h-full object-cover mix-blend-multiply rounded-t-lg transition-opacity duration-300 ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            loading="lazy"
+            decoding="async"
+            onLoad={onLoad}
+          />
+        )}
+      </div>
+    );
+  }
+);
 
 export const PhoneCard: React.FC<PhoneCardProps> = memo(
-  ({ phone, onClick }) => {
+  ({ phone, onClick, onImageLoad, isImageLoaded, index, totalItems, columns }) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const { width } = useWindowSize();
     const isMobile = width < 768;
@@ -52,28 +115,35 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
       setIsFavorite((prev) => !prev);
     }, []);
 
+    // Calculate loading priority based on position
+    const isHighPriority = index < columns * 2; // First two rows
+    const loadingPriority = isHighPriority ? "high" : "low";
+
     return (
       <div
-        className="relative bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer"
+        className="relative bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer transform transition-transform hover:translate-y-[-2px]"
         onClick={handleClick}
+        style={{
+          // Add CSS containment for better performance
+          contain: "content",
+          // Add will-change for smoother animations
+          willChange: "transform",
+        }}
       >
-        {/* Image Container */}
-        <div className="relative pt-[120%] md:pt-[95%] bg-gradient-to-br from-gray-50 via-white to-gray-50">
-          <img
+        {/* Image Container with aspect ratio */}
+        <div className="relative pt-[120%] md:pt-[95%]">
+          <LazyImage
             src={phone.image}
             alt={phone.name}
-            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply rounded-t-lg"
-            loading="lazy"
-            decoding="async"
+            onLoad={onImageLoad}
+            isLoaded={isImageLoaded}
           />
-
-          {/* Favorite Button - Only shown on desktop */}
           {!isMobile && (
             <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />
           )}
         </div>
 
-        {/* Content */}
+        {/* Content with optimized rendering */}
         <div className="p-1.5 md:p-3 md:pt-2.5">
           <div className="space-y-0.5 md:space-y-1">
             {/* Brand and Specs Row */}

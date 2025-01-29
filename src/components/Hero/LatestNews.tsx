@@ -27,7 +27,10 @@ const NewsHeader = memo(() => (
 ));
 
 const NewsItem = memo(({ item }: { item: NewsItemType }) => (
-  <div className="group py-3.5 px-4 hover:bg-gray-50/75 transition-colors cursor-pointer border-b border-gray-100 last:border-b-0">
+  <div
+    className="group py-3.5 px-4 hover:bg-gray-50/75 transition-colors cursor-pointer border-b border-gray-100 last:border-b-0"
+    style={{ contain: "content" }}
+  >
     <div className="flex items-start gap-3">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 text-xs text-gray-500 mb-1.5">
@@ -56,7 +59,7 @@ const NewsItem = memo(({ item }: { item: NewsItemType }) => (
   </div>
 ));
 
-export const LatestNews: React.FC<LatestNewsProps> = ({ news }) => {
+export const LatestNews: React.FC<LatestNewsProps> = memo(({ news }) => {
   // Filter visible news items based on category constraints
   const visibleNews = useMemo(() => {
     const maxCounts = { Review: 3, Blog: 1 };
@@ -72,7 +75,10 @@ export const LatestNews: React.FC<LatestNewsProps> = ({ news }) => {
   }, [news]);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm h-[40vh] flex flex-col font-display overflow-hidden border border-gray-100/75">
+    <div
+      className="bg-white rounded-2xl shadow-sm h-[40vh] flex flex-col font-display overflow-hidden border border-gray-100/75 hidden md:flex"
+      style={{ contain: "content" }}
+    >
       <NewsHeader />
       <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain scroll-smooth">
         {visibleNews.map((item) => (
@@ -81,4 +87,4 @@ export const LatestNews: React.FC<LatestNewsProps> = ({ news }) => {
       </div>
     </div>
   );
-};
+});

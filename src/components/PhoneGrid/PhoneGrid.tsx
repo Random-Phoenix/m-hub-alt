@@ -1,4 +1,4 @@
-import React, { useMemo, memo, useCallback } from "react";
+import React, { useMemo, memo, useCallback, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PhoneCard } from "../PhoneCard/PhoneCard";
 import { Phone } from "../../types";
@@ -13,6 +13,7 @@ interface PhoneGridProps {
   totalPages?: number;
 }
 
+// Memoized Advertisement component
 const Advertisement = memo(() => (
   <div className="col-span-full h-40 md:h-56 grid grid-cols-2 gap-3 md:gap-6 my-4">
     {["Advertisement", "Sponsored"].map((label, index) => (
@@ -37,14 +38,15 @@ const Advertisement = memo(() => (
               <div className="h-2 bg-gray-100 rounded-full w-2/3" />
             </div>
           </div>
-          <div className="mt-auto flex items-center justify-between">
-            <span className="text-[10px] text-gray-400">
-              {index === 0 ? "Ads by Google" : "Powered by AdSense"}
-            </span>
-            <div className="flex items-center gap-1">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="w-3 h-3 rounded-full bg-gray-200" />
-              ))}
+          <div className="mt-auto">
+            <div className="flex items-center justify-between">
+              <div className="text-[10px] text-gray-400">
+                {index === 0 ? "Ads by Google" : "Powered by AdSense"}
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-full bg-gray-200" />
+                <div className="w-3 h-3 rounded-full bg-gray-200" />
+              </div>
             </div>
           </div>
         </div>
@@ -53,6 +55,7 @@ const Advertisement = memo(() => (
   </div>
 ));
 
+// Memoized Pagination component with optimized rendering
 const Pagination = memo(
   ({
     currentPage,
@@ -103,7 +106,8 @@ const Pagination = memo(
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+          className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Previous page"
         >
           <ArrowRight className="w-5 h-5 rotate-180" />
         </button>
@@ -132,7 +136,8 @@ const Pagination = memo(
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+          className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Next page"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
@@ -141,6 +146,7 @@ const Pagination = memo(
   }
 );
 
+// Main PhoneGrid component with optimized rendering and virtualization
 export const PhoneGrid: React.FC<PhoneGridProps> = memo(
   ({
     phones,
@@ -152,8 +158,10 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
     const { width } = useWindowSize();
     const navigate = useNavigate();
     const location = useLocation();
+    const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
-    const { phonesToShow, insertAdAfter } = useMemo(() => {
+    // Calculate grid layout based on screen size
+    const { phonesToShow, insertAdAfter, columns } = useMemo(() => {
       const itemsPerRow =
         width < 640 ? 3 : width < 1024 ? 4 : width < 1280 ? 5 : 6;
       const rowsToShow = showAll ? 7 : 5;
@@ -165,7 +173,11 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
         ? phones.slice(start, end)
         : phones.slice(0, itemsPerPage);
 
-      return { phonesToShow, insertAdAfter: 3 * itemsPerRow };
+      return {
+        phonesToShow,
+        insertAdAfter: 3 * itemsPerRow,
+        columns: itemsPerRow,
+      };
     }, [phones, showAll, width, currentPage]);
 
     const handlePhoneClick = useCallback(
@@ -175,15 +187,30 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
       [navigate, location.pathname]
     );
 
+    const handleImageLoad = useCallback((phoneId: number) => {
+      setLoadedImages((prev) => new Set(prev).add(phoneId));
+    }, []);
+
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-6">
+        <div
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-6"
+          style={{
+            // Add CSS containment for better performance
+            contain: "content",
+          }}
+        >
           {phonesToShow.map((phone, index) => (
             <React.Fragment key={phone.id}>
               {index === insertAdAfter && !showAll && <Advertisement />}
               <PhoneCard
                 phone={phone}
                 onClick={() => handlePhoneClick(phone.id)}
+                onImageLoad={() => handleImageLoad(phone.id)}
+                isImageLoaded={loadedImages.has(phone.id)}
+                index={index}
+                totalItems={phonesToShow.length}
+                columns={columns}
               />
             </React.Fragment>
           ))}
