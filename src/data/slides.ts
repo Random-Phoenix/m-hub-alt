@@ -2,33 +2,33 @@ import { Slide } from '../types';
 
 export const slides: Slide[] = [
   {
-    image: "https://images.unsplash.com/photo-1620288627223-53302f4e8c74",
-    title: "iPhone 15 Pro Max Review",
-    subtitle: "Experience the revolutionary camera system with ProRAW and advanced Photonic Engine"
+    image: "https://images.unsplash.com/photo-1583573636246-18cb2246697f?q=80&w=3438&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Samsung Galaxy S20",
+    subtitle: "8K Video Snap, 5G connectivity, Space Zoom up to 100x."
   },
   {
-    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179",
-    title: "Samsung Galaxy S24 Ultra",
-    subtitle: "Discover the future of mobile photography with AI-powered features"
+    image: "https://images.unsplash.com/photo-1655803243218-809254fd52fd?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Oppo Find N3",
+    subtitle: "Ultra Thin, Ultra Light, Ultra Powerful."
   },
   {
-    image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd",
-    title: "Google Pixel 8 Pro",
-    subtitle: "Computational photography meets artificial intelligence"
+    image: "https://images.unsplash.com/photo-1687168593635-370120784edc?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Vivo X Flip 2023",
+    subtitle: "Light, Stylish, and Powerful"
   },
   {
-    image: "https://images.unsplash.com/photo-1585060544812-6b45742d762f",
-    title: "OnePlus 12",
-    subtitle: "Speed meets sophistication in this flagship killer"
+    image: "https://images.unsplash.com/photo-1727941035071-910fd07135bb?q=80&w=3352&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Pixel 9 Pro",
+    subtitle: "All pro, Pure magic."
   },
   {
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-    title: "Xiaomi 14 Ultra",
-    subtitle: "Professional photography capabilities in your pocket"
+    image: "https://images.unsplash.com/photo-1610945263963-47c586d7abbf?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Samsung S21 Ultra",
+    subtitle: "Professional photography capabilities in your pocket. "
   },
   {
-    image: "https://images.unsplash.com/photo-1581993192008-63e896f4f744",
-    title: "Upcoming Phones 2024",
-    subtitle: "A sneak peek at the most anticipated smartphones"
+    image: "https://images.unsplash.com/photo-1621330396173-e41b1cafd17f?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Xiaomi Mi 11",
+    subtitle: "Quad-curved glass body."
   }
 ];

@@ -62,7 +62,7 @@ const NewsItem = memo(({ item }: { item: NewsItemType }) => (
 export const LatestNews: React.FC<LatestNewsProps> = memo(({ news }) => {
   // Filter visible news items based on category constraints
   const visibleNews = useMemo(() => {
-    const maxCounts = { Review: 3, Blog: 1 };
+    const maxCounts = { Review: 2, Blog: 2 };
     const counts = { Review: 0, Blog: 0 };
 
     return news.filter((item) => {
