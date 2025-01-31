@@ -114,7 +114,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
 
     return (
       <div
-        className="relative w-full h-[15vh] md:h-[40vh] bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
+        className="relative w-full h-[15vh] md:h-[40vh] bg-gray-900 rounded-lg overflow-hidden shadow-lg"
         style={{ contain: "content" }}
       >
         {slides.map((slide, index) => (

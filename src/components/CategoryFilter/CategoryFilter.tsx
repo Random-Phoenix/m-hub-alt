@@ -95,7 +95,7 @@ const FilterButton = memo(
     <button
       onClick={onClick}
       className={`
-      flex items-center gap-2 rounded-xl transition-colors border border-gray-200
+      flex items-center gap-2 rounded-lg transition-colors border border-gray-200
       font-display text-sm bg-white text-gray-700 hover:text-gray-900 hover:bg-gray-50
       ${isMobile ? "p-3" : "px-4 py-2.5"}
       ${className}
@@ -125,7 +125,7 @@ const CategoryButton = memo(
     <button
       onClick={onClick}
       className={`
-      relative group flex items-center justify-start rounded-xl transition-colors shadow-sm
+      relative group flex items-center justify-start rounded-lg transition-colors shadow-sm
       ${isMobile ? "px-4 py-1.5" : isBreakpoint ? "px-4 py-1" : "px-5 py-1.5"}
       ${
         isSelected
@@ -231,7 +231,7 @@ const FilterComponent = memo(
           isMobile={isMobile}
         />
         {isFilterOpen && (
-          <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm">
+          <div className="absolute right-0 mt-2 w-52 bg-white rounded-lg border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm">
             {filterOptions.map((option) => (
               <div
                 key={option.id}
