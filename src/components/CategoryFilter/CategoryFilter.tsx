@@ -7,12 +7,9 @@ import React, {
   useMemo,
 } from "react";
 import { 
-  SlidersHorizontal, 
-  ChevronDown, 
-  Clock, 
-  TrendingUp, 
-  Check, 
-  ArrowUpDown, 
+  Filter, 
+  ChevronRight, 
+  X,
   Smartphone, 
   Cpu, 
   Battery, 
@@ -20,10 +17,11 @@ import {
   HardDrive, 
   Camera, 
   Wifi, 
-  DollarSign, 
-  X,
-  Filter,
-  ChevronRight
+  DollarSign,
+  ArrowUpDown,
+  Clock,
+  TrendingUp,
+  Check
 } from "lucide-react";
 
 interface CategoryFilterProps {
@@ -33,40 +31,7 @@ interface CategoryFilterProps {
   isAllDevicesPage?: boolean;
 }
 
-interface FilterOption {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-  options: { value: string; label: string }[];
-}
-
-interface FilterButtonProps {
-  isOpen: boolean;
-  onClick: () => void;
-  hasActiveFilters: boolean;
-  className?: string;
-  isMobile?: boolean;
-}
-
-interface CategoryButtonProps {
-  category: string;
-  isSelected: boolean;
-  onClick: () => void;
-  isMobile?: boolean;
-  isBreakpoint?: boolean;
-}
-
-interface FilterComponentProps {
-  selectedFilters: Record<string, string>;
-  setSelectedFilters: React.Dispatch<
-    React.SetStateAction<Record<string, string>>
-  >;
-  isFilterOpen: boolean;
-  setIsFilterOpen: (isOpen: boolean) => void;
-  isMobile?: boolean;
-  isAllDevicesPage?: boolean;
-}
-
+// Basic filter options for home page
 const basicFilterOptions: FilterOption[] = [
   {
     id: "price",
@@ -97,6 +62,7 @@ const basicFilterOptions: FilterOption[] = [
   },
 ];
 
+// Advanced filter options for all devices page
 const advancedFilterOptions: FilterOption[] = [
   {
     id: "priceRange",
@@ -180,6 +146,40 @@ const advancedFilterOptions: FilterOption[] = [
   },
 ];
 
+interface FilterOption {
+  id: string;
+  label: string;
+  icon: React.ElementType;
+  options: { value: string; label: string }[];
+}
+
+interface FilterButtonProps {
+  isOpen: boolean;
+  onClick: () => void;
+  hasActiveFilters: boolean;
+  className?: string;
+  isMobile?: boolean;
+}
+
+interface CategoryButtonProps {
+  category: string;
+  isSelected: boolean;
+  onClick: () => void;
+  isMobile?: boolean;
+  isBreakpoint?: boolean;
+}
+
+interface FilterComponentProps {
+  selectedFilters: Record<string, string>;
+  setSelectedFilters: React.Dispatch<
+    React.SetStateAction<Record<string, string>>
+  >;
+  isFilterOpen: boolean;
+  setIsFilterOpen: (isOpen: boolean) => void;
+  isMobile?: boolean;
+  isAllDevicesPage?: boolean;
+}
+
 const FilterButton = memo(
   ({
     isOpen,
@@ -197,7 +197,7 @@ const FilterButton = memo(
         ${className}
         ${
           hasActiveFilters
-            ? "border-2 border-blue-500 text-blue-600 shadow-sm shadow-blue-100"
+            ? "border-2 border-blue-500 text-blue-600"
             : "border border-gray-200 text-gray-700"
         }
       `}
@@ -228,11 +228,11 @@ const CategoryButton = memo(
     <button
       onClick={onClick}
       className={`
-      relative group flex items-center justify-start rounded-lg transition-colors shadow-sm
+      relative group flex items-center justify-start rounded-xl transition-colors
       ${isMobile ? "px-4 py-1.5" : isBreakpoint ? "px-4 py-1" : "px-5 py-1.5"}
       ${
         isSelected
-          ? "bg-blue-600 text-white shadow-blue-500/5"
+          ? "bg-blue-600 text-white"
           : "hover:bg-white/80 text-gray-600 hover:text-gray-900 bg-white border border-gray-200"
       }
     `}
@@ -279,21 +279,6 @@ const CategoryButton = memo(
   )
 );
 
-const useClickOutside = (
-  ref: React.RefObject<HTMLElement>,
-  callback: () => void
-) => {
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        callback();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [ref, callback]);
-};
-
 const FilterComponent = memo(
   ({
     selectedFilters,
@@ -307,10 +292,22 @@ const FilterComponent = memo(
     const filterRef = useRef<HTMLDivElement>(null);
     const activeFiltersCount = Object.keys(selectedFilters).length;
 
-    useClickOutside(filterRef, () => {
-      setIsFilterOpen(false);
-      setOpenSubDropdown(null);
-    });
+    // Handle click outside
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+          setIsFilterOpen(false);
+        }
+      };
+
+      if (isFilterOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+      }
+
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [isFilterOpen, setIsFilterOpen]);
 
     const handleOptionSelect = useCallback(
       (optionId: string, value: string) => {
@@ -339,127 +336,125 @@ const FilterComponent = memo(
         />
         
         {isFilterOpen && (
-          <>
-            <div 
-              className="fixed inset-0 bg-black/5 backdrop-blur-sm z-40"
-              onClick={() => setIsFilterOpen(false)}
-            />
-            <div
-              className={`
-                absolute right-0 mt-3 bg-white rounded-2xl border border-gray-100 
-                overflow-hidden z-50 animate-fadeIn shadow-lg
-                ${isAllDevicesPage ? "w-80" : "w-64"}
-                ${isMobile ? "fixed left-4 right-4 w-auto" : ""}
-              `}
-            >
-              {/* Header */}
-              <div className="px-4 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Filter className="w-4 h-4 text-gray-400" />
-                    <h3 className="text-sm font-semibold text-gray-900">
-                      {activeFiltersCount > 0 
-                        ? `${activeFiltersCount} Filter${activeFiltersCount > 1 ? 's' : ''} Applied` 
-                        : 'All Filters'}
-                    </h3>
-                  </div>
-                  {activeFiltersCount > 0 && (
-                    <button
-                      onClick={() => setSelectedFilters({})}
-                      className="flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                      Clear All
-                    </button>
-                  )}
+          <div
+            className={`
+              absolute bg-white rounded-xl border border-gray-100 
+              overflow-hidden z-50 animate-fadeIn
+              ${isAllDevicesPage ? "w-72" : "w-64"}
+              ${isMobile 
+                ? "fixed left-4 right-4 top-12 w-auto" 
+                : "right-0 mt-2"
+              }
+            `}
+            style={{ maxHeight: "calc(100vh - 200px)" }}
+          >
+            {/* Header */}
+            <div className="px-3 py-2 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-gray-400" />
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    {activeFiltersCount > 0 
+                      ? `${activeFiltersCount} Filter${activeFiltersCount > 1 ? 's' : ''} Applied` 
+                      : 'All Filters'}
+                  </h3>
                 </div>
-              </div>
-
-              {/* Filter Options */}
-              <div className="max-h-[min(65vh,600px)] overflow-y-auto custom-scrollbar divide-y divide-gray-50">
-                {filterOptions.map((option) => (
-                  <div key={option.id} className="relative">
-                    <button
-                      onClick={() => setOpenSubDropdown(
-                        openSubDropdown === option.id ? null : option.id
-                      )}
-                      className={`
-                        w-full px-4 py-3 hover:bg-gray-50 transition-colors
-                        ${openSubDropdown === option.id ? 'bg-blue-50/50' : ''}
-                      `}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`
-                          w-8 h-8 rounded-lg flex items-center justify-center
-                          ${openSubDropdown === option.id 
-                            ? 'bg-blue-100 text-blue-600' 
-                            : 'bg-gray-100 text-gray-500'}
-                        `}>
-                          <option.icon className="w-4 h-4" />
-                        </div>
-                        <div className="flex-1 text-left">
-                          <span className="text-sm font-medium text-gray-700">
-                            {option.label}
-                          </span>
-                          {selectedFilters[option.id] && (
-                            <p className="text-xs text-blue-600 mt-0.5">
-                              {option.options.find(
-                                opt => opt.value === selectedFilters[option.id]
-                              )?.label}
-                            </p>
-                          )}
-                        </div>
-                        <ChevronRight className={`
-                          w-4 h-4 text-gray-400 transition-transform
-                          ${openSubDropdown === option.id ? 'rotate-90' : ''}
-                        `} />
-                      </div>
-                    </button>
-
-                    {/* Options Dropdown */}
-                    {openSubDropdown === option.id && (
-                      <div className="bg-gray-50/80 border-t border-gray-100">
-                        {option.options.map((opt) => (
-                          <button
-                            key={opt.value}
-                            onClick={() => {
-                              handleOptionSelect(option.id, opt.value);
-                              setOpenSubDropdown(null);
-                            }}
-                            className="w-full px-4 py-2.5 hover:bg-gray-100/80 transition-colors"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className={`
-                                w-5 h-5 rounded-full border-2 flex items-center justify-center
-                                transition-colors
-                                ${selectedFilters[option.id] === opt.value
-                                  ? 'border-blue-500 bg-blue-500'
-                                  : 'border-gray-300 bg-white'
-                                }
-                              `}>
-                                {selectedFilters[option.id] === opt.value && (
-                                  <Check className="w-3 h-3 text-white" />
-                                )}
-                              </div>
-                              <span className={`
-                                text-sm transition-colors
-                                ${selectedFilters[option.id] === opt.value
-                                  ? 'text-blue-600 font-medium'
-                                  : 'text-gray-600'
-                                }
-                              `}>
-                                {opt.label}
-                              </span>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                {activeFiltersCount > 0 && (
+                  <button
+                    onClick={() => setSelectedFilters({})}
+                    className="flex items-center gap-1.5 px-2 py-1 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                    Clear All
+                  </button>
+                )}
               </div>
             </div>
-          </>
+
+            {/* Filter Options */}
+            <div className="overflow-y-auto custom-scrollbar divide-y divide-gray-50">
+              {filterOptions.map((option) => (
+                <div key={option.id} className="relative">
+                  <button
+                    onClick={() => setOpenSubDropdown(
+                      openSubDropdown === option.id ? null : option.id
+                    )}
+                    className={`
+                      w-full px-3 py-2 hover:bg-gray-50 transition-colors
+                      ${openSubDropdown === option.id ? 'bg-blue-50/50' : ''}
+                    `}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`
+                        w-7 h-7 rounded-lg flex items-center justify-center
+                        ${openSubDropdown === option.id 
+                          ? 'bg-blue-100 text-blue-600' 
+                          : 'bg-gray-100 text-gray-500'}
+                      `}>
+                        <option.icon className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <span className="text-sm font-medium text-gray-700">
+                          {option.label}
+                        </span>
+                        {selectedFilters[option.id] && (
+                          <p className="text-xs text-blue-600 mt-0.5">
+                            {option.options.find(
+                              opt => opt.value === selectedFilters[option.id]
+                            )?.label}
+                          </p>
+                        )}
+                      </div>
+                      <ChevronRight className={`
+                        w-4 h-4 text-gray-400 transition-transform
+                        ${openSubDropdown === option.id ? 'rotate-90' : ''}
+                      `} />
+                    </div>
+                  </button>
+
+                  {/* Options Dropdown */}
+                  {openSubDropdown === option.id && (
+                    <div className="bg-gray-50/80 border-t border-gray-100">
+                      {option.options.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => {
+                            handleOptionSelect(option.id, opt.value);
+                            setOpenSubDropdown(null);
+                          }}
+                          className="w-full px-3 py-1.5 hover:bg-gray-100/80 transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`
+                              w-4 h-4 rounded-full border-2 flex items-center justify-center
+                              transition-colors
+                              ${selectedFilters[option.id] === opt.value
+                                ? 'border-blue-500 bg-blue-500'
+                                : 'border-gray-300 bg-white'
+                              }
+                            `}>
+                              {selectedFilters[option.id] === opt.value && (
+                                <Check className="w-3 h-3 text-white" />
+                              )}
+                            </div>
+                            <span className={`
+                              text-sm transition-colors
+                              ${selectedFilters[option.id] === opt.value
+                                ? 'text-blue-600 font-medium'
+                                : 'text-gray-600'
+                              }
+                            `}>
+                              {opt.label}
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     );
