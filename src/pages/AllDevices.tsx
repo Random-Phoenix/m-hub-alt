@@ -76,6 +76,7 @@ export const AllDevices = () => {
             categories={categories}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
+            isAllDevicesPage={true}
           />
           
           <PhoneGrid 
