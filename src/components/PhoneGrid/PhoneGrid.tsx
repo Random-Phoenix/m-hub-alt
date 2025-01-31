@@ -16,42 +16,20 @@ interface PhoneGridProps {
 // Memoized Advertisement component
 const Advertisement = memo(() => (
   <div className="col-span-full h-40 md:h-56 grid grid-cols-2 gap-3 md:gap-6 my-4">
-    {["Advertisement", "Sponsored"].map((label, index) => (
-      <div
-        key={index}
-        className="relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100"
-      >
-        <div className="absolute inset-0 bg-white/40" />
-        <div className="relative p-4 flex flex-col h-full">
-          <div className="flex items-center gap-2 mb-2">
-            <div
-              className={`w-6 h-6 rounded ${
-                index === 0 ? "bg-blue-500" : "bg-green-500"
-              }`}
-            />
-            <span className="text-xs text-gray-400">{label}</span>
-          </div>
-          <div className="flex-1 flex items-center justify-center">
-            <div className="space-y-2 w-full max-w-[280px]">
-              <div className="h-3 bg-gray-200 rounded-full w-3/4" />
-              <div className="h-3 bg-gray-200 rounded-full w-1/2" />
-              <div className="h-2 bg-gray-100 rounded-full w-2/3" />
-            </div>
-          </div>
-          <div className="mt-auto">
-            <div className="flex items-center justify-between">
-              <div className="text-[10px] text-gray-400">
-                {index === 0 ? "Ads by Google" : "Powered by AdSense"}
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded-full bg-gray-200" />
-                <div className="w-3 h-3 rounded-full bg-gray-200" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
+    <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100">
+      <img 
+        src="https://www.canny-creative.com/wp-content/uploads/2020/07/greatestprintads_cocacola.jpg"
+        alt="Coca Cola Advertisement"
+        className="w-full h-full object-cover"
+      />
+    </div>
+    <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100">
+      <img 
+        src="https://cdn.i.haymarketmedia.asia/?n=campaign-asia%2fcontent%2fKFC+OOH+1+HotSpicyCOB+land.jpg&c=0"
+        alt="KFC Advertisement"
+        className="w-full h-full object-cover"
+      />
+    </div>
   </div>
 ));
 
