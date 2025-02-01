@@ -14,13 +14,15 @@ const MobileCategoryFilter = memo(({
   isFilterOpen,
   setIsFilterOpen,
   isAllDevicesPage = false,
-  buttonRef
+  buttonRef,
+  dropdownRef
 }: CategoryFilterProps & {
   selectedFilters: Record<string, string | string[]>;
   setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
   isFilterOpen: boolean;
   setIsFilterOpen: (isOpen: boolean) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
+  dropdownRef: React.RefObject<HTMLDivElement>;
 }) => (
   <div className="md:hidden">
     <div className="flex items-center gap-4 mb-3">
@@ -45,9 +47,14 @@ const MobileCategoryFilter = memo(({
           hasActiveFilters={Object.keys(selectedFilters).length > 0}
           isMobile={true}
           activeFiltersCount={Object.keys(selectedFilters).length}
+          ref={buttonRef}
         />
         {isFilterOpen && (
-          <div className="absolute right-0 mt-1 w-52 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm" style={{ maxHeight: isAllDevicesPage ? '70vh' : '60vh' }}>
+          <div 
+            ref={dropdownRef}
+            className="absolute right-0 mt-1 w-52 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm" 
+            style={{ maxHeight: isAllDevicesPage ? '70vh' : '60vh' }}
+          >
             <FilterDropdown
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
@@ -73,13 +80,15 @@ const DesktopCategoryFilter = memo(({
   isFilterOpen,
   setIsFilterOpen,
   isAllDevicesPage = false,
-  buttonRef
+  buttonRef,
+  dropdownRef
 }: CategoryFilterProps & {
   selectedFilters: Record<string, string | string[]>;
   setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
   isFilterOpen: boolean;
   setIsFilterOpen: (isOpen: boolean) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
+  dropdownRef: React.RefObject<HTMLDivElement>;
 }) => {
   const [isBreakpoint, setIsBreakpoint] = useState(false);
 
@@ -109,9 +118,13 @@ const DesktopCategoryFilter = memo(({
           onClick={() => setIsFilterOpen(!isFilterOpen)}
           hasActiveFilters={Object.keys(selectedFilters).length > 0}
           activeFiltersCount={Object.keys(selectedFilters).length}
+          ref={buttonRef}
         />
         {isFilterOpen && (
-          <div className="absolute right-0 mt-1 w-60 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm">
+          <div 
+            ref={dropdownRef}
+            className="absolute right-0 mt-1 w-60 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm"
+          >
             <FilterDropdown
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
@@ -141,32 +154,70 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
 
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const desktopButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileDropdownRef = useRef<HTMLDivElement>(null);
+  const desktopDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Handle mobile dropdown
+      if (isFilterOpenMobile) {
+        if (
+          !mobileDropdownRef.current?.contains(event.target as Node) &&
+          !mobileButtonRef.current?.contains(event.target as Node)
+        ) {
+          setIsFilterOpenMobile(false);
+        }
+      }
+
+      // Handle desktop dropdown
+      if (isFilterOpenDesktop) {
+        if (
+          !desktopDropdownRef.current?.contains(event.target as Node) &&
+          !desktopButtonRef.current?.contains(event.target as Node)
+        ) {
+          setIsFilterOpenDesktop(false);
+        }
+      }
+    };
+
+    if (isFilterOpenMobile || isFilterOpenDesktop) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFilterOpenMobile, isFilterOpenDesktop]);
 
   return (
     <div className="relative mb-6">
-      <MobileCategoryFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        selectedFilters={selectedFiltersMobile}
-        setSelectedFilters={setSelectedFiltersMobile}
-        isFilterOpen={isFilterOpenMobile}
-        setIsFilterOpen={setIsFilterOpenMobile}
-        isAllDevicesPage={isAllDevicesPage}
-        buttonRef={mobileButtonRef}
-      />
+      <div className="max-w-7xl mx-auto">
+        <MobileCategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          selectedFilters={selectedFiltersMobile}
+          setSelectedFilters={setSelectedFiltersMobile}
+          isFilterOpen={isFilterOpenMobile}
+          setIsFilterOpen={setIsFilterOpenMobile}
+          isAllDevicesPage={isAllDevicesPage}
+          buttonRef={mobileButtonRef}
+          dropdownRef={mobileDropdownRef}
+        />
 
-      <DesktopCategoryFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        selectedFilters={selectedFiltersDesktop}
-        setSelectedFilters={setSelectedFiltersDesktop}
-        isFilterOpen={isFilterOpenDesktop}
-        setIsFilterOpen={setIsFilterOpenDesktop}
-        isAllDevicesPage={isAllDevicesPage}
-        buttonRef={desktopButtonRef}
-      />
+        <DesktopCategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          selectedFilters={selectedFiltersDesktop}
+          setSelectedFilters={setSelectedFiltersDesktop}
+          isFilterOpen={isFilterOpenDesktop}
+          setIsFilterOpen={setIsFilterOpenDesktop}
+          isAllDevicesPage={isAllDevicesPage}
+          buttonRef={desktopButtonRef}
+          dropdownRef={desktopDropdownRef}
+        />
+      </div>
     </div>
   );
 });

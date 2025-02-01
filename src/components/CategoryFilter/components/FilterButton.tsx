@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { forwardRef, memo } from 'react';
 import { Filter } from 'lucide-react';
 
 interface FilterButtonProps {
@@ -10,15 +10,16 @@ interface FilterButtonProps {
   activeFiltersCount: number;
 }
 
-export const FilterButton = memo(({
+export const FilterButton = memo(forwardRef<HTMLButtonElement, FilterButtonProps>(({
   isOpen,
   onClick,
   hasActiveFilters,
   className = "",
   isMobile = false,
   activeFiltersCount
-}: FilterButtonProps) => (
+}, ref) => (
   <button
+    ref={ref}
     onClick={onClick}
     className={`
       flex items-center gap-2 rounded-xl transition-all
@@ -43,6 +44,6 @@ export const FilterButton = memo(({
       </>
     )}
   </button>
-));
+)));
 
 FilterButton.displayName = 'FilterButton';
