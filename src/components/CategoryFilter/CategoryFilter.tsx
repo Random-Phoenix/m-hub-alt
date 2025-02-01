@@ -67,18 +67,18 @@ const advancedFilterOptions: FilterOption[] = [
     id: "priceRange",
     label: "Price Range",
     icon: DollarSign,
-    options: [
-      { value: "under-20k", label: "Under Rs. 20,000" },
-      { value: "20k-40k", label: "Rs. 20,000 - 40,000" },
-      { value: "40k-60k", label: "Rs. 40,000 - 60,000" },
-      { value: "60k-100k", label: "Rs. 60,000 - 100,000" },
-      { value: "above-100k", label: "Above Rs. 100,000" },
-    ],
+    type: "range",
+    range: {
+      min: 0,
+      max: 500000,
+      step: 1000,
+    }
   },
   {
     id: "ram",
     label: "RAM",
     icon: Memory,
+    multiSelect: true,
     options: [
       { value: "4gb", label: "4GB" },
       { value: "6gb", label: "6GB" },
@@ -91,6 +91,7 @@ const advancedFilterOptions: FilterOption[] = [
     id: "storage",
     label: "Storage",
     icon: HardDrive,
+    multiSelect: true,
     options: [
       { value: "64gb", label: "64GB" },
       { value: "128gb", label: "128GB" },
@@ -103,6 +104,7 @@ const advancedFilterOptions: FilterOption[] = [
     id: "camera",
     label: "Camera",
     icon: Camera,
+    multiSelect: true,
     options: [
       { value: "under-48mp", label: "Under 48MP" },
       { value: "48mp", label: "48MP" },
@@ -115,6 +117,7 @@ const advancedFilterOptions: FilterOption[] = [
     id: "battery",
     label: "Battery",
     icon: Battery,
+    multiSelect: true,
     options: [
       { value: "3000-4000", label: "3000-4000 mAh" },
       { value: "4000-5000", label: "4000-5000 mAh" },
@@ -126,6 +129,7 @@ const advancedFilterOptions: FilterOption[] = [
     id: "network",
     label: "Network",
     icon: Wifi,
+    multiSelect: true,
     options: [
       { value: "4g", label: "4G" },
       { value: "5g", label: "5G" },
@@ -137,7 +141,14 @@ interface FilterOption {
   id: string;
   label: string;
   icon: React.ElementType;
-  options: { value: string; label: string }[];
+  type?: "range";
+  range?: {
+    min: number;
+    max: number;
+    step: number;
+  };
+  multiSelect?: boolean;
+  options?: { value: string; label: string }[];
 }
 
 interface FilterButtonProps {
@@ -146,6 +157,7 @@ interface FilterButtonProps {
   hasActiveFilters: boolean;
   className?: string;
   isMobile?: boolean;
+  activeFiltersCount: number;
 }
 
 interface CategoryButtonProps {
@@ -157,15 +169,108 @@ interface CategoryButtonProps {
 }
 
 interface FilterComponentProps {
-  selectedFilters: Record<string, string>;
+  selectedFilters: Record<string, string | string[]>;
   setSelectedFilters: React.Dispatch<
-    React.SetStateAction<Record<string, string>>
+    React.SetStateAction<Record<string, string | string[]>>
   >;
   isFilterOpen: boolean;
   setIsFilterOpen: (isOpen: boolean) => void;
   isMobile?: boolean;
   isAllDevicesPage?: boolean;
 }
+
+const PriceRangeSlider = memo(({
+  value,
+  onChange,
+  min,
+  max,
+  step
+}: {
+  value: [number, number];
+  onChange: (value: [number, number]) => void;
+  min: number;
+  max: number;
+  step: number;
+}) => {
+  const [localValue, setLocalValue] = useState(value);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const formatPrice = (price: number) => {
+    return `Rs. ${price.toLocaleString()}`;
+  };
+
+  const handleChange = (index: number, newValue: number) => {
+    const updatedValue: [number, number] = [...localValue] as [number, number];
+    updatedValue[index] = Math.min(Math.max(newValue, min), max);
+    
+    // Ensure min <= max
+    if (index === 0) {
+      updatedValue[0] = Math.min(updatedValue[0], updatedValue[1] - step);
+    } else {
+      updatedValue[1] = Math.max(updatedValue[1], updatedValue[0] + step);
+    }
+    
+    setLocalValue(updatedValue);
+    if (!isDragging) {
+      onChange(updatedValue);
+    }
+  };
+
+  useEffect(() => {
+    if (!isDragging) {
+      setLocalValue(value);
+    }
+  }, [value, isDragging]);
+
+  return (
+    <div className="px-3 py-4">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="text-xs font-medium text-gray-900">
+            {formatPrice(localValue[0])}
+          </div>
+          <div className="text-xs font-medium text-gray-900">
+            {formatPrice(localValue[1])}
+          </div>
+        </div>
+        
+        <div className="relative h-2">
+          <div className="absolute w-full h-1 bg-gray-200 rounded-full" />
+          <div
+            className="absolute h-1 bg-blue-500 rounded-full"
+            style={{
+              left: `${((localValue[0] - min) / (max - min)) * 100}%`,
+              right: `${100 - ((localValue[1] - min) / (max - min)) * 100}%`
+            }}
+          />
+          
+          {[0, 1].map((index) => (
+            <input
+              key={index}
+              type="range"
+              min={min}
+              max={max}
+              step={step}
+              value={localValue[index]}
+              onChange={(e) => handleChange(index, Number(e.target.value))}
+              onMouseDown={() => setIsDragging(true)}
+              onMouseUp={() => {
+                setIsDragging(false);
+                onChange(localValue);
+              }}
+              onTouchStart={() => setIsDragging(true)}
+              onTouchEnd={() => {
+                setIsDragging(false);
+                onChange(localValue);
+              }}
+              className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm hover:[&::-webkit-slider-thumb]:scale-110 active:[&::-webkit-slider-thumb]:scale-95 transition-transform"
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
 
 const FilterButton = memo(
   ({
@@ -174,6 +279,7 @@ const FilterButton = memo(
     hasActiveFilters,
     className = "",
     isMobile = false,
+    activeFiltersCount
   }: FilterButtonProps) => (
     <button
       onClick={onClick}
@@ -193,9 +299,9 @@ const FilterButton = memo(
       {!isMobile && (
         <>
           <span className="font-medium">Filters</span>
-          {hasActiveFilters && (
+          {activeFiltersCount > 0 && (
             <span className="flex items-center justify-center w-5 h-5 text-xs font-semibold bg-blue-100 text-blue-600 rounded-full">
-              {Object.keys(hasActiveFilters).length}
+              {activeFiltersCount}
             </span>
           )}
         </>
@@ -279,7 +385,6 @@ const FilterComponent = memo(
     const filterRef = useRef<HTMLDivElement>(null);
     const activeFiltersCount = Object.keys(selectedFilters).length;
 
-    // Handle click outside
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
@@ -300,13 +405,40 @@ const FilterComponent = memo(
       (optionId: string, value: string) => {
         setSelectedFilters((prev) => {
           const newFilters = { ...prev };
-          if (prev[optionId] === value) {
-            delete newFilters[optionId];
+          const option = advancedFilterOptions.find(opt => opt.id === optionId);
+          
+          if (option?.multiSelect) {
+            const currentValues = (prev[optionId] as string[]) || [];
+            const valueIndex = currentValues.indexOf(value);
+            
+            if (valueIndex === -1) {
+              newFilters[optionId] = [...currentValues, value];
+            } else {
+              newFilters[optionId] = currentValues.filter(v => v !== value);
+              if ((newFilters[optionId] as string[]).length === 0) {
+                delete newFilters[optionId];
+              }
+            }
           } else {
-            newFilters[optionId] = value;
+            if (prev[optionId] === value) {
+              delete newFilters[optionId];
+            } else {
+              newFilters[optionId] = value;
+            }
           }
+          
           return newFilters;
         });
+      },
+      [setSelectedFilters]
+    );
+
+    const handlePriceRangeChange = useCallback(
+      (value: [number, number]) => {
+        setSelectedFilters(prev => ({
+          ...prev,
+          priceRange: value
+        }));
       },
       [setSelectedFilters]
     );
@@ -318,8 +450,9 @@ const FilterComponent = memo(
         <FilterButton
           isOpen={isFilterOpen}
           onClick={() => setIsFilterOpen(!isFilterOpen)}
-          hasActiveFilters={selectedFilters}
+          hasActiveFilters={Object.keys(selectedFilters).length > 0}
           isMobile={isMobile}
+          activeFiltersCount={activeFiltersCount}
         />
         
         {isFilterOpen && (
@@ -342,7 +475,7 @@ const FilterComponent = memo(
                   <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
                   <h3 className="text-sm font-semibold text-gray-900 truncate">
                     {activeFiltersCount > 0 
-                      ? `${activeFiltersCount} Filter${activeFiltersCount > 1 ? 's' : ''} Applied` 
+                      ? `${activeFiltersCount} Filters` 
                       : 'All Filters'}
                   </h3>
                 </div>
@@ -386,9 +519,14 @@ const FilterComponent = memo(
                         </span>
                         {selectedFilters[option.id] && (
                           <p className="text-xs text-blue-600 mt-0.5 truncate">
-                            {option.options.find(
-                              opt => opt.value === selectedFilters[option.id]
-                            )?.label}
+                            {option.type === 'range' 
+                              ? `Rs. ${(selectedFilters[option.id] as [number, number])[0].toLocaleString()} - Rs. ${(selectedFilters[option.id] as [number, number])[1].toLocaleString()}`
+                              : Array.isArray(selectedFilters[option.id])
+                                ? (selectedFilters[option.id] as string[])
+                                    .map(value => option.options?.find(opt => opt.value === value)?.label)
+                                    .join(', ')
+                                : option.options?.find(opt => opt.value === selectedFilters[option.id])?.label
+                            }
                           </p>
                         )}
                       </div>
@@ -402,40 +540,61 @@ const FilterComponent = memo(
                   {/* Options Dropdown */}
                   {openSubDropdown === option.id && (
                     <div className="bg-gray-50/80 border-t border-gray-100">
-                      {option.options.map((opt) => (
-                        <button
-                          key={opt.value}
-                          onClick={() => {
-                            handleOptionSelect(option.id, opt.value);
-                            setOpenSubDropdown(null);
-                          }}
-                          className="w-full px-3 py-1.5 hover:bg-gray-100/80 transition-colors"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`
-                              w-4 h-4 rounded-full border-2 flex items-center justify-center
-                              transition-colors flex-shrink-0
-                              ${selectedFilters[option.id] === opt.value
-                                ? 'border-blue-500 bg-blue-500'
-                                : 'border-gray-300 bg-white'
-                              }
-                            `}>
-                              {selectedFilters[option.id] === opt.value && (
-                                <Check className="w-3 h-3 text-white" />
-                              )}
-                            </div>
-                            <span className={`
-                              text-sm transition-colors truncate
-                              ${selectedFilters[option.id] === opt.value
-                                ? 'text-blue-600 font-medium'
-                                : 'text-gray-600'
-                              }
-                            `}>
-                              {opt.label}
-                            </span>
-                          </div>
-                        </button>
-                      ))}
+                      {option.type === 'range' ? (
+                        <PriceRangeSlider
+                          value={
+                            (selectedFilters[option.id] as [number, number]) || 
+                            [option.range!.min, option.range!.max]
+                          }
+                          onChange={(value) => handlePriceRangeChange(value)}
+                          min={option.range!.min}
+                          max={option.range!.max}
+                          step={option.range!.step}
+                        />
+                      ) : (
+                        option.options?.map((opt) => {
+                          const isSelected = option.multiSelect
+                            ? (selectedFilters[option.id] as string[] || []).includes(opt.value)
+                            : selectedFilters[option.id] === opt.value;
+
+                          return (
+                            <button
+                              key={opt.value}
+                              onClick={() => {
+                                handleOptionSelect(option.id, opt.value);
+                                if (!option.multiSelect) {
+                                  setOpenSubDropdown(null);
+                                }
+                              }}
+                              className="w-full px-3 py-1.5 hover:bg-gray-100/80 transition-colors"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className={`
+                                  w-4 h-4 rounded-full border-2 flex items-center justify-center
+                                  transition-colors flex-shrink-0
+                                  ${isSelected
+                                    ? 'border-blue-500 bg-blue-500'
+                                    : 'border-gray-300 bg-white'
+                                  }
+                                `}>
+                                  {isSelected && (
+                                    <Check className="w-3 h-3 text-white" />
+                                  )}
+                                </div>
+                                <span className={`
+                                  text-sm transition-colors truncate
+                                  ${isSelected
+                                    ? 'text-blue-600 font-medium'
+                                    : 'text-gray-600'
+                                  }
+                                `}>
+                                  {opt.label}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })
+                      )}
                     </div>
                   )}
                 </div>
@@ -452,12 +611,12 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(
   ({ categories, selectedCategory, setSelectedCategory, isAllDevicesPage = false }) => {
     const [isFilterOpenMobile, setIsFilterOpenMobile] = useState(false);
     const [selectedFiltersMobile, setSelectedFiltersMobile] = useState<
-      Record<string, string>
+      Record<string, string | string[]>
     >({});
 
     const [isFilterOpenDesktop, setIsFilterOpenDesktop] = useState(false);
     const [selectedFiltersDesktop, setSelectedFiltersDesktop] = useState<
-      Record<string, string>
+      Record<string, string | string[]>
     >({});
 
     const [isBreakpoint, setIsBreakpoint] = useState(false);
