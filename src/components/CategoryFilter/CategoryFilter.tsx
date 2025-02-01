@@ -5,6 +5,12 @@ import { FilterDropdown } from "./components/FilterDropdown";
 import { basicFilterOptions, advancedFilterOptions } from "./constants";
 import type { CategoryFilterProps } from "./types";
 
+const STORAGE_KEYS = {
+  MOBILE_FILTERS: 'mobilehub_mobile_filters',
+  DESKTOP_FILTERS: 'mobilehub_desktop_filters',
+  SELECTED_CATEGORY: 'mobilehub_selected_category'
+} as const;
+
 const MobileCategoryFilter = memo(({
   categories,
   selectedCategory,
@@ -33,7 +39,10 @@ const MobileCategoryFilter = memo(({
               <CategoryButton
                 category={category}
                 isSelected={selectedCategory === category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => {
+                  setSelectedCategory(category);
+                  localStorage.setItem(STORAGE_KEYS.SELECTED_CATEGORY, category);
+                }}
                 isMobile={true}
               />
             </div>
@@ -57,7 +66,10 @@ const MobileCategoryFilter = memo(({
           >
             <FilterDropdown
               selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
+              setSelectedFilters={(newFilters) => {
+                setSelectedFilters(newFilters);
+                localStorage.setItem(STORAGE_KEYS.MOBILE_FILTERS, JSON.stringify(newFilters));
+              }}
               isFilterOpen={isFilterOpen}
               setIsFilterOpen={setIsFilterOpen}
               isMobile={true}
@@ -108,7 +120,10 @@ const DesktopCategoryFilter = memo(({
           key={category}
           category={category}
           isSelected={selectedCategory === category}
-          onClick={() => setSelectedCategory(category)}
+          onClick={() => {
+            setSelectedCategory(category);
+            localStorage.setItem(STORAGE_KEYS.SELECTED_CATEGORY, category);
+          }}
           isBreakpoint={isBreakpoint}
         />
       ))}
@@ -127,7 +142,10 @@ const DesktopCategoryFilter = memo(({
           >
             <FilterDropdown
               selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
+              setSelectedFilters={(newFilters) => {
+                setSelectedFilters(newFilters);
+                localStorage.setItem(STORAGE_KEYS.DESKTOP_FILTERS, JSON.stringify(newFilters));
+              }}
               isFilterOpen={isFilterOpen}
               setIsFilterOpen={setIsFilterOpen}
               buttonRef={buttonRef}
@@ -142,15 +160,38 @@ const DesktopCategoryFilter = memo(({
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({ 
   categories, 
-  selectedCategory, 
+  selectedCategory: propSelectedCategory, 
   setSelectedCategory, 
   isAllDevicesPage = false 
 }) => {
+  // Initialize state from localStorage or default values
   const [isFilterOpenMobile, setIsFilterOpenMobile] = useState(false);
-  const [selectedFiltersMobile, setSelectedFiltersMobile] = useState<Record<string, string | string[]>>({});
+  const [selectedFiltersMobile, setSelectedFiltersMobile] = useState<Record<string, string | string[]>>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.MOBILE_FILTERS);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
 
   const [isFilterOpenDesktop, setIsFilterOpenDesktop] = useState(false);
-  const [selectedFiltersDesktop, setSelectedFiltersDesktop] = useState<Record<string, string | string[]>>({});
+  const [selectedFiltersDesktop, setSelectedFiltersDesktop] = useState<Record<string, string | string[]>>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.DESKTOP_FILTERS);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  // Initialize selected category from localStorage
+  useEffect(() => {
+    const savedCategory = localStorage.getItem(STORAGE_KEYS.SELECTED_CATEGORY);
+    if (savedCategory && categories.includes(savedCategory)) {
+      setSelectedCategory(savedCategory);
+    }
+  }, [categories, setSelectedCategory]);
 
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const desktopButtonRef = useRef<HTMLButtonElement>(null);
@@ -194,7 +235,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
       <div className="max-w-7xl mx-auto">
         <MobileCategoryFilter
           categories={categories}
-          selectedCategory={selectedCategory}
+          selectedCategory={propSelectedCategory}
           setSelectedCategory={setSelectedCategory}
           selectedFilters={selectedFiltersMobile}
           setSelectedFilters={setSelectedFiltersMobile}
@@ -207,7 +248,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
 
         <DesktopCategoryFilter
           categories={categories}
-          selectedCategory={selectedCategory}
+          selectedCategory={propSelectedCategory}
           setSelectedCategory={setSelectedCategory}
           selectedFilters={selectedFiltersDesktop}
           setSelectedFilters={setSelectedFiltersDesktop}
