@@ -1,27 +1,5 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  memo,
-  useMemo,
-} from "react";
-import { 
-  Filter, 
-  ChevronRight, 
-  X,
-  Smartphone, 
-  Battery, 
-  MemoryStick as Memory, 
-  HardDrive, 
-  Camera, 
-  Wifi, 
-  DollarSign,
-  ArrowUpDown,
-  Clock,
-  TrendingUp,
-  Check
-} from "lucide-react";
+import React, { useState, useRef, useEffect, useCallback, memo, useMemo } from "react";
+import { Filter, ChevronRight, X, Smartphone, Battery, MemoryStick as Memory, HardDrive, Camera, Wifi, DollarSign, ArrowUpDown, Clock, TrendingUp, Check } from "lucide-react";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -30,8 +8,7 @@ interface CategoryFilterProps {
   isAllDevicesPage?: boolean;
 }
 
-// Basic filter options for home page
-const basicFilterOptions: FilterOption[] = [
+const basicFilterOptions = [
   {
     id: "price",
     label: "Price",
@@ -61,8 +38,7 @@ const basicFilterOptions: FilterOption[] = [
   },
 ];
 
-// Advanced filter options for all devices page
-const advancedFilterOptions: FilterOption[] = [
+const advancedFilterOptions = [
   {
     id: "priceRange",
     label: "Price Range",
@@ -137,48 +113,6 @@ const advancedFilterOptions: FilterOption[] = [
   },
 ];
 
-interface FilterOption {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-  type?: "range";
-  range?: {
-    min: number;
-    max: number;
-    step: number;
-  };
-  multiSelect?: boolean;
-  options?: { value: string; label: string }[];
-}
-
-interface FilterButtonProps {
-  isOpen: boolean;
-  onClick: () => void;
-  hasActiveFilters: boolean;
-  className?: string;
-  isMobile?: boolean;
-  activeFiltersCount: number;
-}
-
-interface CategoryButtonProps {
-  category: string;
-  isSelected: boolean;
-  onClick: () => void;
-  isMobile?: boolean;
-  isBreakpoint?: boolean;
-}
-
-interface FilterComponentProps {
-  selectedFilters: Record<string, string | string[]>;
-  setSelectedFilters: React.Dispatch<
-    React.SetStateAction<Record<string, string | string[]>>
-  >;
-  isFilterOpen: boolean;
-  setIsFilterOpen: (isOpen: boolean) => void;
-  isMobile?: boolean;
-  isAllDevicesPage?: boolean;
-}
-
 const PriceRangeSlider = memo(({
   value,
   onChange,
@@ -194,16 +128,16 @@ const PriceRangeSlider = memo(({
 }) => {
   const [localValue, setLocalValue] = useState(value);
   const [isDragging, setIsDragging] = useState(false);
+  const [activeThumb, setActiveThumb] = useState<number | null>(null);
 
-  const formatPrice = (price: number) => {
-    return `Rs. ${price.toLocaleString()}`;
-  };
+  const formatPrice = useCallback((price: number) => (
+    `Rs. ${price.toLocaleString()}`
+  ), []);
 
-  const handleChange = (index: number, newValue: number) => {
+  const handleChange = useCallback((index: number, newValue: number) => {
     const updatedValue: [number, number] = [...localValue] as [number, number];
     updatedValue[index] = Math.min(Math.max(newValue, min), max);
     
-    // Ensure min <= max
     if (index === 0) {
       updatedValue[0] = Math.min(updatedValue[0], updatedValue[1] - step);
     } else {
@@ -214,7 +148,7 @@ const PriceRangeSlider = memo(({
     if (!isDragging) {
       onChange(updatedValue);
     }
-  };
+  }, [isDragging, localValue, max, min, onChange, step]);
 
   useEffect(() => {
     if (!isDragging) {
@@ -226,14 +160,9 @@ const PriceRangeSlider = memo(({
     <div className="px-3 py-4">
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <div className="text-xs font-medium text-gray-900">
-            {formatPrice(localValue[0])}
-          </div>
-          <div className="text-xs font-medium text-gray-900">
-            {formatPrice(localValue[1])}
-          </div>
+          <div className="text-xs font-medium text-gray-900">{formatPrice(localValue[0])}</div>
+          <div className="text-xs font-medium text-gray-900">{formatPrice(localValue[1])}</div>
         </div>
-        
         <div className="relative h-2">
           <div className="absolute w-full h-1 bg-gray-200 rounded-full" />
           <div
@@ -243,7 +172,6 @@ const PriceRangeSlider = memo(({
               right: `${100 - ((localValue[1] - min) / (max - min)) * 100}%`
             }}
           />
-          
           {[0, 1].map((index) => (
             <input
               key={index}
@@ -253,17 +181,28 @@ const PriceRangeSlider = memo(({
               step={step}
               value={localValue[index]}
               onChange={(e) => handleChange(index, Number(e.target.value))}
-              onMouseDown={() => setIsDragging(true)}
+              onMouseDown={() => {
+                setIsDragging(true);
+                setActiveThumb(index);
+              }}
               onMouseUp={() => {
                 setIsDragging(false);
+                setActiveThumb(null);
                 onChange(localValue);
               }}
-              onTouchStart={() => setIsDragging(true)}
+              onTouchStart={() => {
+                setIsDragging(true);
+                setActiveThumb(index);
+              }}
               onTouchEnd={() => {
                 setIsDragging(false);
+                setActiveThumb(null);
                 onChange(localValue);
               }}
-              className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm hover:[&::-webkit-slider-thumb]:scale-110 active:[&::-webkit-slider-thumb]:scale-95 transition-transform"
+              className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:shadow-blue-900/10 hover:[&::-webkit-slider-thumb]:scale-110 active:[&::-webkit-slider-thumb]:scale-95 transition-transform"
+              style={{
+                zIndex: activeThumb === index ? 30 : 20
+              }}
             />
           ))}
         </div>
@@ -272,203 +211,205 @@ const PriceRangeSlider = memo(({
   );
 });
 
-const FilterButton = memo(
-  ({
-    isOpen,
-    onClick,
-    hasActiveFilters,
-    className = "",
-    isMobile = false,
-    activeFiltersCount
-  }: FilterButtonProps) => (
-    <button
-      onClick={onClick}
-      className={`
-        flex items-center gap-2 rounded-xl transition-all
-        font-display text-sm bg-white hover:bg-gray-50
-        ${isMobile ? "p-3" : "px-4 py-2.5"}
-        ${className}
-        ${
-          hasActiveFilters
-            ? "border-2 border-blue-500 text-blue-600"
-            : "border border-gray-200 text-gray-700"
-        }
-      `}
-    >
-      <Filter className={`w-[18px] h-[18px] ${hasActiveFilters ? "text-blue-500" : "text-gray-500"}`} />
-      {!isMobile && (
-        <>
-          <span className="font-medium">Filters</span>
-          {activeFiltersCount > 0 && (
-            <span className="flex items-center justify-center w-5 h-5 text-xs font-semibold bg-blue-100 text-blue-600 rounded-full">
-              {activeFiltersCount}
-            </span>
-          )}
-        </>
-      )}
-    </button>
-  )
-);
+const FilterButton = memo(({
+  isOpen,
+  onClick,
+  hasActiveFilters,
+  className = "",
+  isMobile = false,
+  activeFiltersCount
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+  hasActiveFilters: boolean;
+  className?: string;
+  isMobile?: boolean;
+  activeFiltersCount: number;
+}) => (
+  <button
+    onClick={onClick}
+    className={`
+      flex items-center gap-2 rounded-xl transition-all
+      font-display text-sm bg-white hover:bg-gray-50
+      ${isMobile ? "p-3" : "px-4 py-2.5"}
+      ${hasActiveFilters
+        ? "border-2 border-blue-500 text-blue-600"
+        : "border border-gray-200 text-gray-700"
+      }
+      ${className}
+    `}
+  >
+    <Filter className={`w-[18px] h-[18px] ${hasActiveFilters ? "text-blue-500" : "text-gray-500"}`} />
+    {!isMobile && (
+      <>
+        <span className="font-medium">Filters</span>
+        {activeFiltersCount > 0 && (
+          <span className="flex items-center justify-center w-5 h-5 text-xs font-semibold bg-blue-100 text-blue-600 rounded-full">
+            {activeFiltersCount}
+          </span>
+        )}
+      </>
+    )}
+  </button>
+));
 
-const CategoryButton = memo(
-  ({
-    category,
-    isSelected,
-    onClick,
-    isMobile = false,
-    isBreakpoint = false,
-  }: CategoryButtonProps) => (
-    <button
-      onClick={onClick}
-      className={`
+const CategoryButton = memo(({
+  category,
+  isSelected,
+  onClick,
+  isMobile = false,
+  isBreakpoint = false,
+}: {
+  category: string;
+  isSelected: boolean;
+  onClick: () => void;
+  isMobile?: boolean;
+  isBreakpoint?: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`
       relative group flex items-center justify-start rounded-xl transition-colors
       ${isMobile ? "px-4 py-1.5" : isBreakpoint ? "px-4 py-1" : "px-5 py-1.5"}
-      ${
-        isSelected
-          ? "bg-blue-600 text-white"
-          : "hover:bg-white/80 text-gray-600 hover:text-gray-900 bg-white border border-gray-200"
+      ${isSelected
+        ? "bg-blue-600 text-white"
+        : "hover:bg-white/80 text-gray-600 hover:text-gray-900 bg-white border border-gray-200"
       }
     `}
-    >
-      <div className="flex flex-col items-start">
-        <span
-          className={`font-display tracking-tight transition-colors whitespace-nowrap font-medium ${
-            isMobile
-              ? "text-[13px]"
-              : isBreakpoint
-              ? "text-[13px]"
-              : "text-[14px]"
-          } ${
-            isSelected
-              ? "text-white"
-              : "text-gray-700 group-hover:text-gray-900"
-          }`}
-        >
-          {category}
-        </span>
-        <span
-          className={`transition-colors whitespace-nowrap ${
-            isMobile
-              ? "text-[10px]"
-              : isBreakpoint
-              ? "text-[9px]"
-              : "text-[11px]"
-          } ${
-            isSelected
-              ? "text-blue-100"
-              : "text-gray-400 group-hover:text-gray-500"
-          }`}
-        >
-          {category === "Latest Phones"
-            ? "50 devices"
-            : category === "Budget Phones"
-            ? "Under 30k"
-            : category === "Premium Phones"
-            ? "Above 100k"
-            : "High performance"}
-        </span>
-      </div>
-    </button>
-  )
-);
+  >
+    <div className="flex flex-col items-start">
+      <span className={`font-display tracking-tight transition-colors whitespace-nowrap font-medium ${
+        isMobile
+          ? "text-[13px]"
+          : isBreakpoint
+          ? "text-[13px]"
+          : "text-[14px]"
+      } ${isSelected
+        ? "text-white"
+        : "text-gray-700 group-hover:text-gray-900"
+      }`}>
+        {category}
+      </span>
+      <span className={`transition-colors whitespace-nowrap ${
+        isMobile
+          ? "text-[10px]"
+          : isBreakpoint
+          ? "text-[9px]"
+          : "text-[11px]"
+      } ${isSelected
+        ? "text-blue-100"
+        : "text-gray-400 group-hover:text-gray-500"
+      }`}>
+        {category === "Latest Phones"
+          ? "50 devices"
+          : category === "Budget Phones"
+          ? "Under 30k"
+          : category === "Premium Phones"
+          ? "Above 100k"
+          : "High performance"}
+      </span>
+    </div>
+  </button>
+));
 
-const FilterComponent = memo(
-  ({
-    selectedFilters,
-    setSelectedFilters,
-    isFilterOpen,
-    setIsFilterOpen,
-    isMobile = false,
-    isAllDevicesPage = false,
-  }: FilterComponentProps) => {
-    const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
-    const filterRef = useRef<HTMLDivElement>(null);
-    const activeFiltersCount = Object.keys(selectedFilters).length;
+const FilterComponent = memo(({
+  selectedFilters,
+  setSelectedFilters,
+  isFilterOpen,
+  setIsFilterOpen,
+  isMobile = false,
+  isAllDevicesPage = false,
+}: {
+  selectedFilters: Record<string, string | string[]>;
+  setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
+  isFilterOpen: boolean;
+  setIsFilterOpen: (isOpen: boolean) => void;
+  isMobile?: boolean;
+  isAllDevicesPage?: boolean;
+}) => {
+  const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+  const activeFiltersCount = Object.keys(selectedFilters).length;
 
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-          setIsFilterOpen(false);
-        }
-      };
-
-      if (isFilterOpen) {
-        document.addEventListener('mousedown', handleClickOutside);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setIsFilterOpen(false);
       }
+    };
 
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [isFilterOpen, setIsFilterOpen]);
+    if (isFilterOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
 
-    const handleOptionSelect = useCallback(
-      (optionId: string, value: string) => {
-        setSelectedFilters((prev) => {
-          const newFilters = { ...prev };
-          const option = advancedFilterOptions.find(opt => opt.id === optionId);
-          
-          if (option?.multiSelect) {
-            const currentValues = (prev[optionId] as string[]) || [];
-            const valueIndex = currentValues.indexOf(value);
-            
-            if (valueIndex === -1) {
-              newFilters[optionId] = [...currentValues, value];
-            } else {
-              newFilters[optionId] = currentValues.filter(v => v !== value);
-              if ((newFilters[optionId] as string[]).length === 0) {
-                delete newFilters[optionId];
-              }
-            }
-          } else {
-            if (prev[optionId] === value) {
-              delete newFilters[optionId];
-            } else {
-              newFilters[optionId] = value;
-            }
-          }
-          
-          return newFilters;
-        });
-      },
-      [setSelectedFilters]
-    );
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFilterOpen, setIsFilterOpen]);
 
-    const handlePriceRangeChange = useCallback(
-      (value: [number, number]) => {
-        setSelectedFilters(prev => ({
-          ...prev,
-          priceRange: value
-        }));
-      },
-      [setSelectedFilters]
-    );
-
-    const filterOptions = isAllDevicesPage ? advancedFilterOptions : basicFilterOptions;
-
-    return (
-      <div className="relative" ref={filterRef}>
-        <FilterButton
-          isOpen={isFilterOpen}
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-          hasActiveFilters={Object.keys(selectedFilters).length > 0}
-          isMobile={isMobile}
-          activeFiltersCount={activeFiltersCount}
-        />
+  const handleOptionSelect = useCallback((optionId: string, value: string) => {
+    setSelectedFilters((prev) => {
+      const newFilters = { ...prev };
+      const option = advancedFilterOptions.find(opt => opt.id === optionId);
+      
+      if (option?.multiSelect) {
+        const currentValues = (prev[optionId] as string[]) || [];
+        const valueIndex = currentValues.indexOf(value);
         
-        {isFilterOpen && (
-          <div
-            className={`
-              absolute bg-white rounded-xl border border-gray-100 
-              overflow-hidden z-[100] animate-fadeIn shadow-lg
-              w-56 sm:w-60
-              ${isMobile 
-                ? "fixed left-0 right-0 mx-4 top-16" 
-                : "right-0 mt-2"
-              }
-            `}
-            style={{ maxHeight: "calc(100vh - 180px)" }}
-          >
-            {/* Header */}
+        if (valueIndex === -1) {
+          newFilters[optionId] = [...currentValues, value];
+        } else {
+          newFilters[optionId] = currentValues.filter(v => v !== value);
+          if ((newFilters[optionId] as string[]).length === 0) {
+            delete newFilters[optionId];
+          }
+        }
+      } else {
+        if (prev[optionId] === value) {
+          delete newFilters[optionId];
+        } else {
+          newFilters[optionId] = value;
+        }
+      }
+      
+      return newFilters;
+    });
+  }, [setSelectedFilters]);
+
+  const handlePriceRangeChange = useCallback((value: [number, number]) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      priceRange: value
+    }));
+  }, [setSelectedFilters]);
+
+  const filterOptions = isAllDevicesPage ? advancedFilterOptions : basicFilterOptions;
+
+  return (
+    <div className="relative" ref={filterRef}>
+      <FilterButton
+        isOpen={isFilterOpen}
+        onClick={() => setIsFilterOpen(!isFilterOpen)}
+        hasActiveFilters={activeFiltersCount > 0}
+        isMobile={isMobile}
+        activeFiltersCount={activeFiltersCount}
+      />
+      
+      {isFilterOpen && (
+        <div className={`
+          fixed inset-0 z-[99] ${isMobile ? "md:hidden" : ""}
+        `}>
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setIsFilterOpen(false)} />
+          <div className={`
+            fixed bg-white rounded-xl border border-gray-100 
+            overflow-hidden z-[100] animate-fadeIn shadow-lg
+            w-[calc(100%-2rem)] sm:w-60 max-w-sm
+            ${isMobile 
+              ? "left-4 top-20" 
+              : "right-0 top-16"
+            }
+          `}
+          style={{ maxHeight: "calc(100vh - 6rem)" }}>
             <div className="px-3 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0">
@@ -491,7 +432,6 @@ const FilterComponent = memo(
               </div>
             </div>
 
-            {/* Filter Options */}
             <div className="overflow-y-auto custom-scrollbar divide-y divide-gray-50">
               {filterOptions.map((option) => (
                 <div key={option.id} className="relative">
@@ -537,7 +477,6 @@ const FilterComponent = memo(
                     </div>
                   </button>
 
-                  {/* Options Dropdown */}
                   {openSubDropdown === option.id && (
                     <div className="bg-gray-50/80 border-t border-gray-100">
                       {option.type === 'range' ? (
@@ -601,102 +540,138 @@ const FilterComponent = memo(
               ))}
             </div>
           </div>
-        )}
-      </div>
-    );
-  }
-);
-
-export const CategoryFilter: React.FC<CategoryFilterProps> = memo(
-  ({ categories, selectedCategory, setSelectedCategory, isAllDevicesPage = false }) => {
-    const [isFilterOpenMobile, setIsFilterOpenMobile] = useState(false);
-    const [selectedFiltersMobile, setSelectedFiltersMobile] = useState<
-      Record<string, string | string[]>
-    >({});
-
-    const [isFilterOpenDesktop, setIsFilterOpenDesktop] = useState(false);
-    const [selectedFiltersDesktop, setSelectedFiltersDesktop] = useState<
-      Record<string, string | string[]>
-    >({});
-
-    const [isBreakpoint, setIsBreakpoint] = useState(false);
-
-    useEffect(() => {
-      const handleResize = () => {
-        setIsBreakpoint(
-          window.matchMedia("(min-width: 772px) and (max-width: 902px)").matches
-        );
-      };
-
-      const debouncedResize = debounce(handleResize, 100);
-      handleResize();
-      window.addEventListener("resize", debouncedResize);
-      return () => window.removeEventListener("resize", debouncedResize);
-    }, []);
-
-    const memoizedCategories = useMemo(() => categories, [categories]);
-
-    return (
-      <div className="relative mb-6">
-        {/* Mobile Category Filter */}
-        <div className="md:hidden">
-          <div className="flex items-center gap-4 mb-3">
-            <div className="flex-1 overflow-x-auto hide-scrollbar">
-              <div className="flex gap-2 pb-1 px-0.5">
-                {memoizedCategories.map((category) => (
-                  <div key={category} className="flex-shrink-0">
-                    <CategoryButton
-                      category={category}
-                      isSelected={selectedCategory === category}
-                      onClick={() => setSelectedCategory(category)}
-                      isMobile={true}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <FilterComponent
-              selectedFilters={selectedFiltersMobile}
-              setSelectedFilters={setSelectedFiltersMobile}
-              isFilterOpen={isFilterOpenMobile}
-              setIsFilterOpen={setIsFilterOpenMobile}
-              isMobile={true}
-              isAllDevicesPage={isAllDevicesPage}
-            />
-          </div>
         </div>
+      )}
+    </div>
+  );
+});
 
-        {/* Desktop Category Filter */}
-        <div className="hidden md:flex items-start gap-3">
-          {memoizedCategories.map((category) => (
+const MobileCategoryFilter = memo(({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+  selectedFilters,
+  setSelectedFilters,
+  isFilterOpen,
+  setIsFilterOpen,
+  isAllDevicesPage = false,
+}: CategoryFilterProps & {
+  selectedFilters: Record<string, string | string[]>;
+  setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
+  isFilterOpen: boolean;
+  setIsFilterOpen: (isOpen: boolean) => void;
+}) => (
+  <div className="flex items-center gap-4 mb-3 md:hidden">
+    <div className="flex-1 overflow-x-auto hide-scrollbar">
+      <div className="flex gap-2 pb-1 px-0.5">
+        {categories.map((category) => (
+          <div key={category} className="flex-shrink-0">
             <CategoryButton
-              key={category}
               category={category}
               isSelected={selectedCategory === category}
               onClick={() => setSelectedCategory(category)}
-              isBreakpoint={isBreakpoint}
-            />
-          ))}
-
-          <div className="relative ml-auto">
-            <FilterComponent
-              selectedFilters={selectedFiltersDesktop}
-              setSelectedFilters={setSelectedFiltersDesktop}
-              isFilterOpen={isFilterOpenDesktop}
-              setIsFilterOpen={setIsFilterOpenDesktop}
-              isAllDevicesPage={isAllDevicesPage}
+              isMobile={true}
             />
           </div>
-        </div>
+        ))}
       </div>
-    );
-  }
-);
+    </div>
+    <FilterComponent
+      selectedFilters={selectedFilters}
+      setSelectedFilters={setSelectedFilters}
+      isFilterOpen={isFilterOpen}
+      setIsFilterOpen={setIsFilterOpen}
+      isMobile={true}
+      isAllDevicesPage={isAllDevicesPage}
+    />
+  </div>
+));
 
-const debounce = (fn: Function, delay: number) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return (...args: any[]) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn(...args), delay);
-  };
-};
+const DesktopCategoryFilter = memo(({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+  selectedFilters,
+  setSelectedFilters,
+  isFilterOpen,
+  setIsFilterOpen,
+  isAllDevicesPage = false,
+}: CategoryFilterProps & {
+  selectedFilters: Record<string, string | string[]>;
+  setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
+  isFilterOpen: boolean;
+  setIsFilterOpen: (isOpen: boolean) => void;
+}) => {
+  const [isBreakpoint, setIsBreakpoint] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsBreakpoint(window.matchMedia("(min-width: 772px) and (max-width: 902px)").matches);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <div className="hidden md:flex items-start gap-3">
+      {categories.map((category) => (
+        <CategoryButton
+          key={category}
+          category={category}
+          isSelected={selectedCategory === category}
+          onClick={() => setSelectedCategory(category)}
+          isBreakpoint={isBreakpoint}
+        />
+      ))}
+      <div className="relative ml-auto">
+        <FilterComponent
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
+          isAllDevicesPage={isAllDevicesPage}
+        />
+      </div>
+    </div>
+  );
+});
+
+export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({ 
+  categories, 
+  selectedCategory, 
+  setSelectedCategory, 
+  isAllDevicesPage = false 
+}) => {
+  const [isFilterOpenMobile, setIsFilterOpenMobile] = useState(false);
+  const [selectedFiltersMobile, setSelectedFiltersMobile] = useState<Record<string, string | string[]>>({});
+
+  const [isFilterOpenDesktop, setIsFilterOpenDesktop] = useState(false);
+  const [selectedFiltersDesktop, setSelectedFiltersDesktop] = useState<Record<string, string | string[]>>({});
+
+  return (
+    <div className="relative mb-6">
+      <MobileCategoryFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        selectedFilters={selectedFiltersMobile}
+        setSelectedFilters={setSelectedFiltersMobile}
+        isFilterOpen={isFilterOpenMobile}
+        setIsFilterOpen={setIsFilterOpenMobile}
+        isAllDevicesPage={isAllDevicesPage}
+      />
+
+      <DesktopCategoryFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        selectedFilters={selectedFiltersDesktop}
+        setSelectedFilters={setSelectedFiltersDesktop}
+        isFilterOpen={isFilterOpenDesktop}
+        setIsFilterOpen={setIsFilterOpenDesktop}
+        isAllDevicesPage={isAllDevicesPage}
+      />
+    </div>
+  );
+});
