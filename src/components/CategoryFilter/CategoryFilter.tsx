@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { useState, useRef, useEffect, useCallback, memo } from "react";
 import { CategoryButton } from "./components/CategoryButton";
 import { FilterButton } from "./components/FilterButton";
 import { FilterDropdown } from "./components/FilterDropdown";
@@ -22,29 +22,44 @@ const MobileCategoryFilter = memo(({
   setIsFilterOpen: (isOpen: boolean) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
 }) => (
-  <div className="flex items-center gap-4 mb-3 md:hidden">
-    <div className="flex-1 overflow-x-auto hide-scrollbar">
-      <div className="flex gap-2 pb-1 px-0.5">
-        {categories.map((category) => (
-          <div key={category} className="flex-shrink-0">
-            <CategoryButton
-              category={category}
-              isSelected={selectedCategory === category}
-              onClick={() => setSelectedCategory(category)}
+  <div className="md:hidden">
+    <div className="flex items-center gap-4 mb-3">
+      <div className="flex-1 overflow-x-auto hide-scrollbar">
+        <div className="flex gap-2 pb-1 px-0.5">
+          {categories.map((category) => (
+            <div key={category} className="flex-shrink-0">
+              <CategoryButton
+                category={category}
+                isSelected={selectedCategory === category}
+                onClick={() => setSelectedCategory(category)}
+                isMobile={true}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="relative">
+        <FilterButton
+          isOpen={isFilterOpen}
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          hasActiveFilters={Object.keys(selectedFilters).length > 0}
+          isMobile={true}
+          activeFiltersCount={Object.keys(selectedFilters).length}
+        />
+        {isFilterOpen && (
+          <div className="absolute right-0 mt-1 w-52 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm" style={{ maxHeight: isAllDevicesPage ? '70vh' : '60vh' }}>
+            <FilterDropdown
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
+              isFilterOpen={isFilterOpen}
+              setIsFilterOpen={setIsFilterOpen}
               isMobile={true}
+              buttonRef={buttonRef}
+              filterOptions={isAllDevicesPage ? advancedFilterOptions : basicFilterOptions}
             />
           </div>
-        ))}
+        )}
       </div>
-    </div>
-    <div ref={buttonRef} className="relative">
-      <FilterButton
-        isOpen={isFilterOpen}
-        onClick={() => setIsFilterOpen(!isFilterOpen)}
-        hasActiveFilters={Object.keys(selectedFilters).length > 0}
-        isMobile={true}
-        activeFiltersCount={Object.keys(selectedFilters).length}
-      />
     </div>
   </div>
 ));
@@ -88,13 +103,25 @@ const DesktopCategoryFilter = memo(({
           isBreakpoint={isBreakpoint}
         />
       ))}
-      <div ref={buttonRef} className="relative ml-auto">
+      <div className="relative ml-auto">
         <FilterButton
           isOpen={isFilterOpen}
           onClick={() => setIsFilterOpen(!isFilterOpen)}
           hasActiveFilters={Object.keys(selectedFilters).length > 0}
           activeFiltersCount={Object.keys(selectedFilters).length}
         />
+        {isFilterOpen && (
+          <div className="absolute right-0 mt-1 w-60 bg-white rounded-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn shadow-sm">
+            <FilterDropdown
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
+              isFilterOpen={isFilterOpen}
+              setIsFilterOpen={setIsFilterOpen}
+              buttonRef={buttonRef}
+              filterOptions={isAllDevicesPage ? advancedFilterOptions : basicFilterOptions}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -140,29 +167,6 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
         isAllDevicesPage={isAllDevicesPage}
         buttonRef={desktopButtonRef}
       />
-
-      {isFilterOpenMobile && (
-        <FilterDropdown
-          selectedFilters={selectedFiltersMobile}
-          setSelectedFilters={setSelectedFiltersMobile}
-          isFilterOpen={isFilterOpenMobile}
-          setIsFilterOpen={setIsFilterOpenMobile}
-          isMobile={true}
-          buttonRef={mobileButtonRef}
-          filterOptions={isAllDevicesPage ? advancedFilterOptions : basicFilterOptions}
-        />
-      )}
-
-      {isFilterOpenDesktop && (
-        <FilterDropdown
-          selectedFilters={selectedFiltersDesktop}
-          setSelectedFilters={setSelectedFiltersDesktop}
-          isFilterOpen={isFilterOpenDesktop}
-          setIsFilterOpen={setIsFilterOpenDesktop}
-          buttonRef={desktopButtonRef}
-          filterOptions={isAllDevicesPage ? advancedFilterOptions : basicFilterOptions}
-        />
-      )}
     </div>
   );
 });
