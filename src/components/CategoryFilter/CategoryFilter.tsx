@@ -11,7 +11,6 @@ import {
   ChevronRight, 
   X,
   Smartphone, 
-  Cpu, 
   Battery, 
   MemoryStick as Memory, 
   HardDrive, 
@@ -98,18 +97,6 @@ const advancedFilterOptions: FilterOption[] = [
       { value: "256gb", label: "256GB" },
       { value: "512gb", label: "512GB" },
       { value: "1tb", label: "1TB+" },
-    ],
-  },
-  {
-    id: "processor",
-    label: "Processor",
-    icon: Cpu,
-    options: [
-      { value: "snapdragon-8", label: "Snapdragon 8 Series" },
-      { value: "snapdragon-7", label: "Snapdragon 7 Series" },
-      { value: "dimensity-9", label: "Dimensity 9 Series" },
-      { value: "dimensity-8", label: "Dimensity 8 Series" },
-      { value: "exynos", label: "Samsung Exynos" },
     ],
   },
   {
@@ -339,21 +326,21 @@ const FilterComponent = memo(
           <div
             className={`
               absolute bg-white rounded-xl border border-gray-100 
-              overflow-hidden z-50 animate-fadeIn
-              ${isAllDevicesPage ? "w-72" : "w-64"}
+              overflow-hidden z-[100] animate-fadeIn shadow-lg
+              w-56 sm:w-60
               ${isMobile 
-                ? "fixed left-4 right-4 top-12 w-auto" 
+                ? "fixed left-0 right-0 mx-4 top-16" 
                 : "right-0 mt-2"
               }
             `}
-            style={{ maxHeight: "calc(100vh - 200px)" }}
+            style={{ maxHeight: "calc(100vh - 180px)" }}
           >
             {/* Header */}
-            <div className="px-3 py-2 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-400" />
-                  <h3 className="text-sm font-semibold text-gray-900">
+            <div className="px-3 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Filter className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <h3 className="text-sm font-semibold text-gray-900 truncate">
                     {activeFiltersCount > 0 
                       ? `${activeFiltersCount} Filter${activeFiltersCount > 1 ? 's' : ''} Applied` 
                       : 'All Filters'}
@@ -362,9 +349,9 @@ const FilterComponent = memo(
                 {activeFiltersCount > 0 && (
                   <button
                     onClick={() => setSelectedFilters({})}
-                    className="flex items-center gap-1.5 px-2 py-1 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                    className="flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                     Clear All
                   </button>
                 )}
@@ -393,12 +380,12 @@ const FilterComponent = memo(
                       `}>
                         <option.icon className="w-4 h-4" />
                       </div>
-                      <div className="flex-1 text-left">
-                        <span className="text-sm font-medium text-gray-700">
+                      <div className="flex-1 text-left min-w-0">
+                        <span className="text-sm font-medium text-gray-700 block truncate">
                           {option.label}
                         </span>
                         {selectedFilters[option.id] && (
-                          <p className="text-xs text-blue-600 mt-0.5">
+                          <p className="text-xs text-blue-600 mt-0.5 truncate">
                             {option.options.find(
                               opt => opt.value === selectedFilters[option.id]
                             )?.label}
@@ -406,7 +393,7 @@ const FilterComponent = memo(
                         )}
                       </div>
                       <ChevronRight className={`
-                        w-4 h-4 text-gray-400 transition-transform
+                        w-4 h-4 text-gray-400 transition-transform flex-shrink-0
                         ${openSubDropdown === option.id ? 'rotate-90' : ''}
                       `} />
                     </div>
@@ -427,7 +414,7 @@ const FilterComponent = memo(
                           <div className="flex items-center gap-3">
                             <div className={`
                               w-4 h-4 rounded-full border-2 flex items-center justify-center
-                              transition-colors
+                              transition-colors flex-shrink-0
                               ${selectedFilters[option.id] === opt.value
                                 ? 'border-blue-500 bg-blue-500'
                                 : 'border-gray-300 bg-white'
@@ -438,7 +425,7 @@ const FilterComponent = memo(
                               )}
                             </div>
                             <span className={`
-                              text-sm transition-colors
+                              text-sm transition-colors truncate
                               ${selectedFilters[option.id] === opt.value
                                 ? 'text-blue-600 font-medium'
                                 : 'text-gray-600'
