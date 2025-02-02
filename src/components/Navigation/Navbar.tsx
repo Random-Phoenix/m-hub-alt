@@ -16,32 +16,41 @@ const GoogleIcon = memo(() => (
 
 // Profile Menu Component with useMemo for static content
 const ProfileMenu = memo(({ isOpen, onClose, className = '' }: { isOpen: boolean; onClose: () => void; className?: string }) => {
-  const content = useMemo(() => (
-    <div className={`absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-fadeIn ${className}`}>
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-1">Welcome to MobileHUB</h3>
-        <p className="text-xs text-gray-500 mb-3">Sign in to access your account</p>
-        
-        <div className="space-y-2">
-          <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-gray-300 bg-white text-gray-700 text-sm font-medium transition-colors group">
-            <GoogleIcon />
-            <span>Continue with Google</span>
-          </button>
-          
-          <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
-            <Mail className="w-4 h-4" />
-            <span>Continue with Email</span>
-          </button>
-        </div>
-
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <p className="text-[10px] text-gray-400 text-center">
-            By continuing, you agree to our Terms and Privacy Policy
+  const content = useMemo(
+    () => (
+      <div
+        className={`absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-fadeIn ${className}`}
+      >
+        <div className="p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-1">
+            Welcome to PhoneDive
+          </h3>
+          <p className="text-xs text-gray-500 mb-3">
+            Sign in to access your account
           </p>
+
+          <div className="space-y-2">
+            <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-gray-300 bg-white text-gray-700 text-sm font-medium transition-colors group">
+              <GoogleIcon />
+              <span>Continue with Google</span>
+            </button>
+
+            <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+              <Mail className="w-4 h-4" />
+              <span>Continue with Email</span>
+            </button>
+          </div>
+
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <p className="text-[10px] text-gray-400 text-center">
+              By continuing, you agree to our Terms and Privacy Policy
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  ), [className]);
+    ),
+    [className]
+  );
 
   if (!isOpen) return null;
   return content;
@@ -194,12 +203,20 @@ export const Navbar = memo(({
   }, [isDesktopSearchActive]);
 
   // Memoize static content
-  const logo = useMemo(() => (
-    <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-      <Smartphone className="h-[26px] w-[26px] text-blue-600" />
-      <span className="text-xl font-bold text-gray-900 tracking-tight">MobileHUB</span>
-    </Link>
-  ), []);
+  const logo = useMemo(
+    () => (
+      <Link
+        to="/"
+        className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+      >
+        <Smartphone className="h-[26px] w-[26px] text-blue-600" />
+        <span className="text-xl font-bold text-gray-900 tracking-tight">
+          PhoneDive
+        </span>
+      </Link>
+    ),
+    []
+  );
 
   const desktopLinks = useMemo(() => (
     <div className="hidden md:flex items-center space-x-1 ml-10">

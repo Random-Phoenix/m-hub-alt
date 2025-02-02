@@ -116,7 +116,7 @@ export const Footer = memo(() => {
                       <div className="flex items-center gap-1.5">
                         <Smartphone className="w-5 h-5 text-blue-600" />
                         <span className="text-lg font-bold tracking-tight">
-                          MobileHUB
+                          PhoneDive
                         </span>
                       </div>
                       <p className="text-sm text-gray-500 mt-0.5">
@@ -230,7 +230,7 @@ export const Footer = memo(() => {
           {/* Bottom Bar */}
           <div className="flex justify-center mt-2 pt-2 border-t border-gray-100">
             <p className="text-sm text-gray-500">
-              © 2025 MobileHUB. All rights reserved.
+              © 2025 PhoneDive. All rights reserved.
             </p>
           </div>
         </div>
@@ -251,7 +251,7 @@ const MobileFooter = memo(() => (
         {/* MobileHUB Name */}
         <div className="flex items-center gap-1.5">
           <Smartphone className="w-4 h-4 text-blue-600" />
-          <span className="text-base font-bold tracking-tight">MobileHUB</span>
+          <span className="text-base font-bold tracking-tight">PhoneDive</span>
         </div>
 
         {/* Social Links and App Coming Soon */}
@@ -341,7 +341,7 @@ const MobileFooter = memo(() => (
     {/* Copyright */}
     <div className="px-4 py-1 bg-gray-50/50">
       <p className="text-[10px] text-center text-gray-500">
-        © 2025 MobileHUB. All rights reserved.
+        © 2025 PhoneDive. All rights reserved.
       </p>
     </div>
   </div>
