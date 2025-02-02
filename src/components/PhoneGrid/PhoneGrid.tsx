@@ -13,18 +13,17 @@ interface PhoneGridProps {
   totalPages?: number;
 }
 
-// Memoized Advertisement component
 const Advertisement = memo(() => (
   <div className="col-span-full h-40 md:h-56 grid grid-cols-2 gap-3 md:gap-6 my-4">
     <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100">
-      <img 
+      <img
         src="https://www.canny-creative.com/wp-content/uploads/2020/07/greatestprintads_cocacola.jpg"
         alt="Coca Cola Advertisement"
         className="w-full h-full object-cover"
       />
     </div>
     <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-50 to-white border border-gray-100">
-      <img 
+      <img
         src="https://cdn.i.haymarketmedia.asia/?n=campaign-asia%2fcontent%2fKFC+OOH+1+HotSpicyCOB+land.jpg&c=0"
         alt="KFC Advertisement"
         className="w-full h-full object-cover"
@@ -33,7 +32,6 @@ const Advertisement = memo(() => (
   </div>
 ));
 
-// Memoized Pagination component with optimized rendering
 const Pagination = memo(
   ({
     currentPage,
@@ -72,20 +70,12 @@ const Pagination = memo(
       return range;
     }, [currentPage, totalPages]);
 
-    const handlePageChange = useCallback(
-      (page: number) => {
-        if (page !== -1) onPageChange(page);
-      },
-      [onPageChange]
-    );
-
     return (
       <div className="flex items-center justify-center gap-2 mt-8">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Previous page"
         >
           <ArrowRight className="w-5 h-5 rotate-180" />
         </button>
@@ -98,10 +88,10 @@ const Pagination = memo(
               </span>
             ) : (
               <button
-                onClick={() => handlePageChange(page)}
+                onClick={() => onPageChange(page)}
                 className={`w-10 h-10 rounded-lg font-medium text-sm transition-all ${
                   currentPage === page
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                    ? "bg-blue-600 text-white shadow-lg"
                     : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -115,7 +105,6 @@ const Pagination = memo(
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Next page"
         >
           <ArrowRight className="w-5 h-5" />
         </button>
@@ -124,7 +113,6 @@ const Pagination = memo(
   }
 );
 
-// Main PhoneGrid component with optimized rendering and virtualization
 export const PhoneGrid: React.FC<PhoneGridProps> = memo(
   ({
     phones,
@@ -136,10 +124,9 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
     const { width } = useWindowSize();
     const navigate = useNavigate();
     const location = useLocation();
-    const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
     // Calculate grid layout based on screen size
-    const { phonesToShow, insertAdAfter, columns } = useMemo(() => {
+    const { phonesToShow, insertAdAfter } = useMemo(() => {
       const itemsPerRow =
         width < 640 ? 3 : width < 1024 ? 4 : width < 1280 ? 5 : 6;
       const rowsToShow = showAll ? 7 : 5;
@@ -154,7 +141,6 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
       return {
         phonesToShow,
         insertAdAfter: 3 * itemsPerRow,
-        columns: itemsPerRow,
       };
     }, [phones, showAll, width, currentPage]);
 
@@ -165,16 +151,11 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
       [navigate, location.pathname]
     );
 
-    const handleImageLoad = useCallback((phoneId: number) => {
-      setLoadedImages((prev) => new Set(prev).add(phoneId));
-    }, []);
-
     return (
       <div className="space-y-6">
         <div
           className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-6"
           style={{
-            // Add CSS containment for better performance
             contain: "content",
           }}
         >
@@ -182,13 +163,9 @@ export const PhoneGrid: React.FC<PhoneGridProps> = memo(
             <React.Fragment key={phone.id}>
               {index === insertAdAfter && !showAll && <Advertisement />}
               <PhoneCard
+                key={phone.id} // Ensure this key is stable based on phone id
                 phone={phone}
                 onClick={() => handlePhoneClick(phone.id)}
-                onImageLoad={() => handleImageLoad(phone.id)}
-                isImageLoaded={loadedImages.has(phone.id)}
-                index={index}
-                totalItems={phonesToShow.length}
-                columns={columns}
               />
             </React.Fragment>
           ))}
