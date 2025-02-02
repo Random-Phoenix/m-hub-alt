@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useEffect } from "react";
 import { Heart, Cpu, HardDrive } from "lucide-react";
 import { Phone } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
@@ -14,15 +14,46 @@ const extractBrandAndModel = (name: string) => {
   return { brand, model: modelParts.join(" ") };
 };
 
+// Storage utility functions
+const storageUtils = {
+  setWithExpiry: (key: string, value: any, ttl: number) => {
+    const item = {
+      value,
+      expiry: new Date().getTime() + ttl,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  },
+
+  getWithExpiry: (key: string) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) return null;
+
+    const item = JSON.parse(itemStr);
+    const now = new Date().getTime();
+
+    if (now > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  }
+};
+
+// Three days in milliseconds
+const THREE_DAYS = 3 * 24 * 60 * 60 * 1000;
+
 // Reusable favorite button component
 const FavoriteButton: React.FC<{
+  phoneId: number;
   isFavorite: boolean;
   onClick: (e: React.MouseEvent) => void;
-}> = memo(({ isFavorite, onClick }) => (
+}> = memo(({ phoneId, isFavorite, onClick }) => (
   <button
     onClick={onClick}
-    className="absolute top-3 right-3 transition-opacity opacity-0 group-hover:opacity-100"
-    aria-label="Add to favorites"
+    className={`absolute top-3 right-3 transition-all ${
+      isFavorite ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+    }`}
+    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
   >
     <Heart
       className={`h-5 w-5 transition-colors ${
@@ -43,14 +74,35 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
 
     const { brand, model } = extractBrandAndModel(phone.name);
 
+    // Load favorite state from localStorage on mount
+    useEffect(() => {
+      const favorites = storageUtils.getWithExpiry('favoritePhones') || [];
+      setIsFavorite(favorites.includes(phone.id));
+    }, [phone.id]);
+
     const handleClick = useCallback(() => {
       onClick();
     }, [onClick]);
 
     const handleFavorite = useCallback((e: React.MouseEvent) => {
       e.stopPropagation();
-      setIsFavorite((prev) => !prev);
-    }, []);
+      setIsFavorite(prev => {
+        const newState = !prev;
+        const favorites = storageUtils.getWithExpiry('favoritePhones') || [];
+        
+        if (newState) {
+          // Add to favorites
+          const newFavorites = [...favorites, phone.id];
+          storageUtils.setWithExpiry('favoritePhones', newFavorites, THREE_DAYS);
+        } else {
+          // Remove from favorites
+          const newFavorites = favorites.filter((id: number) => id !== phone.id);
+          storageUtils.setWithExpiry('favoritePhones', newFavorites, THREE_DAYS);
+        }
+        
+        return newState;
+      });
+    }, [phone.id]);
 
     return (
       <div
@@ -68,7 +120,11 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
 
           {/* Favorite Button - Only shown on desktop */}
           {!isMobile && (
-            <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />
+            <FavoriteButton 
+              phoneId={phone.id} 
+              isFavorite={isFavorite} 
+              onClick={handleFavorite} 
+            />
           )}
         </div>
 
