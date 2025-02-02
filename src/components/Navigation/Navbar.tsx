@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef, useCallback, memo, useMemo } from 'react';
-import { Smartphone, Heart, Search, Menu, X, User, Mail } from 'lucide-react';
+import { Smartphone, Heart, Search, Menu, X, User, Mail, Scale } from 'lucide-react';
 import { MobileMenu } from './MobileMenu';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { useNavigate, Link } from 'react-router-dom';
 
-// Memoize static JSX elements
 const GoogleIcon = memo(() => (
   <svg className="w-4 h-4" viewBox="0 0 24 24">
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -14,7 +13,6 @@ const GoogleIcon = memo(() => (
   </svg>
 ));
 
-// Profile Menu Component with useMemo for static content
 const ProfileMenu = memo(({ isOpen, onClose, className = '' }: { isOpen: boolean; onClose: () => void; className?: string }) => {
   const content = useMemo(
     () => (
@@ -56,7 +54,6 @@ const ProfileMenu = memo(({ isOpen, onClose, className = '' }: { isOpen: boolean
   return content;
 });
 
-// Memoized button component with optimized re-renders
 const IconButton = memo(({ icon: Icon, label, onClick, badge, className = '' }: {
   icon: React.ElementType;
   label: string;
@@ -86,7 +83,6 @@ const IconButton = memo(({ icon: Icon, label, onClick, badge, className = '' }: 
   );
 });
 
-// Memoized search input with optimized re-renders
 const SearchInput = memo(({ inputRef, placeholder }: {
   inputRef: React.RefObject<HTMLInputElement>;
   placeholder: string;
@@ -124,7 +120,6 @@ export const Navbar = memo(({
   const lastScrollY = useRef(0);
   const navigate = useNavigate();
 
-  // Optimized scroll handler with RAF and throttling
   const handleScroll = useCallback(() => {
     if (scrollListenerRef.current) return;
 
@@ -148,7 +143,6 @@ export const Navbar = memo(({
     };
   }, [handleScroll]);
 
-  // Optimized click outside handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -177,14 +171,12 @@ export const Navbar = memo(({
     }
   }, [isMenuOpen, setIsMenuOpen, isSearchActive, isProfileMenuOpen]);
 
-  // Auto-focus for search inputs
   useEffect(() => {
     if (isSearchActive && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isSearchActive]);
 
-  // Memoize static content
   const logo = useMemo(
     () => (
       <Link
@@ -203,7 +195,10 @@ export const Navbar = memo(({
   const desktopLinks = useMemo(() => (
     <div className="hidden md:flex items-center space-x-1 ml-10">
       <Link to="/mobile-phones" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
-        Latest Phones
+        Phones
+      </Link>
+      <Link to="/compare" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
+        Compare
       </Link>
       <a href="#" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
         News & Reviews

@@ -1,5 +1,5 @@
 import React, { useState, memo, useMemo } from 'react';
-import { ChevronRight, User, Smartphone, Newspaper, ArrowLeft, Mail } from 'lucide-react';
+import { ChevronRight, User, Smartphone, Newspaper, ArrowLeft, Mail, Scale } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -111,10 +111,17 @@ export const MobileMenu = memo(({ isOpen, onProfileClick }: MobileMenuProps) => 
       <nav className="py-1">
         <MenuItem 
           icon={Smartphone}
-          label="Latest Phones"
+          label="Phones"
           iconBgColor="bg-blue-50"
           iconRingColor="ring-blue-100/75"
           iconTextColor="text-blue-600"
+        />
+        <MenuItem 
+          icon={Scale}
+          label="Compare"
+          iconBgColor="bg-green-50"
+          iconRingColor="ring-green-100/75"
+          iconTextColor="text-green-600"
         />
         <MenuItem 
           icon={Newspaper}
@@ -132,3 +139,5 @@ export const MobileMenu = memo(({ isOpen, onProfileClick }: MobileMenuProps) => 
     </div>
   );
 });
+
+MobileMenu.displayName = 'MobileMenu';
