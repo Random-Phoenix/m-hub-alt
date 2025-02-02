@@ -87,11 +87,11 @@ export const PhoneDetail = () => {
             </div>
 
             {/* Product Info */}
-            <div className="space-y-3.5">
+            <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex-1">
-                    <span className="inline-block px-2.5 py-1 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg">
+                    <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg">
                       {phone.category}
                     </span>
                   </div>
@@ -115,20 +115,20 @@ export const PhoneDetail = () => {
                     </button>
                   </div>
                 </div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 font-display mb-2">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-900 font-display mb-2">
                   {phone.name}
                 </h1>
                 <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <span className="text-xl md:text-2xl font-bold text-blue-600 font-display">
+                  <span className="text-lg md:text-xl font-bold text-blue-600 font-display">
                     {phone.price}
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-green-50 text-green-700 text-sm font-medium">
-                      <Award className="w-4 h-4" />
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-green-50 text-green-700 text-xs font-medium">
+                      <Award className="w-3.5 h-3.5" />
                       Official Warranty
                     </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-sm font-medium">
-                      <Shield className="w-4 h-4" />
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 text-xs font-medium">
+                      <Shield className="w-3.5 h-3.5" />
                       PTA Approved
                     </span>
                   </div>
@@ -136,7 +136,7 @@ export const PhoneDetail = () => {
               </div>
 
               {/* Quick Specs Grid */}
-              <div className="grid grid-cols-2 gap-y-1.5 gap-x-1">
+              <div className="grid grid-cols-2 gap-2.5">
                 {quickSpecs.map((spec, index) => (
                   <SpecCard
                     key={index}
@@ -148,20 +148,20 @@ export const PhoneDetail = () => {
               </div>
 
               {/* Key Features */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3">
-                <h3 className="text-xs font-semibold text-gray-900 mb-2">Key Features</h3>
-                <ul className="space-y-1.5">
-                  <li className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Check className="w-3.5 h-3.5 text-blue-600" />
-                    <span>5G Connectivity for Ultra-Fast Internet</span>
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-2">
+                <h3 className="text-xs font-semibold text-gray-900 mb-1.5">Key Features</h3>
+                <ul className="space-y-1">
+                  <li className="flex items-center gap-1">
+                    <Check className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                    <span className="text-[13px] text-gray-600">5G Connectivity for Ultra-Fast Internet</span>
                   </li>
-                  <li className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Check className="w-3.5 h-3.5 text-blue-600" />
-                    <span>AI-Enhanced Camera System</span>
+                  <li className="flex items-center gap-1">
+                    <Check className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                    <span className="text-[13px] text-gray-600">AI-Enhanced Camera System</span>
                   </li>
-                  <li className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Check className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Fast Charging Support (65W)</span>
+                  <li className="flex items-center gap-1">
+                    <Check className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                    <span className="text-[13px] text-gray-600">Fast Charging Support (65W)</span>
                   </li>
                 </ul>
               </div>
