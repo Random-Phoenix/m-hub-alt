@@ -111,14 +111,14 @@ export const MobileMenu = memo(({ isOpen, onProfileClick }: MobileMenuProps) => 
       <nav className="py-1">
         <MenuItem 
           icon={Smartphone}
-          label="Phones"
+          label="Mobile Phones"
           iconBgColor="bg-blue-50"
           iconRingColor="ring-blue-100/75"
           iconTextColor="text-blue-600"
         />
         <MenuItem 
           icon={Scale}
-          label="Compare"
+          label="Compare Phones"
           iconBgColor="bg-green-50"
           iconRingColor="ring-green-100/75"
           iconTextColor="text-green-600"

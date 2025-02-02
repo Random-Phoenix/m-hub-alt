@@ -194,13 +194,22 @@ export const Navbar = memo(({
 
   const desktopLinks = useMemo(() => (
     <div className="hidden md:flex items-center space-x-1 ml-10">
-      <Link to="/mobile-phones" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
-        Phones
+      <Link 
+        to="/mobile-phones" 
+        className="px-3 lg:px-4 py-2 text-[13px] lg:text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors"
+      >
+        Mobile Phones
       </Link>
-      <Link to="/compare" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
-        Compare
+      <Link 
+        to="/compare" 
+        className="px-3 lg:px-4 py-2 text-[13px] lg:text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors"
+      >
+        Compare Phones
       </Link>
-      <a href="#" className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors">
+      <a 
+        href="#" 
+        className="px-3 lg:px-4 py-2 text-[13px] lg:text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors"
+      >
         News & Reviews
       </a>
     </div>
@@ -221,7 +230,7 @@ export const Navbar = memo(({
           {desktopLinks}
           
           <div className="hidden md:flex items-center space-x-3 ml-auto">
-            <div className="w-[260px] lg:w-[280px]">
+            <div className="w-[240px] lg:w-[280px]">
               <SearchInput
                 inputRef={desktopSearchInputRef}
                 placeholder="Search phones..."
