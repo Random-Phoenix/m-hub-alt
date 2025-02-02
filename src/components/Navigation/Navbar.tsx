@@ -87,29 +87,19 @@ const IconButton = memo(({ icon: Icon, label, onClick, badge, className = '' }: 
 });
 
 // Memoized search input with optimized re-renders
-const SearchInput = memo(({ inputRef, placeholder, onClose }: {
+const SearchInput = memo(({ inputRef, placeholder }: {
   inputRef: React.RefObject<HTMLInputElement>;
   placeholder: string;
-  onClose: () => void;
 }) => (
-  <div className="flex items-center bg-white animate-slideIn-horizontal">
-    <div className="relative flex-1">
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder={placeholder}
-        className="w-full h-10 pl-11 pr-4 bg-gray-50 rounded-xl outline-none ring-blue-500/20 focus:ring-2 focus:bg-white font-display text-[15px] placeholder:text-gray-400 transition-all"
-        autoComplete="off"
-      />
-      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-    </div>
-    <button
-      className="p-2 ml-1.5 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors"
-      onClick={onClose}
-      aria-label="Close search"
-    >
-      <X className="h-5 w-5 text-gray-500" />
-    </button>
+  <div className="relative flex-1">
+    <input
+      ref={inputRef}
+      type="text"
+      placeholder={placeholder}
+      className="w-full h-10 pl-11 pr-4 bg-white rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all"
+      autoComplete="off"
+    />
+    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
   </div>
 ));
 
@@ -124,7 +114,6 @@ export const Navbar = memo(({
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [isDesktopSearchActive, setIsDesktopSearchActive] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   
   const menuRef = useRef<HTMLDivElement>(null);
@@ -179,15 +168,14 @@ export const Navbar = memo(({
       
       if (!isClickInsideSearch) {
         setIsSearchActive(false);
-        setIsDesktopSearchActive(false);
       }
     };
 
-    if (isMenuOpen || isSearchActive || isDesktopSearchActive || isProfileMenuOpen) {
+    if (isMenuOpen || isSearchActive || isProfileMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [isMenuOpen, setIsMenuOpen, isSearchActive, isDesktopSearchActive, isProfileMenuOpen]);
+  }, [isMenuOpen, setIsMenuOpen, isSearchActive, isProfileMenuOpen]);
 
   // Auto-focus for search inputs
   useEffect(() => {
@@ -195,12 +183,6 @@ export const Navbar = memo(({
       searchInputRef.current.focus();
     }
   }, [isSearchActive]);
-
-  useEffect(() => {
-    if (isDesktopSearchActive && desktopSearchInputRef.current) {
-      desktopSearchInputRef.current.focus();
-    }
-  }, [isDesktopSearchActive]);
 
   // Memoize static content
   const logo = useMemo(
@@ -243,23 +225,12 @@ export const Navbar = memo(({
           
           {desktopLinks}
           
-          <div className="hidden md:flex items-center space-x-2 ml-auto">
-            <div className="relative flex items-center justify-end min-w-[300px]">
-              {isDesktopSearchActive ? (
-                <div className="absolute left-0 right-0">
-                  <SearchInput
-                    inputRef={desktopSearchInputRef}
-                    placeholder="Search phones..."
-                    onClose={() => setIsDesktopSearchActive(false)}
-                  />
-                </div>
-              ) : (
-                <IconButton
-                  icon={Search}
-                  label="Search"
-                  onClick={() => setIsDesktopSearchActive(true)}
-                />
-              )}
+          <div className="hidden md:flex items-center space-x-3 ml-auto">
+            <div className="w-[260px] lg:w-[280px]">
+              <SearchInput
+                inputRef={desktopSearchInputRef}
+                placeholder="Search phones..."
+              />
             </div>
             <div className="relative">
               <IconButton
@@ -285,11 +256,25 @@ export const Navbar = memo(({
           <div className={`md:hidden flex items-center ${isSearchActive ? 'w-full' : 'ml-auto'} space-x-2`}>
             <div className={`relative ${isSearchActive ? 'flex-1' : ''}`}>
               {isSearchActive ? (
-                <SearchInput
-                  inputRef={searchInputRef}
-                  placeholder="Search phones..."
-                  onClose={() => setIsSearchActive(false)}
-                />
+                <div className="flex items-center bg-white animate-slideIn-horizontal">
+                  <div className="relative flex-1">
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Search phones..."
+                      className="w-full h-10 pl-11 pr-4 bg-white rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all"
+                      autoComplete="off"
+                    />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                  </div>
+                  <button
+                    className="p-2 ml-1.5 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                    onClick={() => setIsSearchActive(false)}
+                    aria-label="Close search"
+                  >
+                    <X className="h-5 w-5 text-gray-500" />
+                  </button>
+                </div>
               ) : (
                 <IconButton
                   icon={Search}
