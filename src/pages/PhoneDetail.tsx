@@ -487,5 +487,3 @@ export const PhoneDetail = () => {
     </div>
   );
 };
-
-export { PhoneDetail }
