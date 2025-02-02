@@ -1,4 +1,4 @@
-import React, { useMemo, memo, useCallback, useState } from "react";
+import React, { useMemo, memo, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PhoneCard } from "../PhoneCard/PhoneCard";
 import { Phone } from "../../types";
