@@ -1,5 +1,5 @@
 import React, { useState, useCallback, memo, useEffect } from "react";
-import { Heart, Cpu, HardDrive } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Phone } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
@@ -117,11 +117,11 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
         {/* Image Container */}
         <div className="relative pt-[120%] md:pt-[95%] bg-gradient-to-br from-gray-50 via-white to-gray-50">
           <img
-            src={phone.image} // Assuming phone.image is a reliable URL
+            src="https://images.unsplash.com/photo-1595941069915-4ebc5197c14a?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt={phone.name}
-            loading="lazy" // Lazy load the image
+            loading="lazy"
             className="absolute inset-0 w-full h-full object-cover mix-blend-multiply rounded-t-lg"
-            onError={handleImageError} // Handle image errors
+            onError={handleImageError}
           />
 
           {/* Favorite Button - Only shown on desktop */}
@@ -133,35 +133,19 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
         {/* Content */}
         <div className="p-1.5 md:p-3 md:pt-2.5">
           <div className="space-y-0.5 md:space-y-1">
-            {/* Brand and Specs Row */}
-            <div className="flex items-center justify-between">
-              <div className="w-full md:w-auto">
-                <span className="block md:inline-block text-center md:text-left w-full px-1 md:px-2 py-0.5 bg-gray-50 rounded-md text-[9px] md:text-[10px] font-bold text-gray-600 tracking-wide uppercase font-display">
-                  {brand}
-                </span>
-              </div>
-              <div className="hidden md:flex items-center gap-2.5">
-                <div className="flex items-center gap-1">
-                  <Cpu className="w-3 h-3 text-gray-400" />
-                  <span className="text-[10px] font-medium text-gray-500">
-                    8GB
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <HardDrive className="w-3 h-3 text-gray-400" />
-                  <span className="text-[10px] font-medium text-gray-500">
-                    256GB
-                  </span>
-                </div>
-              </div>
+            {/* Brand */}
+            <div className="text-center">
+              <span className="inline-block px-2 py-0.5 bg-gray-50 rounded-md text-[10px] md:text-[11px] font-bold text-gray-600 tracking-wide uppercase font-display">
+                {brand}
+              </span>
             </div>
 
             {/* Model Name and Price */}
-            <div className="block md:flex md:items-center md:justify-between">
-              <h3 className="font-display text-center md:text-left font-semibold text-[11px] md:text-[13px] leading-none tracking-tight text-gray-900 mb-0.5 md:mb-0">
+            <div className="text-center md:text-center">
+              <h3 className="font-display font-semibold text-[12px] md:text-[14px] leading-none tracking-tight text-gray-900 mb-1">
                 {model}
               </h3>
-              <p className="font-display text-center md:text-left font-bold text-[10px] md:text-xs text-blue-600 leading-none">
+              <p className="font-display font-bold text-[11px] md:text-[13px] text-blue-600 leading-none">
                 {phone.price}
               </p>
             </div>
