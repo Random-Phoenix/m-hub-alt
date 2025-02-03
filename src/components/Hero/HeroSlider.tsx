@@ -63,7 +63,7 @@ const LazySlideImage = memo(
     return (
       <div
         ref={imgRef}
-        className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900"
+        className="absolute inset-0"
       >
         {shouldLoad && (
           <img
@@ -73,7 +73,6 @@ const LazySlideImage = memo(
             loading={priority ? "eager" : "lazy"}
             decoding={priority ? "sync" : "async"}
             onLoad={onLoad}
-            fetchpriority={priority ? "high" : "low"}
           />
         )}
       </div>
@@ -84,7 +83,6 @@ const LazySlideImage = memo(
 export const HeroSlider: React.FC<HeroSliderProps> = memo(
   ({ slides, currentSlide, onSlideChange }) => {
     const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
-    const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const slideInterval = 5000;
 
@@ -108,13 +106,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
       };
     }, [currentSlide, slides.length, onSlideChange]);
 
-    const handleImageLoad = useCallback((index: number) => {
-      setLoadedImages((prev) => new Set(prev).add(index));
-    }, []);
-
     return (
       <div
-        className="relative w-full h-[15vh] md:h-[40vh] bg-gray-900 rounded-lg overflow-hidden shadow-lg"
+        className="relative w-full h-[18vh] md:h-[40vh] bg-gray-900 rounded-xl overflow-hidden shadow-lg"
         style={{ contain: "content" }}
       >
         {slides.map((slide, index) => (
@@ -131,12 +125,11 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
             }`}
             style={{ willChange: "transform, opacity" }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-900/50 to-transparent" />
             <LazySlideImage
               src={slide.image}
               alt={slide.title}
               priority={index === 0 || index === 1}
-              onLoad={() => handleImageLoad(index)}
+              onLoad={() => {}}
             />
             <SlideOverlay title={slide.title} subtitle={slide.subtitle} />
           </div>
@@ -163,3 +156,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
     );
   }
 );
+
+HeroSlider.displayName = "HeroSlider";
+SlideOverlay.displayName = "SlideOverlay";
+LazySlideImage.displayName = "LazySlideImage";
