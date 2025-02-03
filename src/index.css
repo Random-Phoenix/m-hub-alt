@@ -16,25 +16,27 @@
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #E5E7EB transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
   scroll-behavior: smooth;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #E5E7EB;
-  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #D1D5DB;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* Modern scrollbar for horizontal scrolling */

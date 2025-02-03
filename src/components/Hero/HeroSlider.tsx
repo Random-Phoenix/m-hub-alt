@@ -9,7 +9,7 @@ interface HeroSliderProps {
 
 const SlideOverlay = memo(
   ({ title, subtitle }: { title: string; subtitle: string }) => (
-    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent pb-12 pt-24 px-6 md:px-8 hidden md:block">
+    <div className="absolute inset-x-0 bottom-0 pb-12 pt-8 px-6 md:px-8 hidden md:block">
       <h2 className="text-xl md:text-3xl font-bold text-white mb-2 line-clamp-2">
         {title}
       </h2>

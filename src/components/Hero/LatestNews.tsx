@@ -76,7 +76,7 @@ export const LatestNews: React.FC<LatestNewsProps> = memo(({ news }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-sm h-[40vh] flex flex-col font-display overflow-hidden border border-gray-100/75 hidden md:flex"
+      className="bg-white rounded-xl shadow-sm h-[40vh] flex flex-col font-display overflow-hidden border border-gray-100/75 hidden md:flex"
       style={{ contain: "content" }}
     >
       <NewsHeader />
