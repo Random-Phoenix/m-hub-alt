@@ -17,7 +17,7 @@ const ProfileMenu = memo(({ isOpen, onClose, className = '' }: { isOpen: boolean
   const content = useMemo(
     () => (
       <div
-        className={`absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-fadeIn ${className}`}
+        className={`absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg border border-gray-100/75 overflow-hidden animate-fadeIn backdrop-blur-sm ${className}`}
       >
         <div className="p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-1">
@@ -28,12 +28,12 @@ const ProfileMenu = memo(({ isOpen, onClose, className = '' }: { isOpen: boolean
           </p>
 
           <div className="space-y-2">
-            <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-gray-300 bg-white text-gray-700 text-sm font-medium transition-colors group">
+            <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:border-gray-300 bg-white text-gray-700 text-sm font-medium transition-all group hover:bg-gray-50">
               <GoogleIcon />
               <span>Continue with Google</span>
             </button>
 
-            <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+            <button className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-all">
               <Mail className="w-4 h-4" />
               <span>Continue with Email</span>
             </button>
@@ -74,7 +74,7 @@ const IconButton = memo(({ icon: Icon, label, onClick, badge, className = '' }: 
 
   return (
     <button 
-      className={`relative p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors ${className}`}
+      className={`relative p-2 rounded-xl hover:bg-gray-100 active:bg-gray-200 transition-all ${className}`}
       onClick={onClick}
       aria-label={label}
     >
@@ -92,7 +92,7 @@ const SearchInput = memo(({ inputRef, placeholder }: {
       ref={inputRef}
       type="text"
       placeholder={placeholder}
-      className="w-full h-10 pl-11 pr-4 bg-white rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all"
+      className="w-full h-11 pl-11 pr-4 bg-gray-50 rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all hover:bg-gray-100 focus:bg-white"
       autoComplete="off"
     />
     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
@@ -181,9 +181,11 @@ export const Navbar = memo(({
     () => (
       <Link
         to="/"
-        className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        className="flex items-center gap-2 hover:opacity-90 transition-opacity"
       >
-        <Smartphone className="h-[26px] w-[26px] text-blue-600" />
+        <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+          <Smartphone className="h-5 w-5 text-white" />
+        </div>
         <span className="text-xl font-bold text-gray-900 tracking-tight">
           PhoneDive
         </span>
@@ -196,19 +198,19 @@ export const Navbar = memo(({
     <div className="hidden md:flex items-center space-x-1 ml-10">
       <Link 
         to="/mobile-phones" 
-        className="px-3 lg:px-4 py-2 text-[13px] lg:text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors"
+        className="px-4 py-2.5 text-[15.5px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         Mobile Phones
       </Link>
       <Link 
         to="/compare" 
-        className="px-3 lg:px-4 py-2 text-[13px] lg:text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors"
+        className="px-4 py-2.5 text-[15.5px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         Compare Phones
       </Link>
       <a 
         href="#" 
-        className="px-3 lg:px-4 py-2 text-[13px] lg:text-[15px] font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-colors"
+        className="px-4 py-2.5 text-[15.5px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         News & Reviews
       </a>
@@ -230,7 +232,7 @@ export const Navbar = memo(({
           {desktopLinks}
           
           <div className="hidden md:flex items-center space-x-3 ml-auto">
-            <div className="w-[240px] lg:w-[280px]">
+            <div className="w-[280px] lg:w-[320px]">
               <SearchInput
                 inputRef={desktopSearchInputRef}
                 placeholder="Search phones..."
@@ -266,13 +268,13 @@ export const Navbar = memo(({
                       ref={searchInputRef}
                       type="text"
                       placeholder="Search phones..."
-                      className="w-full h-10 pl-11 pr-4 bg-white rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all"
+                      className="w-full h-11 pl-11 pr-4 bg-gray-50 rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all"
                       autoComplete="off"
                     />
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
                   </div>
                   <button
-                    className="p-2 ml-1.5 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                    className="p-2 ml-1.5 rounded-xl hover:bg-gray-100 active:bg-gray-200 transition-colors"
                     onClick={() => setIsSearchActive(false)}
                     aria-label="Close search"
                   >
