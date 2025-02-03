@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useEffect, memo, useState } from "react";
 import type { Slide } from "../../types";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 interface HeroSliderProps {
   slides: Slide[];
@@ -85,6 +86,10 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
     const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const slideInterval = 5000;
+    const { width } = useWindowSize();
+
+    // Calculate dynamic height based on screen width for mobile
+    const mobileHeight = width < 768 ? `${Math.min(Math.max(width * 0.35, 120), 250)}px` : '40vh';
 
     const goToSlide = useCallback(
       (index: number, direction: "next" | "prev" = "next") => {
@@ -108,8 +113,11 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
 
     return (
       <div
-        className="relative w-full h-[18vh] md:h-[40vh] bg-gray-900 rounded-xl overflow-hidden shadow-lg"
-        style={{ contain: "content" }}
+        className="relative w-full bg-gray-900 rounded-xl overflow-hidden shadow-lg"
+        style={{ 
+          contain: "content",
+          height: width < 768 ? mobileHeight : '40vh'
+        }}
       >
         {slides.map((slide, index) => (
           <div

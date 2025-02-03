@@ -111,7 +111,7 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
 
     return (
       <div
-        className="relative bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer"
+        className="relative bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer"
         onClick={handleClick}
       >
         {/* Image Container */}
@@ -120,7 +120,7 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
             src="https://images.unsplash.com/photo-1595941069915-4ebc5197c14a?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt={phone.name}
             loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply rounded-t-lg"
+            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
             onError={handleImageError}
           />
 
