@@ -92,7 +92,7 @@ const SearchInput = memo(({ inputRef, placeholder }: {
       ref={inputRef}
       type="text"
       placeholder={placeholder}
-      className="w-full h-11 pl-11 pr-4 bg-gray-50 rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all hover:bg-gray-100 focus:bg-white"
+      className="w-full h-10 pl-11 pr-4 bg-gray-50 rounded-xl outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-500/30 font-display text-[15px] placeholder:text-gray-400 transition-all hover:bg-gray-100 focus:bg-white"
       autoComplete="off"
     />
     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
@@ -183,10 +183,10 @@ export const Navbar = memo(({
         to="/"
         className="flex items-center gap-2 hover:opacity-90 transition-opacity"
       >
-        <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-          <Smartphone className="h-5 w-5 text-white" />
+        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+          <Smartphone className="h-4.5 w-4.5 text-white" />
         </div>
-        <span className="text-xl font-bold text-gray-900 tracking-tight">
+        <span className="text-lg font-bold text-gray-900 tracking-tight">
           PhoneDive
         </span>
       </Link>
@@ -198,19 +198,19 @@ export const Navbar = memo(({
     <div className="hidden md:flex items-center space-x-1 ml-10">
       <Link 
         to="/mobile-phones" 
-        className="px-4 py-2.5 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
+        className="px-4 py-2 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         Mobile Phones
       </Link>
       <Link 
         to="/compare" 
-        className="px-4 py-2.5 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
+        className="px-4 py-2 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         Compare Phones
       </Link>
       <a 
         href="#" 
-        className="px-4 py-2.5 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
+        className="px-4 py-2 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         News & Reviews
       </a>
@@ -224,7 +224,7 @@ export const Navbar = memo(({
       `}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center h-16 px-4">
+        <div className="flex items-center h-14 px-4">
           <div className={`flex items-center flex-shrink-0 ${isSearchActive ? 'hidden' : 'flex'}`}>
             {logo}
           </div>

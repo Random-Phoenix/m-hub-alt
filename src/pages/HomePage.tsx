@@ -34,7 +34,7 @@ export const HomePage = () => {
         favoritesCount={favorites.length}
       />
 
-      <div className="pt-16">
+      <div className="pt-14 md:pt-14">
         <div className="max-w-7xl mx-auto px-4">
           <div className="md:hidden">
             <HeroSlider
@@ -43,7 +43,7 @@ export const HomePage = () => {
               onSlideChange={setCurrentSlide}
             />
           </div>
-          <div className="hidden md:grid md:grid-cols-3 gap-6 py-6">
+          <div className="hidden md:grid md:grid-cols-3 gap-6 py-4">
             <div className="col-span-2">
               <HeroSlider
                 slides={slides}
