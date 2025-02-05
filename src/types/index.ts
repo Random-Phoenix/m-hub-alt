@@ -4,6 +4,9 @@ export interface Phone {
   price: number;
   image: string;
   category: string;
+  views: number;
+  releaseDate: Date;
+  trending: boolean;
   specs: {
     screen: string;
     processor: string;

@@ -275,6 +275,7 @@ export const phones: Phone[] = [
     views: 15000,
     trending: true,
   })),
+
   // Premium Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 51,
@@ -549,6 +550,7 @@ export const phones: Phone[] = [
     views: 25000,
     trending: true,
   })),
+
   // Gaming Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 101,
@@ -823,6 +825,7 @@ export const phones: Phone[] = [
     views: 30000,
     trending: true,
   })),
+
   // Budget Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 151,
