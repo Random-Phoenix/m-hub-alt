@@ -11,9 +11,11 @@ export const usePhoneFilter = (
   phones: Phone[],
   selectedCategory: string,
   searchQuery: string,
-  filters: FilterState
+  filters: FilterState = {} // Provide default empty object
 ) => {
   return useMemo(() => {
+    if (!phones || !phones.length) return [];
+
     // First filter by category and search query
     let filteredPhones = phones.filter(phone => {
       const matchesCategory = phone.category === selectedCategory;
@@ -21,17 +23,20 @@ export const usePhoneFilter = (
       return matchesCategory && matchesSearch;
     });
 
+    // If no phones match the filters, return empty array
+    if (!filteredPhones.length) return [];
+
+    // Get maximum values for normalization
+    const maxPrice = Math.max(...filteredPhones.map(p => p.price));
+    const maxViews = Math.max(...filteredPhones.map(p => p.views));
+    const maxDate = Math.max(...filteredPhones.map(p => p.releaseDate.getTime()));
+    const minDate = Math.min(...filteredPhones.map(p => p.releaseDate.getTime()));
+    const dateRange = maxDate - minDate;
+
     // Apply all active filters sequentially
     const sortedPhones = [...filteredPhones].sort((a, b) => {
       // Normalize all scores to be between -1 and 1 for fair comparison
       const getScore = (value: number, max: number) => (value / max) * 2 - 1;
-
-      // Get maximum values for normalization
-      const maxPrice = Math.max(...filteredPhones.map(p => p.price));
-      const maxViews = Math.max(...filteredPhones.map(p => p.views));
-      const maxDate = Math.max(...filteredPhones.map(p => p.releaseDate.getTime()));
-      const minDate = Math.min(...filteredPhones.map(p => p.releaseDate.getTime()));
-      const dateRange = maxDate - minDate;
 
       // Initialize weights for each filter type
       const weights = {

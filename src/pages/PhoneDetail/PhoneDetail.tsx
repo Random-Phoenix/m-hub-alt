@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import {
   ChevronRight,
@@ -26,6 +26,7 @@ import { SpecTable } from "./components/SpecTable/SpecTable";
 import { mockImages, specifications } from "./constants/mockData";
 import { phones } from "../../data/phones";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { storageUtils } from "../../components/PhoneCard/PhoneCard";
 
 export const PhoneDetail = () => {
   useScrollToTop();
@@ -40,6 +41,21 @@ export const PhoneDetail = () => {
   const shareButtonRef = useRef<HTMLButtonElement>(null);
 
   const phone = phones.find((p) => p.id === Number(id));
+
+  // Load favorite state from localStorage on mount
+  useEffect(() => {
+    if (phone) {
+      const favorites = storageUtils.getFavorites();
+      setIsFavorite(favorites.includes(phone.id));
+    }
+  }, [phone]);
+
+  const handleFavoriteToggle = () => {
+    if (phone) {
+      const newIsFavorite = storageUtils.toggleFavorite(phone.id);
+      setIsFavorite(newIsFavorite);
+    }
+  };
 
   if (!phone) return <div>Phone not found</div>;
 
@@ -115,7 +131,7 @@ export const PhoneDetail = () => {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <button
-                      onClick={() => setIsFavorite(!isFavorite)}
+                      onClick={handleFavoriteToggle}
                       className="p-1.5 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors"
                     >
                       <Heart

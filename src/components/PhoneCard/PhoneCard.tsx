@@ -15,48 +15,47 @@ const extractBrandAndModel = (name: string) => {
 };
 
 // Storage utility functions
-const storageUtils = {
-  setFavorites: (key: string, value: any) => {
+export const storageUtils = {
+  setFavorites: (favorites: number[]) => {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem("favoritePhones", JSON.stringify(favorites));
     } catch (error) {
       console.error("Error saving to localStorage:", error);
     }
   },
 
-  getFavorites: (key: string) => {
+  getFavorites: (): number[] => {
     try {
-      const itemStr = localStorage.getItem(key);
+      const itemStr = localStorage.getItem("favoritePhones");
       return itemStr ? JSON.parse(itemStr) : [];
     } catch (error) {
       console.error("Error reading from localStorage:", error);
       return [];
     }
   },
+
+  toggleFavorite: (phoneId: number) => {
+    const favorites = storageUtils.getFavorites();
+    const newFavorites = favorites.includes(phoneId)
+      ? favorites.filter(id => id !== phoneId)
+      : [...favorites, phoneId];
+    storageUtils.setFavorites(newFavorites);
+    return newFavorites.includes(phoneId);
+  }
 };
 
-// Reusable favorite button component
-const FavoriteButton: React.FC<{
-  isFavorite: boolean;
-  onClick: (e: React.MouseEvent) => void;
-}> = memo(({ isFavorite, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`absolute top-3 right-3 transition-all transform ${
-      isFavorite ? "opacity-100 scale-100" : "opacity-0 scale-90 group-hover:scale-100 group-hover:opacity-100"
-    }`}
-    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+// Favorite indicator component - renamed from FavoriteButton since it's no longer a button
+const FavoriteIndicator = memo(({ isFavorite }: { isFavorite: boolean }) => (
+  <div
+    className="absolute top-3 right-3"
+    aria-label="Favorite indicator"
   >
     <Heart
-      className={`w-6 h-6 transition-all duration-200 ${
-        isFavorite
-          ? "fill-red-500 text-red-500 hover:scale-110 active:scale-95"
-          : "text-gray-600 hover:scale-110 active:scale-95 hover:text-gray-900"
-      }`}
+      className="w-6 h-6 fill-red-500 text-red-500"
     />
-  </button>
+  </div>
 ));
-FavoriteButton.displayName = "FavoriteButton";
+FavoriteIndicator.displayName = "FavoriteIndicator";
 
 export const PhoneCard: React.FC<PhoneCardProps> = memo(
   ({ phone, onClick }) => {
@@ -66,40 +65,30 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
 
     const { brand, model } = extractBrandAndModel(phone.name);
 
-    // Load favorite state from localStorage on mount
+    // Load favorite state from localStorage on mount and when it changes
     useEffect(() => {
-      const favorites = storageUtils.getFavorites("favoritePhones") || [];
-      setIsFavorite(favorites.includes(phone.id));
+      const checkFavoriteStatus = () => {
+        const favorites = storageUtils.getFavorites();
+        setIsFavorite(favorites.includes(phone.id));
+      };
+
+      // Check initial status
+      checkFavoriteStatus();
+
+      // Add storage event listener to update status when changed from detail page
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === "favoritePhones") {
+          checkFavoriteStatus();
+        }
+      };
+
+      window.addEventListener('storage', handleStorageChange);
+      return () => window.removeEventListener('storage', handleStorageChange);
     }, [phone.id]);
 
     const handleClick = useCallback(() => {
       onClick();
     }, [onClick]);
-
-    const handleFavorite = useCallback(
-      (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setIsFavorite((prev) => {
-          const newState = !prev;
-          const favorites = storageUtils.getFavorites("favoritePhones") || [];
-
-          if (newState) {
-            // Add to favorites
-            const newFavorites = [...favorites, phone.id];
-            storageUtils.setFavorites("favoritePhones", newFavorites);
-          } else {
-            // Remove from favorites
-            const newFavorites = favorites.filter(
-              (id: number) => id !== phone.id
-            );
-            storageUtils.setFavorites("favoritePhones", newFavorites);
-          }
-
-          return newState;
-        });
-      },
-      [phone.id]
-    );
 
     // Handle image loading error and set a fallback image
     const handleImageError = useCallback(
@@ -125,10 +114,8 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
             style={{ transform: 'translate3d(0, 0, 0)' }}
           />
 
-          {/* Favorite Button - Only shown on desktop */}
-          {!isMobile && (
-            <FavoriteButton isFavorite={isFavorite} onClick={handleFavorite} />
-          )}
+          {/* Favorite Indicator - Only shown if favorite */}
+          {isFavorite && <FavoriteIndicator isFavorite={true} />}
         </div>
 
         {/* Content */}
