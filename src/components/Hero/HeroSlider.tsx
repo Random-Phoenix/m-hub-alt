@@ -113,7 +113,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = memo(
 
     return (
       <div
-        className="relative w-full bg-gray-900 rounded-xl overflow-hidden shadow-lg"
+        className="relative w-full bg-white rounded-xl overflow-hidden border border-gray-100"
         style={{ 
           contain: "content",
           height: width < 768 ? mobileHeight : '40vh'
