@@ -198,19 +198,19 @@ export const Navbar = memo(({
     <div className="hidden md:flex items-center space-x-1 ml-10">
       <Link 
         to="/mobile-phones" 
-        className="px-4 py-2.5 text-[15.5px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
+        className="px-4 py-2.5 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         Mobile Phones
       </Link>
       <Link 
         to="/compare" 
-        className="px-4 py-2.5 text-[15.5px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
+        className="px-4 py-2.5 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         Compare Phones
       </Link>
       <a 
         href="#" 
-        className="px-4 py-2.5 text-[15.5px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
+        className="px-4 py-2.5 text-[15px] font-semibold text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all"
       >
         News & Reviews
       </a>
