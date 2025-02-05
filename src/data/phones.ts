@@ -2,7 +2,7 @@ import { Phone } from '../types';
 
 export const phones: Phone[] = [
   // Latest Phones (50 devices)
-  ...Array.from({ length: 50 }, (_, i) => ({
+   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
     name: [
       "Xiaomi Redmi Note 14 Pro", "Samsung Galaxy S25 Ultra", "iPhone 16 Pro Max", "Google Pixel 9 Pro", "Oppo Reno 13",
@@ -68,9 +68,9 @@ export const phones: Phone[] = [
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera"
       ][i]
     },
-    releaseDate: new Date("2024-10-01"),
-    views: 15000,
-    trending: true
+    releaseDate: new Date(Date.now() - Math.floor(Math.random() * (new Date("2025-02-05").getTime() - new Date("2024-01-01").getTime()))),
+    views: [15000, 12000, 18000, 22000, 9000, 25000, 14000, 16000, 11000, 13000][i % 10],
+    trending: [true, false, true, false, true, false, true, false, true, false][i % 10]
   })),
   // Premium Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
@@ -139,9 +139,9 @@ export const phones: Phone[] = [
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera"
       ][i]
     },
-    releaseDate: new Date("2024-09-15"),
-    views: 25000,
-    trending: true
+    releaseDate: new Date(Date.now() - Math.floor(Math.random() * (new Date("2025-02-05").getTime() - new Date("2024-01-01").getTime()))),
+    views: [15000, 12000, 18000, 22000, 9000, 25000, 14000, 16000, 11000, 13000][i % 10],
+    trending: [true, false, true, false, true, false, true, false, true, false][i % 10]
   })),
   // Gaming Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
@@ -210,9 +210,9 @@ export const phones: Phone[] = [
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera"
       ][i]
     },
-    releaseDate: new Date("2024-08-20"),
-    views: 30000,
-    trending: true
+    releaseDate: new Date(Date.now() - Math.floor(Math.random() * (new Date("2025-02-05").getTime() - new Date("2024-01-01").getTime()))),
+    views: [15000, 12000, 18000, 22000, 9000, 25000, 14000, 16000, 11000, 13000][i % 10],
+    trending: [true, false, true, false, true, false, true, false, true, false][i % 10]
   })),
   // Budget Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
@@ -281,8 +281,8 @@ export const phones: Phone[] = [
       "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera"
     ][i]
   },
-  releaseDate: new Date("2024-01-15"),
-  views: 5000,
-  trending: false
+  releaseDate: new Date(Date.now() - Math.floor(Math.random() * (new Date("2025-02-05").getTime() - new Date("2024-01-01").getTime()))),
+    views: [15000, 12000, 18000, 22000, 9000, 25000, 14000, 16000, 11000, 13000][i % 10],
+    trending: [true, false, true, false, true, false, true, false, true, false][i % 10]
 }))
 ];

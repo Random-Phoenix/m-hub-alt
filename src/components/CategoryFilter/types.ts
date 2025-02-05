@@ -21,5 +21,7 @@ export interface CategoryFilterProps {
   categories: string[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  selectedFilters: Record<string, string | string[]>;
+  setSelectedFilters: (filters: Record<string, string | string[]>) => void;
   isAllDevicesPage?: boolean;
 }
