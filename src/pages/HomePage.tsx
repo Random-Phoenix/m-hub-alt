@@ -17,14 +17,37 @@ const LatestNews = lazy(() => import('../components/Hero/LatestNews').then(modul
   default: module.LatestNews
 })));
 
+interface FilterState {
+  price?: 'low-to-high' | 'high-to-low';
+  date?: 'newest' | 'oldest';
+  popularity?: 'most-viewed' | 'trending';
+}
+
 export const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Latest Phones');
   const [favorites] = useState<number[]>([1, 2, 3]);
+  const [filters, setFilters] = useState<FilterState>({});
 
-  const filteredPhones = usePhoneFilter(phones, selectedCategory, searchQuery);
+  const filteredPhones = usePhoneFilter(phones, selectedCategory, searchQuery, filters);
+
+  const handleFilterChange = (filterId: string, value: string | null) => {
+    setFilters(prev => {
+      const newFilters = { ...prev };
+      
+      if (value === null) {
+        // Remove only the specific filter
+        delete newFilters[filterId as keyof FilterState];
+      } else {
+        // Update or add the new filter value
+        newFilters[filterId as keyof FilterState] = value as any;
+      }
+      
+      return newFilters;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -70,6 +93,8 @@ export const HomePage = () => {
           categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
+          onFilterChange={handleFilterChange}
+          activeFilters={filters}
         />
         
         <PhoneGrid phones={filteredPhones} />

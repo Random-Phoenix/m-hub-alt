@@ -42,16 +42,16 @@ const FavoriteButton: React.FC<{
 }> = memo(({ isFavorite, onClick }) => (
   <button
     onClick={onClick}
-    className={`absolute top-3 right-3 transition-all ${
-      isFavorite ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+    className={`absolute top-3 right-3 transition-all transform ${
+      isFavorite ? "opacity-100 scale-100" : "opacity-0 scale-90 group-hover:scale-100 group-hover:opacity-100"
     }`}
     aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
   >
     <Heart
-      className={`h-5 w-5 transition-colors ${
+      className={`w-6 h-6 transition-all duration-200 ${
         isFavorite
-          ? "fill-red-500 text-red-500"
-          : "text-gray-600 hover:text-gray-600"
+          ? "fill-red-500 text-red-500 hover:scale-110 active:scale-95"
+          : "text-gray-600 hover:scale-110 active:scale-95 hover:text-gray-900"
       }`}
     />
   </button>
@@ -111,17 +111,18 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
 
     return (
       <div
-        className="relative bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer"
+        className="relative bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 group mt-1.5 mr-1.5 cursor-pointer transition-transform duration-200 hover:-translate-y-1"
         onClick={handleClick}
       >
         {/* Image Container */}
-        <div className="relative pt-[120%] md:pt-[95%] bg-gradient-to-br from-gray-50 via-white to-gray-50">
+        <div className="relative pt-[120%] md:pt-[95%] bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1595941069915-4ebc5197c14a?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt={phone.name}
             loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
+            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply transition-transform duration-300 group-hover:scale-110 will-change-transform"
             onError={handleImageError}
+            style={{ transform: 'translate3d(0, 0, 0)' }}
           />
 
           {/* Favorite Button - Only shown on desktop */}

@@ -22,4 +22,6 @@ export interface CategoryFilterProps {
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
   isAllDevicesPage?: boolean;
+  onFilterChange: (filterId: string, value: string | null) => void;
+  activeFilters?: Record<string, string>;
 }

@@ -21,7 +21,9 @@ const MobileCategoryFilter = memo(({
   setIsFilterOpen,
   isAllDevicesPage = false,
   buttonRef,
-  dropdownRef
+  dropdownRef,
+  onFilterChange,
+  activeFilters
 }: CategoryFilterProps & {
   selectedFilters: Record<string, string | string[]>;
   setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
@@ -29,6 +31,8 @@ const MobileCategoryFilter = memo(({
   setIsFilterOpen: (isOpen: boolean) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
   dropdownRef: React.RefObject<HTMLDivElement>;
+  onFilterChange: (filterId: string, value: string | null) => void;
+  activeFilters: Record<string, string>;
 }) => (
   <div className="md:hidden">
     <div className="flex items-center gap-4 mb-3">
@@ -53,9 +57,9 @@ const MobileCategoryFilter = memo(({
         <FilterButton
           isOpen={isFilterOpen}
           onClick={() => setIsFilterOpen(!isFilterOpen)}
-          hasActiveFilters={Object.keys(selectedFilters).length > 0}
+          hasActiveFilters={Object.keys(activeFilters).length > 0}
           isMobile={true}
-          activeFiltersCount={Object.keys(selectedFilters).length}
+          activeFiltersCount={Object.keys(activeFilters).length}
           ref={buttonRef}
         />
         {isFilterOpen && (
@@ -66,15 +70,14 @@ const MobileCategoryFilter = memo(({
           >
             <FilterDropdown
               selectedFilters={selectedFilters}
-              setSelectedFilters={(newFilters) => {
-                setSelectedFilters(newFilters);
-                localStorage.setItem(STORAGE_KEYS.MOBILE_FILTERS, JSON.stringify(newFilters));
-              }}
+              setSelectedFilters={setSelectedFilters}
               isFilterOpen={isFilterOpen}
               setIsFilterOpen={setIsFilterOpen}
               isMobile={true}
               buttonRef={buttonRef}
               filterOptions={isAllDevicesPage ? advancedFilterOptions : basicFilterOptions}
+              onFilterChange={onFilterChange}
+              activeFilters={activeFilters}
             />
           </div>
         )}
@@ -93,7 +96,9 @@ const DesktopCategoryFilter = memo(({
   setIsFilterOpen,
   isAllDevicesPage = false,
   buttonRef,
-  dropdownRef
+  dropdownRef,
+  onFilterChange,
+  activeFilters
 }: CategoryFilterProps & {
   selectedFilters: Record<string, string | string[]>;
   setSelectedFilters: React.Dispatch<React.SetStateAction<Record<string, string | string[]>>>;
@@ -101,6 +106,8 @@ const DesktopCategoryFilter = memo(({
   setIsFilterOpen: (isOpen: boolean) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
   dropdownRef: React.RefObject<HTMLDivElement>;
+  onFilterChange: (filterId: string, value: string | null) => void;
+  activeFilters: Record<string, string>;
 }) => {
   const [isBreakpoint, setIsBreakpoint] = useState(false);
 
@@ -131,8 +138,8 @@ const DesktopCategoryFilter = memo(({
         <FilterButton
           isOpen={isFilterOpen}
           onClick={() => setIsFilterOpen(!isFilterOpen)}
-          hasActiveFilters={Object.keys(selectedFilters).length > 0}
-          activeFiltersCount={Object.keys(selectedFilters).length}
+          hasActiveFilters={Object.keys(activeFilters).length > 0}
+          activeFiltersCount={Object.keys(activeFilters).length}
           ref={buttonRef}
         />
         {isFilterOpen && (
@@ -142,14 +149,13 @@ const DesktopCategoryFilter = memo(({
           >
             <FilterDropdown
               selectedFilters={selectedFilters}
-              setSelectedFilters={(newFilters) => {
-                setSelectedFilters(newFilters);
-                localStorage.setItem(STORAGE_KEYS.DESKTOP_FILTERS, JSON.stringify(newFilters));
-              }}
+              setSelectedFilters={setSelectedFilters}
               isFilterOpen={isFilterOpen}
               setIsFilterOpen={setIsFilterOpen}
               buttonRef={buttonRef}
               filterOptions={isAllDevicesPage ? advancedFilterOptions : basicFilterOptions}
+              onFilterChange={onFilterChange}
+              activeFilters={activeFilters}
             />
           </div>
         )}
@@ -162,7 +168,9 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
   categories, 
   selectedCategory: propSelectedCategory, 
   setSelectedCategory, 
-  isAllDevicesPage = false 
+  isAllDevicesPage = false,
+  onFilterChange,
+  activeFilters = {}
 }) => {
   // Initialize state from localStorage or default values
   const [isFilterOpenMobile, setIsFilterOpenMobile] = useState(false);
@@ -244,6 +252,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
           isAllDevicesPage={isAllDevicesPage}
           buttonRef={mobileButtonRef}
           dropdownRef={mobileDropdownRef}
+          onFilterChange={onFilterChange}
+          activeFilters={activeFilters}
         />
 
         <DesktopCategoryFilter
@@ -257,6 +267,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
           isAllDevicesPage={isAllDevicesPage}
           buttonRef={desktopButtonRef}
           dropdownRef={desktopDropdownRef}
+          onFilterChange={onFilterChange}
+          activeFilters={activeFilters}
         />
       </div>
     </div>

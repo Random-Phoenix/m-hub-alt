@@ -11,6 +11,8 @@ interface FilterDropdownProps {
   isMobile?: boolean;
   buttonRef: React.RefObject<HTMLButtonElement>;
   filterOptions: FilterOption[];
+  onFilterChange: (filterId: string, value: string | null) => void;
+  activeFilters: Record<string, string>;
 }
 
 export const FilterDropdown = memo(({
@@ -20,11 +22,13 @@ export const FilterDropdown = memo(({
   setIsFilterOpen,
   isMobile = false,
   buttonRef,
-  filterOptions
+  filterOptions,
+  onFilterChange,
+  activeFilters
 }: FilterDropdownProps) => {
   const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
-  const activeFiltersCount = Object.keys(selectedFilters).length;
+  const activeFiltersCount = Object.keys(activeFilters).length;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,33 +48,17 @@ export const FilterDropdown = memo(({
   }, [isFilterOpen, setIsFilterOpen, buttonRef]);
 
   const handleOptionSelect = useCallback((optionId: string, value: string) => {
-    setSelectedFilters((prev) => {
-      const newFilters = { ...prev };
-      const option = filterOptions.find(opt => opt.id === optionId);
-      
-      if (option?.multiSelect) {
-        const currentValues = (prev[optionId] as string[]) || [];
-        const valueIndex = currentValues.indexOf(value);
-        
-        if (valueIndex === -1) {
-          newFilters[optionId] = [...currentValues, value];
-        } else {
-          newFilters[optionId] = currentValues.filter(v => v !== value);
-          if ((newFilters[optionId] as string[]).length === 0) {
-            delete newFilters[optionId];
-          }
-        }
-      } else {
-        if (prev[optionId] === value) {
-          delete newFilters[optionId];
-        } else {
-          newFilters[optionId] = value;
-        }
-      }
-      
-      return newFilters;
-    });
-  }, [setSelectedFilters, filterOptions]);
+    // If the same value is selected, clear it
+    if (activeFilters[optionId] === value) {
+      onFilterChange(optionId, null);
+    } else {
+      onFilterChange(optionId, value);
+    }
+    
+    if (!filterOptions.find(opt => opt.id === optionId)?.multiSelect) {
+      setOpenSubDropdown(null);
+    }
+  }, [onFilterChange, activeFilters, filterOptions]);
 
   const handlePriceRangeChange = useCallback((value: [number, number]) => {
     setSelectedFilters(prev => ({
@@ -93,7 +81,11 @@ export const FilterDropdown = memo(({
           </div>
           {activeFiltersCount > 0 && (
             <button
-              onClick={() => setSelectedFilters({})}
+              onClick={() => {
+                Object.keys(activeFilters).forEach(filterId => {
+                  onFilterChange(filterId, null);
+                });
+              }}
               className="flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
             >
               <X className="w-3.5 h-3.5" />
@@ -128,15 +120,11 @@ export const FilterDropdown = memo(({
                   <span className="text-sm font-medium text-gray-700 block truncate">
                     {option.label}
                   </span>
-                  {selectedFilters[option.id] && (
+                  {activeFilters[option.id] && (
                     <p className="text-xs text-blue-600 mt-0.5 truncate">
                       {option.type === 'range' 
-                        ? `Rs. ${(selectedFilters[option.id] as [number, number])[0].toLocaleString()} - Rs. ${(selectedFilters[option.id] as [number, number])[1].toLocaleString()}`
-                        : Array.isArray(selectedFilters[option.id])
-                          ? (selectedFilters[option.id] as string[])
-                              .map(value => option.options?.find(opt => opt.value === value)?.label)
-                              .join(', ')
-                          : option.options?.find(opt => opt.value === selectedFilters[option.id])?.label
+                        ? `Rs. ${(activeFilters[option.id] as [number, number])[0].toLocaleString()} - Rs. ${(activeFilters[option.id] as [number, number])[1].toLocaleString()}`
+                        : option.options?.find(opt => opt.value === activeFilters[option.id])?.label
                       }
                     </p>
                   )}
@@ -163,19 +151,12 @@ export const FilterDropdown = memo(({
                   />
                 ) : (
                   option.options?.map((opt) => {
-                    const isSelected = option.multiSelect
-                      ? (selectedFilters[option.id] as string[] || []).includes(opt.value)
-                      : selectedFilters[option.id] === opt.value;
+                    const isSelected = activeFilters[option.id] === opt.value;
 
                     return (
                       <button
                         key={opt.value}
-                        onClick={() => {
-                          handleOptionSelect(option.id, opt.value);
-                          if (!option.multiSelect) {
-                            setOpenSubDropdown(null);
-                          }
-                        }}
+                        onClick={() => handleOptionSelect(option.id, opt.value)}
                         className="w-full px-3 py-1.5 hover:bg-gray-100/80 transition-colors"
                       >
                         <div className="flex items-center gap-3">
