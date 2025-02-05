@@ -146,7 +146,7 @@ export const PhoneCard: React.FC<PhoneCardProps> = memo(
                 {model}
               </h3>
               <p className="font-display font-bold text-[11px] md:text-[13px] text-blue-600 leading-none">
-                {phone.price}
+                Rs. {phone.price.toLocaleString()}
               </p>
             </div>
           </div>
