@@ -17,11 +17,12 @@
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -32,7 +33,7 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
-  transition: background-color 0.2s ease;
+  border: none;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {

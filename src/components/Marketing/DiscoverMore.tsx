@@ -1,9 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Heart, Grid2X2 } from "lucide-react";
 
 export const DiscoverMore = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentCategory = location.pathname === "/" ? location.state?.category : null;
 
   return (
     <div className="relative mb-8">
@@ -20,7 +22,9 @@ export const DiscoverMore = () => {
             </button>
 
             <button
-              onClick={() => navigate("/mobile-phones")}
+              onClick={() => navigate("/mobile-phones", { 
+                state: { category: currentCategory } 
+              })}
               className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 rounded-xl bg-blue-600 text-white font-display font-semibold text-[13px] sm:text-[15px]"
             >
               <Grid2X2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />

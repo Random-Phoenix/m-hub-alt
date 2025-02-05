@@ -11,6 +11,7 @@ import { phones } from '../data/phones';
 import { slides } from '../data/slides';
 import { news } from '../data/news';
 import { categories } from '../data/categories';
+import { useLocation } from 'react-router-dom';
 
 // Lazy load LatestNews component since it's only used on desktop
 const LatestNews = lazy(() => import('../components/Hero/LatestNews').then(module => ({
@@ -30,6 +31,7 @@ export const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState('Latest Phones');
   const [favorites] = useState<number[]>([1, 2, 3]);
   const [filters, setFilters] = useState<FilterState>({});
+  const location = useLocation();
 
   const filteredPhones = usePhoneFilter(phones, selectedCategory, searchQuery, filters);
 
@@ -38,15 +40,19 @@ export const HomePage = () => {
       const newFilters = { ...prev };
       
       if (value === null) {
-        // Remove only the specific filter
         delete newFilters[filterId as keyof FilterState];
       } else {
-        // Update or add the new filter value
         newFilters[filterId as keyof FilterState] = value as any;
       }
       
       return newFilters;
     });
+  };
+
+  // Update location state when category changes
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    location.state = { ...location.state, category };
   };
 
   return (
@@ -92,7 +98,7 @@ export const HomePage = () => {
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
+          setSelectedCategory={handleCategoryChange}
           onFilterChange={handleFilterChange}
           activeFilters={filters}
         />

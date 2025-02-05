@@ -11,10 +11,13 @@ import { ChevronRight } from 'lucide-react';
 export const AllDevices = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Latest Phones');
   const [favorites] = useState<number[]>([1, 2, 3]);
   const [currentPage, setCurrentPage] = useState(1);
   const location = useLocation();
+
+  // Get the initial category from location state or default to 'Latest Phones'
+  const initialCategory = location.state?.category || 'Latest Phones';
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   const filteredPhones = usePhoneFilter(phones, selectedCategory, searchQuery);
   

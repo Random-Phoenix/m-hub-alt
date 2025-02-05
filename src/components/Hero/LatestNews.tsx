@@ -7,7 +7,7 @@ interface LatestNewsProps {
 }
 
 const NewsHeader = memo(() => (
-  <div className="px-4 py-3 border-b border-gray-100">
+  <div className="flex-shrink-0 px-4 py-3 border-b border-gray-100">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Newspaper className="w-4 h-4 text-blue-600" />
@@ -27,10 +27,7 @@ const NewsHeader = memo(() => (
 ));
 
 const NewsItem = memo(({ item }: { item: NewsItemType }) => (
-  <div
-    className="group py-3.5 px-4 hover:bg-gray-50/75 transition-colors cursor-pointer border-b border-gray-100 last:border-b-0"
-    style={{ contain: "content" }}
-  >
+  <div className="group py-3.5 px-4 hover:bg-gray-50/75 transition-colors cursor-pointer border-b border-gray-100 last:border-b-0">
     <div className="flex items-start gap-3">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 text-xs text-gray-500 mb-1.5">
@@ -75,15 +72,14 @@ export const LatestNews: React.FC<LatestNewsProps> = memo(({ news }) => {
   }, [news]);
 
   return (
-    <div
-      className="bg-white rounded-xl h-[40vh] flex flex-col font-display overflow-hidden border border-gray-100 hidden md:flex"
-      style={{ contain: "content" }}
-    >
-      <NewsHeader />
-      <div className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain scroll-smooth">
-        {visibleNews.map((item) => (
-          <NewsItem key={item.id} item={item} />
-        ))}
+    <div className="relative bg-white rounded-xl h-[40vh] font-display overflow-hidden border border-gray-100 hidden md:block">
+      <div className="absolute inset-0 flex flex-col">
+        <NewsHeader />
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
+          {visibleNews.map((item) => (
+            <NewsItem key={item.id} item={item} />
+          ))}
+        </div>
       </div>
     </div>
   );
