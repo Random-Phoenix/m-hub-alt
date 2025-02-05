@@ -1,7 +1,7 @@
 export interface Phone {
   id: number;
   name: string;
-  price: number;
+  price: string;
   image: string;
   category: string;
   specs: {

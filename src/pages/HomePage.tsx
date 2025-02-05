@@ -23,19 +23,8 @@ export const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Latest Phones');
   const [favorites] = useState<number[]>([1, 2, 3]);
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string | string[]>>({});
 
-  // Get the current sort option from filters
-  const currentSortOption = selectedFilters.price || 
-                          selectedFilters.date || 
-                          selectedFilters.popularity;
-
-  const filteredPhones = usePhoneFilter(
-    phones, 
-    selectedCategory, 
-    searchQuery,
-    currentSortOption as any
-  );
+  const filteredPhones = usePhoneFilter(phones, selectedCategory, searchQuery);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -81,8 +70,6 @@ export const HomePage = () => {
           categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
-          selectedFilters={selectedFilters}
-          setSelectedFilters={setSelectedFilters}
         />
         
         <PhoneGrid phones={filteredPhones} />

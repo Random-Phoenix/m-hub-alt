@@ -151,7 +151,7 @@ const FavoriteCard = ({ phone }: { phone: Phone }) => (
       </h3>
       <div className="space-y-1 mb-4">
         <p className="text-sm text-gray-500">{phone.specs.processor}</p>
-        <p className="text-sm font-medium text-blue-600">Rs. {phone.price.toLocaleString()}</p>
+        <p className="text-sm font-medium text-blue-600">{phone.price}</p>
       </div>
       <Link
         to={`/phone/${phone.id}`}

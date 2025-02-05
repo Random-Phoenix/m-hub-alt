@@ -162,8 +162,6 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
   categories, 
   selectedCategory: propSelectedCategory, 
   setSelectedCategory, 
-  selectedFilters: propSelectedFilters,
-  setSelectedFilters: propSetSelectedFilters,
   isAllDevicesPage = false 
 }) => {
   // Initialize state from localStorage or default values
@@ -199,15 +197,6 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = memo(({
   const desktopButtonRef = useRef<HTMLButtonElement>(null);
   const mobileDropdownRef = useRef<HTMLDivElement>(null);
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
-
-  // Sync filters with parent component
-  useEffect(() => {
-    if (window.innerWidth >= 768) {
-      propSetSelectedFilters(selectedFiltersDesktop);
-    } else {
-      propSetSelectedFilters(selectedFiltersMobile);
-    }
-  }, [selectedFiltersMobile, selectedFiltersDesktop, propSetSelectedFilters]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
