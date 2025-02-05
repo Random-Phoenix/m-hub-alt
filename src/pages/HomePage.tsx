@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, Suspense, lazy, useEffect } from 'react';
 import { Navbar } from '../components/Navigation/Navbar';
 import { HeroSlider } from '../components/Hero/HeroSlider';
 import { MobileSearch } from '../components/Search/MobileSearch';
@@ -12,6 +12,7 @@ import { slides } from '../data/slides';
 import { news } from '../data/news';
 import { categories } from '../data/categories';
 import { useLocation } from 'react-router-dom';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 // Lazy load LatestNews component since it's only used on desktop
 const LatestNews = lazy(() => import('../components/Hero/LatestNews').then(module => ({
@@ -25,13 +26,23 @@ interface FilterState {
 }
 
 export const HomePage = () => {
+  useScrollToTop();
+  const location = useLocation();
+
+  // Initialize state with location state category if available
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Latest Phones');
+  const [selectedCategory, setSelectedCategory] = useState(location.state?.category || 'Latest Phones');
   const [favorites] = useState<number[]>([1, 2, 3]);
   const [filters, setFilters] = useState<FilterState>({});
-  const location = useLocation();
+
+  // Update selectedCategory when location state changes
+  useEffect(() => {
+    if (location.state?.category) {
+      setSelectedCategory(location.state.category);
+    }
+  }, [location.state]);
 
   const filteredPhones = usePhoneFilter(phones, selectedCategory, searchQuery, filters);
 
