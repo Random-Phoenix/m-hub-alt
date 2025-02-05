@@ -120,7 +120,7 @@ export const PhoneDetail = () => {
                 </h1>
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   <span className="text-lg md:text-xl font-bold text-blue-600 font-display">
-                    {phone.price}
+                    Rs. {phone.price.toLocaleString()}
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-green-50 text-green-700 text-xs font-medium">

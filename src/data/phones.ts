@@ -16,18 +16,18 @@ export const phones: Phone[] = [
       "OnePlus Nord 5", "Huawei Nova 12 Pro", "Honor X9b", "Asus ROG Phone 8", "Sony Xperia 10 VI",
       "ZTE Nubia Red Magic 10", "Meizu 20 Pro", "Black Shark 7 Pro", "Lenovo Legion Phone 4", "Poco F6 Pro"
     ][i],
-    price: [
-      "Rs. 79,999", "Rs. 390,500", "Rs. 518,999", "Rs. 376,400", "Rs. 100,300",
-      "Rs. 120,000", "Rs. 145,000", "Rs. 160,000", "Rs. 180,000", "Rs. 95,000",
-      "Rs. 85,000", "Rs. 110,000", "Rs. 130,000", "Rs. 250,000", "Rs. 200,000",
-      "Rs. 140,000", "Rs. 90,000", "Rs. 150,000", "Rs. 170,000", "Rs. 220,000",
-      "Rs. 210,000", "Rs. 80,000", "Rs. 190,000", "Rs. 230,000", "Rs. 240,000",
-      "Rs. 70,000", "Rs. 260,000", "Rs. 135,000", "Rs. 50,000", "Rs. 60,000",
-      "Rs. 105,000", "Rs. 115,000", "Rs. 125,000", "Rs. 175,000", "Rs. 185,000",
-      "Rs. 65,000", "Rs. 75,000", "Rs. 88,000", "Rs. 98,000", "Rs. 108,000",
-      "Rs. 118,000", "Rs. 128,000", "Rs. 138,000", "Rs. 148,000", "Rs. 158,000",
-      "Rs. 168,000", "Rs. 178,000", "Rs. 188,000", "Rs. 198,000", "Rs. 208,000"
-    ][i],
+    price: parseInt([
+      "79,999", "390,500", "518,999", "376,400", "100,300",
+      "120,000", "145,000", "160,000", "180,000", "95,000",
+      "85,000", "110,000", "130,000", "250,000", "200,000",
+      "140,000", "90,000", "150,000", "170,000", "220,000",
+      "210,000", "80,000", "190,000", "230,000", "240,000",
+      "70,000", "260,000", "135,000", "50,000", "60,000",
+      "105,000", "115,000", "125,000", "175,000", "185,000",
+      "65,000", "75,000", "88,000", "98,000", "108,000",
+      "118,000", "128,000", "138,000", "148,000", "158,000",
+      "168,000", "178,000", "188,000", "198,000", "208,000"
+    ][i].replace(/,/g, ''), 10),
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf",
     category: "Latest Phones",
     specs: {
@@ -67,9 +67,11 @@ export const phones: Phone[] = [
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Dual Camera",
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera"
       ][i]
-    }
+    },
+    releaseDate: new Date("2024-10-01"),
+    views: 15000,
+    trending: true
   })),
-
   // Premium Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 51,
@@ -85,18 +87,18 @@ export const phones: Phone[] = [
       "OnePlus Nord 6", "Huawei Nova 13 Pro", "Honor X10b", "Asus ROG Phone 9", "Sony Xperia 11 VI",
       "ZTE Nubia Red Magic 11", "Meizu 21 Pro", "Black Shark 8 Pro", "Lenovo Legion Phone 5", "Poco F7 Pro"
     ][i],
-    price: [
-      "Rs. 577,999", "Rs. 325,900", "Rs. 314,999", "Rs. 185,500", "Rs. 152,200",
-      "Rs. 200,000", "Rs. 220,000", "Rs. 240,000", "Rs. 160,000", "Rs. 95,000",
-      "Rs. 85,000", "Rs. 110,000", "Rs. 130,000", "Rs. 250,000", "Rs. 200,000",
-      "Rs. 140,000", "Rs. 90,000", "Rs. 150,000", "Rs. 170,000", "Rs. 220,000",
-      "Rs. 210,000", "Rs. 80,000", "Rs. 190,000", "Rs. 230,000", "Rs. 240,000",
-      "Rs. 70,000", "Rs. 260,000", "Rs. 135,000", "Rs. 50,000", "Rs. 60,000",
-      "Rs. 105,000", "Rs. 115,000", "Rs. 125,000", "Rs. 175,000", "Rs. 185,000",
-      "Rs. 65,000", "Rs. 75,000", "Rs. 88,000", "Rs. 98,000", "Rs. 108,000",
-      "Rs. 118,000", "Rs. 128,000", "Rs. 138,000", "Rs. 148,000", "Rs. 158,000",
-      "Rs. 168,000", "Rs. 178,000", "Rs. 188,000", "Rs. 198,000", "Rs. 208,000"
-    ][i],
+    price: parseInt([
+      "577,999", "325,900", "314,999", "185,500", "152,200",
+      "200,000", "220,000", "240,000", "160,000", "95,000",
+      "85,000", "110,000", "130,000", "250,000", "200,000",
+      "140,000", "90,000", "150,000", "170,000", "220,000",
+      "210,000", "80,000", "190,000", "230,000", "240,000",
+      "70,000", "260,000", "135,000", "50,000", "60,000",
+      "105,000", "115,000", "125,000", "175,000", "185,000",
+      "65,000", "75,000", "88,000", "98,000", "108,000",
+      "118,000", "128,000", "138,000", "148,000", "158,000",
+      "168,000", "178,000", "188,000", "198,000", "208,000"
+    ][i].replace(/,/g, ''), 10),
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf",
     category: "Premium Phones",
     specs: {
@@ -136,9 +138,11 @@ export const phones: Phone[] = [
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Dual Camera",
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera"
       ][i]
-    }
+    },
+    releaseDate: new Date("2024-09-15"),
+    views: 25000,
+    trending: true
   })),
-
   // Gaming Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 101,
@@ -150,22 +154,22 @@ export const phones: Phone[] = [
       "Micromax In 3 Pro", "Lava Agni 3", "Google Pixel 8a", "Samsung Galaxy A75", "Xiaomi Mi 14 Lite",
       "Oppo Find X7", "Vivo X100 Pro", "Realme Narzo 70 Pro", "Infinix Note 40 Pro", "Tecno Camon 30 Ultra",
       "Motorola Moto G100", "Nokia G60", "OnePlus Nord 5", "Huawei Nova 12 Pro", "Honor X9b",
-      "Asus ROG Phone 8", "Sony Xperia 10 VI", "ZTE Nubia Red Magic 10", "Meizu 20 Pro", "Black Shark 7 Pro",
+      "Asus ROG Phone 8", "Sony Xperia 10 VI", "ZTE Nubia Red Magic 11", "Meizu 20 Pro", "Black Shark 8 Pro",
       "Lenovo Legion Phone 4", "Poco F6 Pro", "iQOO 14 Pro", "Nubia Z70 Ultra", "Fairphone 6",
       "Cat S80", "Sharp Aquos R9", "HTC U25 Pro", "Micromax In 4 Pro", "Lava Agni 4"
     ][i],
-    price: [
-      "Rs. 225,400", "Rs. 279,999", "Rs. 244,800", "Rs. 154,600", "Rs. 97,500",
-      "Rs. 200,000", "Rs. 220,000", "Rs. 240,000", "Rs. 160,000", "Rs. 95,000",
-      "Rs. 85,000", "Rs. 110,000", "Rs. 130,000", "Rs. 250,000", "Rs. 200,000",
-      "Rs. 140,000", "Rs. 90,000", "Rs. 150,000", "Rs. 170,000", "Rs. 220,000",
-      "Rs. 210,000", "Rs. 80,000", "Rs. 190,000", "Rs. 230,000", "Rs. 240,000",
-      "Rs. 70,000", "Rs. 260,000", "Rs. 135,000", "Rs. 50,000", "Rs. 60,000",
-      "Rs. 105,000", "Rs. 115,000", "Rs. 125,000", "Rs. 175,000", "Rs. 185,000",
-      "Rs. 65,000", "Rs. 75,000", "Rs. 88,000", "Rs. 98,000", "Rs. 108,000",
-      "Rs. 118,000", "Rs. 128,000", "Rs. 138,000", "Rs. 148,000", "Rs. 158,000",
-      "Rs. 168,000", "Rs. 178,000", "Rs. 188,000", "Rs. 198,000", "Rs. 208,000"
-    ][i],
+    price: parseInt([
+      "225,400", "279,999", "244,800", "154,600", "97,500",
+      "200,000", "220,000", "240,000", "160,000", "95,000",
+      "85,000", "110,000", "130,000", "250,000", "200,000",
+      "140,000", "90,000", "150,000", "170,000", "220,000",
+      "210,000", "80,000", "190,000", "230,000", "240,000",
+      "70,000", "260,000", "135,000", "50,000", "60,000",
+      "105,000", "115,000", "125,000", "175,000", "185,000",
+      "65,000", "75,000", "88,000", "98,000", "108,000",
+      "118,000", "128,000", "138,000", "148,000", "158,000",
+      "168,000", "178,000", "188,000", "198,000", "208,000"
+    ][i].replace(/,/g, ''), 10),
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf",
     category: "Gaming Phones",
     specs: {
@@ -205,9 +209,11 @@ export const phones: Phone[] = [
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Dual Camera",
         "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera", "50MP Triple Camera"
       ][i]
-    }
+    },
+    releaseDate: new Date("2024-08-20"),
+    views: 30000,
+    trending: true
   })),
-
   // Budget Phones (50 devices)
   ...Array.from({ length: 50 }, (_, i) => ({
     id: i + 151,
@@ -223,57 +229,60 @@ export const phones: Phone[] = [
       "Itel A58", "Samsung Galaxy A02s", "Nokia G10", "Motorola Moto G13", "Oppo A16",
       "Vivo Y12s", "Infinix Hot 12 Play", "Tecno Spark 8C", "Realme Narzo N53", "Itel A49"
     ][i],
-    price: [
-      "Rs. 18,999", "Rs. 25,999", "Rs. 45,000", "Rs. 34,999", "Rs. 19,999",
-      "Rs. 30,000", "Rs. 35,000", "Rs. 40,000", "Rs. 22,000", "Rs. 28,000",
-      "Rs. 20,000", "Rs. 15,000", "Rs. 32,000", "Rs. 18,000", "Rs. 26,000",
-      "Rs. 24,000", "Rs. 21,000", "Rs. 29,000", "Rs. 27,000", "Rs. 23,000",
-      "Rs. 33,000", "Rs. 36,000", "Rs. 17,000", "Rs. 19,500", "Rs. 25,500",
-      "Rs. 20,500", "Rs. 22,500", "Rs. 28,500", "Rs. 21,500", "Rs. 16,500",
-      "Rs. 31,000", "Rs. 18,500", "Rs. 19,000", "Rs. 24,500", "Rs. 20,000",
-      "Rs. 23,500", "Rs. 27,500", "Rs. 22,000", "Rs. 26,500", "Rs. 29,500",
-      "Rs. 17,500", "Rs. 20,000", "Rs. 25,000", "Rs. 30,500", "Rs. 22,500",
-      "Rs. 28,000", "Rs. 21,000", "Rs. 16,000", "Rs. 32,500", "Rs. 18,000"
-    ][i],
+    price: parseInt([
+      "18,999", "25,999", "45,000", "34,999", "19,999",
+      "30,000", "35,000", "40,000", "22,000", "28,000",
+      "20,000", "15,000", "32,000", "18,000", "26,000",
+      "24,000", "21,000", "29,000", "27,000", "23,000",
+      "33,000", "36,000", "17,000", "19,500", "25,500",
+      "20,500", "22,500", "28,500", "21,500", "16,500",
+      "31,000", "18,500", "19,000", "24,500", "20,000",
+      "23,500", "27,500", "22,000", "26,500", "29,500",
+      "17,500", "20,000", "25,000", "30,500", "22,500",
+      "28,000", "21,000", "16,000", "32,500", "18,000"
+    ][i].replace(/,/g, ''), 10),
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf",
     category: "Budget Phones",
     specs: {
       screen: [
-        "6.56-inch IPS LCD", "6.6-inch IPS LCD", "6.78-inch AMOLED", "6.74-inch IPS LCD", "6.6-inch IPS LCD",
-        "6.5-inch IPS LCD", "6.5-inch IPS LCD", "6.5-inch IPS LCD", "6.56-inch IPS LCD", "6.5-inch IPS LCD",
-        "6.6-inch IPS LCD", "6.5-inch IPS LCD", "6.74-inch IPS LCD", "6.6-inch IPS LCD", "6.5-inch IPS LCD",
-        "6.5-inch IPS LCD", "6.5-inch IPS LCD", "6.56-inch IPS LCD", "6.5-inch IPS LCD", "6.6-inch IPS LCD",
-        "6.5-inch IPS LCD", "6.74-inch IPS LCD", "6.6-inch IPS LCD", "6.5-inch IPS LCD", "6.5-inch IPS LCD",
-        "6.5-inch IPS LCD", "6.56-inch IPS LCD", "6.5-inch IPS LCD", "6.6-inch IPS LCD", "6.5-inch IPS LCD",
-        "6.74-inch IPS LCD", "6.6-inch IPS LCD", "6.5-inch IPS LCD", "6.5-inch IPS LCD", "6.5-inch IPS LCD",
-        "6.56-inch IPS LCD", "6.5-inch IPS LCD", "6.6-inch IPS LCD", "6.5-inch IPS LCD", "6.74-inch IPS LCD",
-        "6.6-inch IPS LCD", "6.5-inch IPS LCD", "6.5-inch IPS LCD", "6.5-inch IPS LCD", "6.56-inch IPS LCD",
-        "6.5-inch IPS LCD", "6.6-inch IPS LCD", "6.5-inch IPS LCD", "6.74-inch IPS LCD", "6.6-inch IPS LCD"
+        "6.8-inch AMOLED 165Hz", "6.78-inch AMOLED 165Hz", "6.8-inch AMOLED 120Hz", "6.67-inch AMOLED 144Hz", "6.92-inch AMOLED 144Hz",
+        "6.78-inch AMOLED", "6.67-inch AMOLED", "6.74-inch AMOLED", "6.78-inch AMOLED", "6.8-inch AMOLED",
+        "6.7-inch AMOLED", "6.78-inch AMOLED", "6.9-inch AMOLED", "6.67-inch AMOLED", "6.78-inch AMOLED",
+        "6.8-inch AMOLED", "6.3-inch OLED", "6.5-inch IPS LCD", "6.6-inch AMOLED", "6.7-inch OLED",
+        "6.5-inch IPS LCD", "6.78-inch AMOLED", "6.1-inch OLED", "6.4-inch AMOLED", "6.55-inch AMOLED",
+        "6.82-inch AMOLED", "6.78-inch AMOLED", "6.72-inch IPS LCD", "6.78-inch AMOLED", "6.67-inch AMOLED",
+        "6.7-inch OLED", "6.56-inch IPS LCD", "6.55-inch AMOLED", "6.78-inch AMOLED", "6.8-inch AMOLED",
+        "6.78-inch AMOLED", "6.5-inch OLED", "6.8-inch AMOLED", "6.7-inch AMOLED", "6.78-inch AMOLED",
+        "6.9-inch AMOLED", "6.67-inch AMOLED", "6.78-inch AMOLED", "6.8-inch AMOLED", "6.3-inch OLED",
+        "6.5-inch IPS LCD", "6.6-inch AMOLED", "6.7-inch OLED", "6.5-inch IPS LCD", "6.78-inch AMOLED"
       ][i],
-      processor: [
-        "Helio G36", "Helio G35", "Helio G85", "Unisoc T612", "Unisoc T606",
-        "Helio G35", "Unisoc T606", "Helio G37", "Helio G35", "Helio G35",
-        "Helio G35", "Helio G35", "Unisoc T612", "Unisoc T606", "Helio G35",
-        "Unisoc T606", "Helio G37", "Helio G35", "Helio G35", "Helio G35",
-        "Helio G35", "Unisoc T612", "Unisoc T606", "Helio G35", "Helio G35",
-        "Helio G37", "Helio G35", "Helio G35", "Helio G35", "Helio G35",
-        "Unisoc T612", "Unisoc T606", "Helio G35", "Helio G35", "Helio G37",
-        "Helio G35", "Helio G35", "Helio G35", "Helio G35", "Unisoc T612",
-        "Unisoc T606", "Helio G35", "Helio G35", "Helio G37", "Helio G35",
-        "Helio G35", "Helio G35", "Helio G35", "Unisoc T612", "Unisoc T606"
-      ][i],
-      camera: [
-        "13MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "13MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
-        "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera"
-      ][i]
-    }
-  }))
+    processor: [
+      "Helio G36", "Helio G35", "Helio G85", "Unisoc T612", "Unisoc T606",
+      "Helio G35", "Unisoc T606", "Helio G37", "Helio G35", "Helio G35",
+      "Helio G35", "Helio G35", "Unisoc T612", "Unisoc T606", "Helio G35",
+      "Unisoc T606", "Helio G37", "Helio G35", "Helio G35", "Helio G35",
+      "Helio G35", "Unisoc T612", "Unisoc T606", "Helio G35", "Helio G35",
+      "Helio G37", "Helio G35", "Helio G35", "Helio G35", "Helio G35",
+      "Unisoc T612", "Unisoc T606", "Helio G35", "Helio G35", "Helio G37",
+      "Helio G35", "Helio G35", "Helio G35", "Helio G35", "Unisoc T612",
+      "Unisoc T606", "Helio G35", "Helio G35", "Helio G37", "Helio G35",
+      "Helio G35", "Helio G35", "Helio G35", "Unisoc T612", "Unisoc T606"
+    ][i],
+    camera: [
+      "13MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "13MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera",
+      "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera", "50MP Dual Camera"
+    ][i]
+  },
+  releaseDate: new Date("2024-01-15"),
+  views: 5000,
+  trending: false
+}))
 ];
